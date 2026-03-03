@@ -1,0 +1,126 @@
+.page.data-v-85a239f0 {
+  min-height: 100vh;
+  background: var(--color-bg-page, #f0f2f5);
+  padding-bottom: 40px;
+}
+
+/* 搜索栏 */
+.search-bar.data-v-85a239f0 {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm, 12px);
+  padding: var(--space-sm, 12px) var(--space-md, 16px);
+  background: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.search-input-wrap.data-v-85a239f0 {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background: var(--color-bg-page, #f0f2f5);
+  border-radius: 22px;
+  padding: 0 14px;
+  height: 44px;
+  gap: 8px;
+}
+.search-icon.data-v-85a239f0 {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.search-input.data-v-85a239f0 {
+  flex: 1;
+  font-size: var(--font-base, 17px);
+  color: var(--color-text-main, #1e2a3a);
+  background: transparent;
+}
+.placeholder.data-v-85a239f0 {
+  color: var(--color-text-muted, #a0aab5);
+}
+.filter-btn.data-v-85a239f0 {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 56px;
+}
+.filter-text.data-v-85a239f0 {
+  font-size: var(--font-sm, 15px);
+  color: var(--color-primary, #3a7bd5);
+}
+.filter-arrow.data-v-85a239f0 {
+  font-size: 11px;
+  color: var(--color-primary, #3a7bd5);
+}
+
+/* 筛选面板 */
+.filter-panel.data-v-85a239f0 {
+  background: #fff;
+  padding: var(--space-sm, 12px) var(--space-md, 16px);
+  border-bottom: 1px solid var(--color-border, #e2e7ec);
+}
+.filter-label.data-v-85a239f0 {
+  display: block;
+  font-size: var(--font-sm, 15px);
+  font-weight: 600;
+  color: var(--color-text-main, #1e2a3a);
+  margin-bottom: 8px;
+}
+.filter-chips.data-v-85a239f0 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip.data-v-85a239f0 {
+  padding: 5px 14px;
+  border-radius: 20px;
+  font-size: var(--font-sm, 15px);
+  color: var(--color-text-sub, #6b7b8d);
+  background: var(--color-bg-page, #f0f2f5);
+}
+.chip-active.data-v-85a239f0 {
+  background: var(--color-primary-bg, #eef3fc);
+  color: var(--color-primary, #3a7bd5);
+  font-weight: 500;
+}
+
+/* 统计 */
+.list-meta.data-v-85a239f0 {
+  padding: var(--space-sm, 12px) var(--space-md, 16px) var(--space-xs, 8px);
+}
+.meta-text.data-v-85a239f0 {
+  font-size: var(--font-sm, 15px);
+  color: var(--color-text-sub, #6b7b8d);
+}
+
+/* 列表 */
+.list-wrap.data-v-85a239f0 {
+  padding: 0 var(--space-md, 16px);
+}
+.loading-wrap.data-v-85a239f0 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 0;
+  gap: 12px;
+}
+.loading-text.data-v-85a239f0 {
+  font-size: var(--font-sm, 15px);
+  color: var(--color-text-muted, #a0aab5);
+}
+
+/* 空状态 */
+.empty.data-v-85a239f0 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 0;
+  gap: 12px;
+}
+.empty-icon.data-v-85a239f0 {
+  font-size: 52px;
+}
+.empty-text.data-v-85a239f0 {
+  font-size: var(--font-base, 17px);
+  color: var(--color-text-muted, #a0aab5);
+}

@@ -1,0 +1,82 @@
+/**
+ * @file variables.scss
+ * @description 全局 CSS 变量：适老化颜色、字号、间距规范
+ * @phase Phase 1 - 1-2
+ */
+
+/**
+ * @file variables.scss
+ * @description 全局 CSS 变量定义 —— 适老化设计规范
+ */
+
+// ── 字体大小（比普通小程序大 2-4px）──
+:root,
+page {
+  --font-xs:   13px;   // 次要信息
+  --font-sm:   15px;   // 辅助文字
+  --font-base: 17px;   // 正文（默认）
+  --font-lg:   19px;   // 标题
+  --font-xl:   22px;   // 大标题
+
+  // ── 行高 ──
+  --line-height-base: 1.7;  // 宽松行距
+
+  // ── 点击区域最小尺寸 ──
+  --tap-min-size: 44px;
+
+  // ── 间距 ──
+  --space-xs:  8px;
+  --space-sm:  12px;
+  --space-md:  16px;
+  --space-lg:  24px;
+  --space-xl:  32px;
+
+  // ── 圆角 ──
+  --radius-sm:  6px;
+  --radius-md:  10px;
+  --radius-lg:  16px;
+
+  // ── 主题色 ──
+  --color-primary:      #3a7bd5;
+  --color-primary-dark: #2a5caa;
+  --color-primary-bg:   #eef3fc;
+
+  // ── 状态色 ──
+  --color-success:    #27ae60;
+  --color-success-bg: #e6f9f0;
+  --color-warning:    #e67e22;
+  --color-warning-bg: #fff3e0;
+  --color-danger:     #e74c3c;
+  --color-danger-bg:  #fdf0f0;
+  --color-muted:      #a0aab5;
+  --color-muted-bg:   #f0f2f4;
+
+  // ── 文字色 ──
+  --color-text-main:  #1e2a3a;
+  --color-text-sub:   #6b7b8d;
+  --color-text-muted: #a0aab5;
+
+  // ── 边框 & 背景 ──
+  --color-border:   #e2e7ec;
+  --color-bg-page:  #f0f2f5;
+  --color-bg-card:  #ffffff;
+
+  // ── 阴影 ──
+  --shadow-card: 0 2px 12px rgba(30, 42, 58, 0.08);
+
+  // ── 过渡 ──
+  --transition-base: all 0.2s ease;
+}
+
+// SCSS 变量（与 CSS 变量对应，供 mixin 使用）
+$color-primary:    #3a7bd5;
+$color-text-main:  #1e2a3a;
+$color-border:     #e2e7ec;
+$color-bg-page:    #f0f2f5;
+$tap-min-size:     44px;
+$space-md:         16px;
+$space-lg:         24px;
+// ── 颜色 ──
+// ── 字号 ──
+// ── 间距 ──
+// ── 点击区域 ──

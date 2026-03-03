@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "发布活动",
+  "usingComponents": {
+    "uv-datetime-picker": "../../node-modules/@climblee/uv-ui/components/uv-datetime-picker/uv-datetime-picker"
+  }
+}

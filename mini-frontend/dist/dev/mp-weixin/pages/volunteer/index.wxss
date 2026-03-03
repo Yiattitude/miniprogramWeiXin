@@ -1,0 +1,103 @@
+.page.data-v-9c01f5c3 {
+  min-height: 100vh;
+  background: var(--color-bg-page, #f0f2f5);
+  padding-bottom: 40px;
+}
+
+/* 顶部 */
+.header.data-v-9c01f5c3 {
+  background: linear-gradient(135deg, #27ae60 0%, #1e8449 100%);
+  padding: 36px var(--space-md, 16px) var(--space-xl, 32px);
+}
+.header-title.data-v-9c01f5c3 {
+  display: block;
+  font-size: var(--font-xl, 22px);
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 4px;
+}
+.header-sub.data-v-9c01f5c3 {
+  font-size: var(--font-sm, 15px);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* 四格 */
+.grid.data-v-9c01f5c3 {
+  display: flex;
+  flex-wrap: wrap;
+  padding: var(--space-md, 16px);
+  gap: var(--space-sm, 12px);
+  margin-top: -20px;
+}
+.grid-item.data-v-9c01f5c3 {
+  flex: 0 0 calc(50% - 6px);
+  background: #fff;
+  border-radius: var(--radius-md, 10px);
+  padding: var(--space-md, 16px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.grid-icon-wrap.data-v-9c01f5c3 {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm, 6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+.grid-icon.data-v-9c01f5c3 {
+  font-size: 26px;
+}
+.grid-label.data-v-9c01f5c3 {
+  font-size: var(--font-base, 17px);
+  font-weight: 600;
+  color: var(--color-text-main, #1e2a3a);
+}
+.grid-desc.data-v-9c01f5c3 {
+  font-size: var(--font-xs, 13px);
+  color: var(--color-text-sub, #6b7b8d);
+}
+
+/* 汇总卡 */
+.summary-card.data-v-9c01f5c3 {
+  background: #fff;
+  margin: 0 var(--space-md, 16px);
+  border-radius: var(--radius-md, 10px);
+  padding: var(--space-md, 16px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+.summary-title.data-v-9c01f5c3 {
+  display: block;
+  font-size: var(--font-base, 17px);
+  font-weight: 600;
+  color: var(--color-text-main, #1e2a3a);
+  margin-bottom: var(--space-sm, 12px);
+}
+.summary-row.data-v-9c01f5c3 {
+  display: flex;
+  align-items: center;
+}
+.summary-item.data-v-9c01f5c3 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.summary-num.data-v-9c01f5c3 {
+  font-size: var(--font-xl, 22px);
+  font-weight: 700;
+  color: #27ae60;
+}
+.summary-label.data-v-9c01f5c3 {
+  font-size: var(--font-xs, 13px);
+  color: var(--color-text-sub, #6b7b8d);
+}
+.summary-divider.data-v-9c01f5c3 {
+  width: 1px;
+  height: 32px;
+  background: var(--color-border, #e2e7ec);
+}

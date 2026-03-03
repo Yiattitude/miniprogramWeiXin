@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "打卡",
+  "enablePullDownRefresh": true,
+  "usingComponents": {
+    "uv-loading-icon": "../../node-modules/@climblee/uv-ui/components/uv-loading-icon/uv-loading-icon",
+    "checkin-card": "../../components/volunteer/CheckinCard"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "记录",
+  "usingComponents": {
+    "uv-loading-icon": "../../node-modules/@climblee/uv-ui/components/uv-loading-icon/uv-loading-icon"
+  }
+}

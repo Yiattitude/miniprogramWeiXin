@@ -1,0 +1,40 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/volunteer/index",
+    "pages/volunteer/publish",
+    "pages/volunteer/signup-list",
+    "pages/volunteer/signup-detail",
+    "pages/volunteer/checkin-list",
+    "pages/volunteer/checkin-form",
+    "pages/volunteer/record",
+    "pages/volunteer/profile",
+    "pages/volunteer/statistics"
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "银发人才平台",
+    "navigationBarBackgroundColor": "#ffffff",
+    "backgroundColor": "#f0f2f5"
+  },
+  "tabBar": {
+    "color": "#6b7b8d",
+    "selectedColor": "#3a7bd5",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/volunteer/index",
+        "text": "志愿"
+      },
+      {
+        "pagePath": "pages/volunteer/profile",
+        "text": "我的"
+      }
+    ]
+  },
+  "usingComponents": {}
+}

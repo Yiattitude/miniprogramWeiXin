@@ -1,0 +1,119 @@
+/**
+ * @file global.scss
+ * @description 全局基础样式 & 适老化覆盖（由原 app.wxss 迁移扩展）
+ * @phase Phase 1 - 1-3
+ */
+
+/**
+ * @file global.scss
+ * @description 全局基础样式 & 适老化覆盖
+ * （原 app.wxss 内容迁移至此）
+ */
+
+@import './variables.scss';
+@import './mixins.scss';
+
+// ── Reset ─────────────────────────────────────
+// 注意：微信小程序 WXSS 不支持通配符 *，box-sizing 通过各组件自身设置
+// -webkit-tap-highlight-color 在 view/button 等常用标签上单独覆盖
+view, button, input, textarea, image, scroll-view, swiper, picker {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+page {
+  background-color: var(--color-bg-page);
+  font-size: var(--font-base);
+  line-height: var(--line-height-base);
+  color: var(--color-text-main);
+  font-family: -apple-system, 'PingFang SC', 'Helvetica Neue', sans-serif;
+}
+
+// ── 通用 Flex 工具类 ───────────────────────────
+.flex            { display: flex; }
+.flex-col        { display: flex; flex-direction: column; }
+.flex-center     { @include flex-center; }
+.flex-between    { @include flex-between; }
+.flex-1          { flex: 1; }
+.flex-wrap       { flex-wrap: wrap; }
+
+// ── 间距工具类 ─────────────────────────────────
+.p-xs  { padding: var(--space-xs); }
+.p-sm  { padding: var(--space-sm); }
+.p-md  { padding: var(--space-md); }
+.p-lg  { padding: var(--space-lg); }
+.px-md { padding-left: var(--space-md); padding-right: var(--space-md); }
+.py-md { padding-top: var(--space-md); padding-bottom: var(--space-md); }
+.mt-sm { margin-top: var(--space-sm); }
+.mt-md { margin-top: var(--space-md); }
+.mt-lg { margin-top: var(--space-lg); }
+.mb-sm { margin-bottom: var(--space-sm); }
+.mb-md { margin-bottom: var(--space-md); }
+
+// ── 文字工具类 ─────────────────────────────────
+.text-xs    { font-size: var(--font-xs); }
+.text-sm    { font-size: var(--font-sm); }
+.text-base  { font-size: var(--font-base); }
+.text-lg    { font-size: var(--font-lg); }
+.text-xl    { font-size: var(--font-xl); }
+.text-main  { color: var(--color-text-main); }
+.text-sub   { color: var(--color-text-sub); }
+.text-muted { color: var(--color-text-muted); }
+.text-primary { color: var(--color-primary); }
+.text-danger  { color: var(--color-danger); }
+.text-bold  { font-weight: 600; }
+.text-center { text-align: center; }
+.text-ellipsis { @include ellipsis(1); }
+
+// ── 卡片 ──────────────────────────────────────
+.card {
+  @include card;
+  margin-bottom: var(--space-md);
+}
+
+// ── 页面容器 ───────────────────────────────────
+.page-container {
+  min-height: 100vh;
+  background-color: var(--color-bg-page);
+  padding: var(--space-md);
+}
+
+// ── 安全区域（底部适配）───────────────────────
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+// ── 分割线 ─────────────────────────────────────
+.divider {
+  @include divider;
+  margin: var(--space-sm) 0;
+}
+
+// ── 空状态容器 ─────────────────────────────────
+.empty-wrapper {
+  @include flex-center;
+  flex-direction: column;
+  padding: 60px var(--space-lg);
+  color: var(--color-text-muted);
+}
+
+// ── uni-app 组件适老化覆盖（uv-ui） ───────────
+// 保证所有 uv-button 满足最小触摸区域
+.u-btn,
+.uv-btn {
+  min-height: var(--tap-min-size) !important;
+}
+
+// input 高度适老化
+.u-input,
+.uv-input {
+  min-height: var(--tap-min-size) !important;
+}
+
+// 导航栏文字大小
+.u-navbar__title,
+.uv-navbar__title {
+  font-size: var(--font-lg) !important;
+}
+// 引入变量
+// @import './variables.scss';
