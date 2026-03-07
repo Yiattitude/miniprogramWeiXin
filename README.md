@@ -56,6 +56,7 @@
 ---
 
 ## 安装依赖
+### 推荐使用bun，依赖下载速度远高于npm
 
 ```bash
 cd mini-frontend
@@ -70,9 +71,7 @@ bun install
 
 ```bash
 bun run dev:mp-weixin
-```
 # 或
-```bash
 npm run dev:mp-weixin
 ```
 
