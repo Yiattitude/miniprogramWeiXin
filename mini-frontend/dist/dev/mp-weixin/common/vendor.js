@@ -9548,7 +9548,7 @@ function rgbToHex(rgb) {
     return _this;
   }
 }
-const props$7 = {
+const props$8 = {
   props: {
     // 是否显示组件
     show: {
@@ -9615,7 +9615,7 @@ const props$7 = {
     ...(_h = (_g = index$1.$uv) == null ? void 0 : _g.props) == null ? void 0 : _h.loadingIcon
   }
 };
-const props$8 = {
+const props$7 = {
   props: {
     // 组件状态，loadmore-加载前的状态，loading-加载中的状态，nomore-没有更多的状态
     status: {
@@ -10551,8 +10551,8 @@ exports.onShow = onShow;
 exports.p = p;
 exports.promise = promise;
 exports.props = props$9;
-exports.props$1 = props$7;
-exports.props$2 = props$8;
+exports.props$1 = props$8;
+exports.props$2 = props$7;
 exports.props$3 = props$6;
 exports.props$4 = props$5;
 exports.props$5 = props$4;

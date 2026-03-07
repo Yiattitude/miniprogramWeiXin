@@ -51,6 +51,10 @@
     "color": "#6b7b8d",
     "selectedColor": "#3a7bd5",
     "backgroundColor": "#ffffff",
+    "fontSize": "16px",
+    "iconWidth": "28px",
+    "spacing": "4px",
+    "height": "64px",
     "list": [
       {
         "pagePath": "pages/index/index",
