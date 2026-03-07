@@ -1,70 +1,43 @@
 /**
  * @file volunteer.ts
  * @description 志愿活动模块 Pinia Store
- * @phase Phase 1 - 1-9
- */
-
-/**
- * @file volunteer.ts
- * @description 志愿活动模块 Pinia Store
- * 负责活动列表、报名、打卡、统计数据的状态管理
  */
 
 import { defineStore } from 'pinia'
 import { ref, reactive } from 'vue'
-import * as volunteerApi from '@/api/volunteer'
-import type {
-  Activity,
-  CheckinRecord,
-  CheckinForm,
-  PublishActivityForm,
-  StatisticsData,
-  VolunteerFilter,
-  PageResult,
-} from '@/types/volunteer'
+import * as volunteerApi from '../api/volunteer'
+import type { Activity, CheckinRecord, StatisticsData } from '../types/volunteer'
 
 export const useVolunteerStore = defineStore('volunteer', () => {
-  // ────── 状态 ──────
-
-  /** 活动列表（报名页）*/
   const activityList = ref<Activity[]>([])
   const activityTotal = ref(0)
-
-  /** 当前活动详情（详情页）*/
   const currentActivity = ref<Activity | null>(null)
-
-  /** 我已报名的活动（打卡页）*/
   const mySignups = ref<Activity[]>([])
-
-  /** 我的打卡记录 */
   const myRecords = ref<CheckinRecord[]>([])
   const recordTotal = ref(0)
-
-  /** 统计报表数据 */
   const statistics = ref<StatisticsData | null>(null)
 
-  /** 筛选条件 */
-  const filter = reactive<VolunteerFilter>({
+  const filter = reactive({
     timeRange: 'month',
     location: '',
     keyword: '',
+    startDate: undefined as string | undefined,
+    endDate: undefined as string | undefined
   })
 
-  // ────── Actions ──────
-
   /**
-   * 获取活动列表（支持筛选和搜索）
+   * 获取活动列表
    */
-  async function fetchActivityList(page = 1, pageSize = 10): Promise<PageResult<Activity>> {
+  async function fetchActivityList(page = 1, pageSize = 10) {
     const result = await volunteerApi.getActivityList({
       page,
       pageSize,
       keyword: filter.keyword || undefined,
-      timeRange: filter.timeRange,
       location: filter.location || undefined,
       startDate: filter.startDate,
-      endDate: filter.endDate,
+      endDate: filter.endDate
     })
+    
     if (page === 1) {
       activityList.value = result.list
     } else {
@@ -75,33 +48,34 @@ export const useVolunteerStore = defineStore('volunteer', () => {
   }
 
   /**
-   * 获取单个活动详情
+   * 获取活动详情
    */
-  async function fetchActivityById(id: string): Promise<Activity> {
+  async function fetchActivityById(id: string) {
     const activity = await volunteerApi.getActivityById(id)
     currentActivity.value = activity
     return activity
   }
 
   /**
-   * 发布活动（仅管理员）
+   * 发布活动
    */
-  async function publishActivity(form: PublishActivityForm): Promise<Activity> {
+  async function publishActivity(form: any) {
     const activity = await volunteerApi.publishActivity(form)
     return activity
   }
 
   /**
-   * 报名参加活动
+   * 报名活动
    */
   async function signupActivity(activityId: string) {
     await volunteerApi.signup(activityId)
-    // 报名成功后更新列表中的该活动状态
-    const idx = activityList.value.findIndex((a) => a.id === activityId)
+    
+    // 更新本地状态
+    const idx = activityList.value.findIndex(a => a._id === activityId)
     if (idx !== -1) {
       activityList.value[idx] = { ...activityList.value[idx], isSignedUp: true }
     }
-    if (currentActivity.value?.id === activityId) {
+    if (currentActivity.value?._id === activityId) {
       currentActivity.value = { ...currentActivity.value, isSignedUp: true }
     }
   }
@@ -111,17 +85,18 @@ export const useVolunteerStore = defineStore('volunteer', () => {
    */
   async function cancelSignup(activityId: string) {
     await volunteerApi.cancelSignup(activityId)
-    const idx = activityList.value.findIndex((a) => a.id === activityId)
+    
+    const idx = activityList.value.findIndex(a => a._id === activityId)
     if (idx !== -1) {
       activityList.value[idx] = { ...activityList.value[idx], isSignedUp: false }
     }
-    if (currentActivity.value?.id === activityId) {
+    if (currentActivity.value?._id === activityId) {
       currentActivity.value = { ...currentActivity.value, isSignedUp: false }
     }
   }
 
   /**
-   * 获取我已报名的活动列表（打卡页）
+   * 获取我的报名
    */
   async function fetchMySignups() {
     mySignups.value = await volunteerApi.getMySignups()
@@ -130,10 +105,11 @@ export const useVolunteerStore = defineStore('volunteer', () => {
   /**
    * 提交打卡
    */
-  async function submitCheckin(form: CheckinForm): Promise<CheckinRecord> {
+  async function submitCheckin(form: any) {
     const record = await volunteerApi.submitCheckin(form)
-    // 打卡成功后标记对应活动已打卡
-    const idx = mySignups.value.findIndex((a) => a.id === form.activityId)
+    
+    // 更新本地状态：在我的报名中标记已打卡
+    const idx = mySignups.value.findIndex(a => a._id === form.activityId)
     if (idx !== -1) {
       mySignups.value[idx] = { ...mySignups.value[idx], isCheckedIn: true }
     }
@@ -141,9 +117,9 @@ export const useVolunteerStore = defineStore('volunteer', () => {
   }
 
   /**
-   * 获取个人历史打卡记录（分页）
+   * 获取我的打卡记录
    */
-  async function fetchMyRecords(page = 1, pageSize = 10): Promise<PageResult<CheckinRecord>> {
+  async function fetchMyRecords(page = 1, pageSize = 10) {
     const result = await volunteerApi.getMyRecords({ page, pageSize })
     if (page === 1) {
       myRecords.value = result.list
@@ -155,21 +131,23 @@ export const useVolunteerStore = defineStore('volunteer', () => {
   }
 
   /**
-   * 获取统计报表数据
+   * 获取统计数据
    */
-  async function fetchStatistics(params: Parameters<typeof volunteerApi.getStatistics>[0]) {
-    statistics.value = await volunteerApi.getStatistics(params)
+  async function fetchStatistics() {
+    statistics.value = await volunteerApi.getStatistics()
   }
 
   /**
-   * 导出统计报表
+   * 导出报表
    */
-  async function exportReport(params: Parameters<typeof volunteerApi.exportReport>[0]): Promise<string> {
-    const { downloadUrl } = await volunteerApi.exportReport(params)
+  async function exportReport() {
+    const { downloadUrl } = await volunteerApi.exportReport()
     return downloadUrl
   }
 
-  /** 重置筛选条件 */
+  /**
+   * 重置筛选
+   */
   function resetFilter() {
     filter.timeRange = 'month'
     filter.location = ''
@@ -197,6 +175,6 @@ export const useVolunteerStore = defineStore('volunteer', () => {
     fetchMyRecords,
     fetchStatistics,
     exportReport,
-    resetFilter,
+    resetFilter
   }
 })
