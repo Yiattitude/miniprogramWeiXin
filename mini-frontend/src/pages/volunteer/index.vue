@@ -1,8 +1,75 @@
+<template>
+  <view class="page">
+    <view class="header">
+      <text class="header-title">志愿活动</text>
+      <text class="header-sub">参与志愿服务，传递银发力量</text>
+    </view>
+
+    <view class="grid">
+      <view class="grid-item" @tap="goPage('/pages/volunteer/signup-list')">
+        <view class="grid-icon-wrap" style="background: #eef3fc">
+          <text class="grid-icon">📝</text>
+        </view>
+        <text class="grid-label">活动报名</text>
+        <text class="grid-desc">浏览并报名志愿活动</text>
+      </view>
+
+      <view class="grid-item" @tap="goPage('/pages/volunteer/checkin-list')">
+        <view class="grid-icon-wrap" style="background: #e6f9f0">
+          <text class="grid-icon">✅</text>
+        </view>
+        <text class="grid-label">志愿打卡</text>
+        <text class="grid-desc">已报名活动打卡记录</text>
+      </view>
+
+      <view v-if="userStore.isAdmin" class="grid-item" @tap="goPage('/pages/volunteer/publish')">
+        <view class="grid-icon-wrap" style="background: #fff3e0">
+          <text class="grid-icon">📢</text>
+        </view>
+        <text class="grid-label">发布活动</text>
+        <text class="grid-desc">创建新的志愿活动</text>
+      </view>
+
+      <view class="grid-item" @tap="goPage('/pages/volunteer/record')">
+        <view class="grid-icon-wrap" style="background: #f3eeff">
+          <text class="grid-icon">📋</text>
+        </view>
+        <text class="grid-label">打卡记录</text>
+        <text class="grid-desc">查看历史打卡记录</text>
+      </view>
+
+      <view class="grid-item" @tap="goPage('/pages/volunteer/statistics')">
+        <view class="grid-icon-wrap" style="background: #fdf0f0">
+          <text class="grid-icon">📊</text>
+        </view>
+        <text class="grid-label">统计报表</text>
+        <text class="grid-desc">个人与团队统计汇总</text>
+      </view>
+    </view>
+
+    <view v-if="userStore.userInfo" class="summary-card">
+      <text class="summary-title">我的志愿汇总</text>
+      <view class="summary-row">
+        <view class="summary-item">
+          <text class="summary-num">{{ userStore.userInfo.totalHours || 0 }}</text>
+          <text class="summary-label">服务时长(h)</text>
+        </view>
+        <view class="summary-divider"></view>
+        <view class="summary-item">
+          <text class="summary-num">{{ userStore.userInfo.totalCount || 0 }}</text>
+          <text class="summary-label">参与次数</text>
+        </view>
+        <view class="summary-divider"></view>
+        <view class="summary-item">
+          <text class="summary-num">{{ userStore.userInfo.totalServed || 0 }}</text>
+          <text class="summary-label">服务人数</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
+
 <script setup lang="ts">
-/**
- * @page volunteer/index
- * @description 志愿活动首页：四格功能入口，admin 才显示"发布活动"
- */
 import { useUserStore } from '@/stores/user'
 
 const userStore = useUserStore()
@@ -11,89 +78,6 @@ function goPage(path: string) {
   uni.navigateTo({ url: path })
 }
 </script>
-
-<template>
-  <view class="page">
-    <!-- 顶部标题区 -->
-    <view class="header">
-      <text class="header-title">志愿活动</text>
-      <text class="header-sub">参与志愿服务，传递银发力量</text>
-    </view>
-
-    <!-- 四格入口 -->
-    <view class="grid">
-      <!-- 活动报名 -->
-      <view class="grid-item" @click="goPage('/pages/volunteer/signup-list')">
-        <view class="grid-icon-wrap" style="background: #eef3fc;">
-          <text class="grid-icon">📝</text>
-        </view>
-        <text class="grid-label">活动报名</text>
-        <text class="grid-desc">浏览并报名志愿活动</text>
-      </view>
-
-      <!-- 志愿打卡 -->
-      <view class="grid-item" @click="goPage('/pages/volunteer/checkin-list')">
-        <view class="grid-icon-wrap" style="background: #e6f9f0;">
-          <text class="grid-icon">✅</text>
-        </view>
-        <text class="grid-label">志愿打卡</text>
-        <text class="grid-desc">已报名活动打卡记录</text>
-      </view>
-
-      <!-- 发布活动（仅 admin 显示） -->
-      <view
-        v-if="userStore.isAdmin"
-        class="grid-item"
-        @click="goPage('/pages/volunteer/publish')"
-      >
-        <view class="grid-icon-wrap" style="background: #fff3e0;">
-          <text class="grid-icon">📢</text>
-        </view>
-        <text class="grid-label">发布活动</text>
-        <text class="grid-desc">创建新的志愿活动</text>
-      </view>
-
-      <!-- 打卡记录 -->
-      <view class="grid-item" @click="goPage('/pages/volunteer/record')">
-        <view class="grid-icon-wrap" style="background: #f3eeff;">
-          <text class="grid-icon">📋</text>
-        </view>
-        <text class="grid-label">打卡记录</text>
-        <text class="grid-desc">查看历史打卡记录</text>
-      </view>
-
-      <!-- 统计报表 -->
-      <view class="grid-item" @click="goPage('/pages/volunteer/statistics')">
-        <view class="grid-icon-wrap" style="background: #fdf0f0;">
-          <text class="grid-icon">📊</text>
-        </view>
-        <text class="grid-label">统计报表</text>
-        <text class="grid-desc">个人与团队统计汇总</text>
-      </view>
-    </view>
-
-    <!-- 个人小结卡 -->
-    <view v-if="userStore.userInfo" class="summary-card">
-      <text class="summary-title">我的志愿汇总</text>
-      <view class="summary-row">
-        <view class="summary-item">
-          <text class="summary-num">{{ userStore.userInfo.totalHours }}</text>
-          <text class="summary-label">时长(h)</text>
-        </view>
-        <view class="summary-divider" />
-        <view class="summary-item">
-          <text class="summary-num">{{ userStore.userInfo.totalCount }}</text>
-          <text class="summary-label">次数</text>
-        </view>
-        <view class="summary-divider" />
-        <view class="summary-item">
-          <text class="summary-num">{{ userStore.userInfo.totalServed }}</text>
-          <text class="summary-label">服务人次</text>
-        </view>
-      </view>
-    </view>
-  </view>
-</template>
 
 <style lang="scss" scoped>
 .page {
@@ -116,7 +100,7 @@ function goPage(path: string) {
 }
 .header-sub {
   font-size: var(--font-sm, 15px);
-  color: rgba(255,255,255,0.8);
+  color: rgba(255, 255, 255, 0.8);
 }
 
 /* 四格 */
@@ -132,7 +116,7 @@ function goPage(path: string) {
   background: #fff;
   border-radius: var(--radius-md, 10px);
   padding: var(--space-md, 16px);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -146,7 +130,9 @@ function goPage(path: string) {
   justify-content: center;
   margin-bottom: 4px;
 }
-.grid-icon { font-size: 26px; }
+.grid-icon {
+  font-size: 26px;
+}
 .grid-label {
   font-size: var(--font-base, 17px);
   font-weight: 600;
@@ -163,7 +149,7 @@ function goPage(path: string) {
   margin: 0 var(--space-md, 16px);
   border-radius: var(--radius-md, 10px);
   padding: var(--space-md, 16px);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 .summary-title {
   display: block;
@@ -194,7 +180,7 @@ function goPage(path: string) {
 }
 .summary-divider {
   width: 1px;
-  height: 32px;
-  background: var(--color-border, #e2e7ec);
+  height: 30px;
+  background: #eee;
 }
 </style>

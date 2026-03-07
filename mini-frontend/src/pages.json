@@ -1,55 +1,79 @@
 {
-  "easycom": {
-    "autoscan": true,
-    "custom": {
-      "^uv-(.*)": "@climblee/uv-ui/components/uv-$1/uv-$1.vue"
-    }
-  },
   "pages": [
     {
       "path": "pages/index/index",
-      "style": { "navigationBarTitleText": "银发人才平台" }
+      "style": {
+        "navigationBarTitleText": "银发人才平台"
+      }
     },
     {
       "path": "pages/volunteer/index",
-      "style": { "navigationBarTitleText": "志愿活动" }
+      "style": {
+        "navigationBarTitleText": "志愿活动"
+      }
     },
     {
       "path": "pages/volunteer/publish",
-      "style": { "navigationBarTitleText": "发布活动" }
+      "style": {
+        "navigationBarTitleText": "发布活动"
+      }
     },
     {
       "path": "pages/volunteer/signup-list",
-      "style": { "navigationBarTitleText": "报名", "enablePullDownRefresh": true }
+      "style": {
+        "navigationBarTitleText": "活动报名",
+        "enablePullDownRefresh": true
+      }
     },
     {
       "path": "pages/volunteer/signup-detail",
-      "style": { "navigationBarTitleText": "报名详情" }
+      "style": {
+        "navigationBarTitleText": "活动详情"
+      }
     },
     {
       "path": "pages/volunteer/checkin-list",
-      "style": { "navigationBarTitleText": "打卡", "enablePullDownRefresh": true }
+      "style": {
+        "navigationBarTitleText": "志愿打卡",
+        "enablePullDownRefresh": true
+      }
     },
     {
       "path": "pages/volunteer/checkin-form",
-      "style": { "navigationBarTitleText": "打卡详情" }
+      "style": {
+        "navigationBarTitleText": "打卡填报"
+      }
     },
     {
       "path": "pages/volunteer/record",
-      "style": { "navigationBarTitleText": "记录" }
+      "style": {
+        "navigationBarTitleText": "打卡记录",
+        "enablePullDownRefresh": true
+      }
     },
     {
       "path": "pages/volunteer/profile",
-      "style": { "navigationBarTitleText": "个人" }
+      "style": {
+        "navigationBarTitleText": "个人中心"
+      }
     },
     {
       "path": "pages/volunteer/statistics",
-      "style": { "navigationBarTitleText": "统计报表" }
+      "style": {
+        "navigationBarTitleText": "统计报表"
+      }
     }
   ],
+  "globalStyle": {
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "银发人才平台",
+    "navigationBarBackgroundColor": "#ffffff",
+    "backgroundColor": "#f0f2f5"
+  },
   "tabBar": {
     "color": "#6b7b8d",
     "selectedColor": "#3a7bd5",
+    "borderStyle": "black",
     "backgroundColor": "#ffffff",
     "list": [
       {
@@ -65,11 +89,5 @@
         "text": "我的"
       }
     ]
-  },
-  "globalStyle": {
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "银发人才平台",
-    "navigationBarBackgroundColor": "#ffffff",
-    "backgroundColor": "#f0f2f5"
   }
 }

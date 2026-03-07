@@ -1,62 +1,14 @@
-<script setup lang="ts">
-/**
- * @component ActivityCard
- * @description 志愿活动列表卡片：名称、时间、地点、报名进度、状态徽标
- * @props activity  Activity 对象
- * @emits click     点击卡片时抛出 Activity
- */
-import type { Activity, ActivityStatus } from '@/types/volunteer'
-import { formatActivityTime } from '@/utils/format'
-
-const props = defineProps<{
-  activity: Activity
-}>()
-
-const emit = defineEmits<{
-  click: [activity: Activity]
-}>()
-
-interface StatusConfig {
-  text: string
-  color: string
-  bg: string
-}
-
-const STATUS_MAP: Record<ActivityStatus, StatusConfig> = {
-  recruiting: { text: '招募中',   color: '#3a7bd5', bg: '#eef3fc' },
-  upcoming:   { text: '即将开始', color: '#e67e22', bg: '#fff3e0' },
-  ongoing:    { text: '进行中',   color: '#27ae60', bg: '#e6f9f0' },
-  ended:      { text: '已结束',   color: '#a0aab5', bg: '#f0f2f4' },
-}
-
-const enrollPercent = () =>
-  Math.min((props.activity.enrollCount / props.activity.maxCount) * 100, 100)
-
-function handleClick() {
-  emit('click', props.activity)
-}
-</script>
-
 <template>
-  <view class="activity-card" @click="handleClick">
-    <!-- 顶部：标题 + 状态徽标 -->
+  <view class="activity-card" @tap="handleClick">
     <view class="card-header">
       <text class="card-title">{{ activity.name }}</text>
-      <view
-        class="status-badge"
-        :style="{
-          color: STATUS_MAP[activity.status].color,
-          backgroundColor: STATUS_MAP[activity.status].bg,
-        }"
-      >
-        {{ STATUS_MAP[activity.status].text }}
+      <view class="status-badge" :style="{ color: statusInfo.color, backgroundColor: statusInfo.bg }">
+        {{ statusInfo.text }}
       </view>
     </view>
-
-    <!-- 已报名标记 -->
+    
     <view v-if="activity.isSignedUp" class="tag-signed">✓ 已报名</view>
-
-    <!-- 信息行 -->
+    
     <view class="card-meta">
       <view class="meta-row">
         <text class="meta-icon">🕐</text>
@@ -71,13 +23,45 @@ function handleClick() {
         <text class="meta-text">已报名 {{ activity.enrollCount }} / {{ activity.maxCount }} 人</text>
       </view>
     </view>
-
-    <!-- 报名进度条 -->
+    
     <view class="progress-wrap">
-      <view class="progress-bar" :style="{ width: enrollPercent() + '%' }" />
+      <view class="progress-bar" :style="{ width: enrollPercent + '%' }" />
     </view>
   </view>
 </template>
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import { formatActivityTime } from '@/utils/format'
+import type { Activity } from '@/types/volunteer'
+
+interface Props {
+  activity: Activity
+}
+
+const props = defineProps<Props>()
+const emit = defineEmits(['click'])
+
+const STATUS_MAP = {
+  recruiting: { text: '招募中', color: '#3a7bd5', bg: '#eef3fc' },
+  upcoming: { text: '即将开始', color: '#e67e22', bg: '#fff3e0' },
+  ongoing: { text: '进行中', color: '#27ae60', bg: '#e6f9f0' },
+  ended: { text: '已结束', color: '#a0aab5', bg: '#f0f2f4' }
+}
+
+const statusInfo = computed(() => {
+  return STATUS_MAP[props.activity.status] || STATUS_MAP.ended
+})
+
+const enrollPercent = computed(() => {
+  if (!props.activity.maxCount) return 0
+  return Math.min((props.activity.enrollCount / props.activity.maxCount) * 100, 100)
+})
+
+function handleClick() {
+  emit('click', props.activity)
+}
+</script>
 
 <style lang="scss" scoped>
 .activity-card {
