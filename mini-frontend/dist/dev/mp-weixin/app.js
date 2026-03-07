@@ -21,6 +21,8 @@ const _sfc_main = {
       userStore.fetchProfile().catch(() => {
       });
     }
+    
+    
   }
 };
 function createApp() {

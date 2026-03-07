@@ -1,24 +1,30 @@
-<script lang="ts">
-/**
- * @file App.vue
- * @description 应用层入口，处理全局生命周期、登录初始化
- * App 级生命周期（onLaunch/onShow/onHide）必须用 Options API，不能用 script setup
- */
-import { useUserStore } from '@/stores/user'
+<script setup lang="ts">
+import { onLaunch } from '@dcloudio/uni-app'
+import { useUserStore } from './stores/user'
 
-export default {
-  onLaunch() {
-    const userStore = useUserStore()
-    if (userStore.isLoggedIn) {
-      userStore.fetchProfile().catch(() => {
-        // token 失效，http.ts 中已处理 401 跳转
-      })
-    }
-  },
-}
+onLaunch(() => {
+  // 1. 初始化微信云开发
+  if (!wx.cloud) {
+    console.error('请使用 2.2.3 或以上的基础库以使用云能力')
+  } else {
+    wx.cloud.init({
+      env: 'cloud1-9gqeut4h5f964174', // TODO: 填入你的云开发环境 ID
+      traceUser: true,
+    })
+    console.log('微信云开发初始化成功')
+  }
+
+  // 2. 检查登录状态
+  const userStore = useUserStore()
+  if (userStore.isLoggedIn) {
+    userStore.fetchProfile().catch(err => {
+      console.error('获取用户信息失败', err)
+    })
+  }
+})
 </script>
 
 <style lang="scss">
-@import '@/styles/global.scss';
-@import '@climblee/uv-ui/index.scss';
+/* 全局公共样式 */
+@import "@/styles/global.scss";
 </style>

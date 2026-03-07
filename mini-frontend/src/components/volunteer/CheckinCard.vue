@@ -1,48 +1,12 @@
-<script setup lang="ts">
-/**
- * @component CheckinCard
- * @description 打卡列表卡片：已打卡置灰不可点击，未打卡高亮可跳转
- * @props activity  Activity 对象
- * @emits checkin   点击"去打卡"按钮时抛出 Activity
- */
-import type { Activity, ActivityStatus } from '@/types/volunteer'
-import { formatActivityTime } from '@/utils/format'
-
-const props = defineProps<{
-  activity: Activity
-}>()
-
-const emit = defineEmits<{
-  checkin: [activity: Activity]
-}>()
-
-const STATUS_TEXT: Record<ActivityStatus, string> = {
-  recruiting: '招募中',
-  upcoming:   '即将开始',
-  ongoing:    '进行中',
-  ended:      '已结束',
-}
-
-function handleCheckin() {
-  if (!props.activity.isCheckedIn) {
-    emit('checkin', props.activity)
-  }
-}
-</script>
-
 <template>
   <view class="checkin-card" :class="{ 'is-checked': activity.isCheckedIn }">
-    <!-- 左侧内容 -->
     <view class="card-body">
       <view class="card-header">
         <text class="card-title">{{ activity.name }}</text>
-        <!-- 已打卡标记 -->
         <view v-if="activity.isCheckedIn" class="tag-done">✓ 已打卡</view>
-        <!-- 进行中标记（未打卡） -->
-        <view v-else-if="activity.status === 'ongoing'" class="tag-ongoing">进行中</view>
-        <view v-else class="tag-status">{{ STATUS_TEXT[activity.status] }}</view>
+        <view v-elif="activity.status === 'ongoing'" class="tag-ongoing">进行中</view>
+        <view v-else class="tag-status">{{ STATUS_TEXT[activity.status] || '已结束' }}</view>
       </view>
-
       <view class="meta-row">
         <text class="meta-icon">🕐</text>
         <text class="meta-text">{{ formatActivityTime(activity.startTime, activity.endTime) }}</text>
@@ -52,25 +16,37 @@ function handleCheckin() {
         <text class="meta-text">{{ activity.location }}</text>
       </view>
     </view>
-
-    <!-- 右侧按钮 -->
     <view class="card-action">
-      <view
-        v-if="activity.isCheckedIn"
-        class="btn-checked"
-      >
-        已完成
-      </view>
-      <view
-        v-else
-        class="btn-checkin"
-        @click="handleCheckin"
-      >
-        去打卡
-      </view>
+      <view v-if="activity.isCheckedIn" class="btn-checked">已完成</view>
+      <view v-else class="btn-checkin" @tap="handleCheckin">去打卡</view>
     </view>
   </view>
 </template>
+
+<script setup lang="ts">
+import { formatActivityTime } from '@/utils/format'
+import type { Activity } from '@/types/volunteer'
+
+interface Props {
+  activity: Activity
+}
+
+const props = defineProps<Props>()
+const emit = defineEmits(['checkin'])
+
+const STATUS_TEXT: Record<string, string> = {
+  recruiting: '招募中',
+  upcoming: '即将开始',
+  ongoing: '进行中',
+  ended: '已结束'
+}
+
+function handleCheckin() {
+  if (!props.activity.isCheckedIn) {
+    emit('checkin', props.activity)
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 .checkin-card {
@@ -82,11 +58,10 @@ function handleCheckin() {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
 
-  // 已打卡状态：整体置灰
-  &.is-checked {
-    opacity: 0.6;
-  }
+.checkin-card.is-checked {
+  opacity: 0.6;
 }
 
 .card-body {

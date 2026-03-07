@@ -1,6 +1,7 @@
 {
   "description": "项目配置文件",
   "miniprogramRoot": "dist/dev/mp-weixin/",
+  "cloudfunctionRoot": "cloudfunctions/",
   "compileType": "miniprogram",
   "setting": {
     "babelSetting": {
@@ -28,7 +29,8 @@
     "condition": false,
     "swc": false,
     "disableSWC": true,
-    "disableUseStrict": false
+    "disableUseStrict": false,
+    "useCompilerPlugins": false
   },
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
@@ -37,10 +39,10 @@
     "tabIndent": "insertSpaces",
     "tabSize": 2
   },
-  "libVersion": "3.3.3",
+  "libVersion": "3.14.2",
   "packOptions": {
     "ignore": [],
     "include": []
   },
-  "appid": "wx8aa643e89ae9c5a9"
+  "appid": "wx2b8ff48151cc1a2b"
 }
