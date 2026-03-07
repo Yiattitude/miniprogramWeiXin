@@ -1,6 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "uv-popup": "../uv-popup/uv-popup"
-  }
-}

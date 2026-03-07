@@ -4,7 +4,7 @@
       <uv-loading-icon size="36" />
     </view>
     
-    <view v-elif="activity">
+    <view v-else-if="activity">
       <view class="status-bar" :style="{ background: statusInfo.bg }">
         <text class="status-text" :style="{ color: statusInfo.color }">{{ statusInfo.text }}</text>
       </view>

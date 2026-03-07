@@ -8,7 +8,7 @@
       <uv-loading-icon size="36" />
     </view>
     
-    <view v-elif="list.length > 0" class="list-wrap">
+    <view v-else-if="list.length > 0" class="list-wrap">
       <CheckinCard 
         v-for="item in list" 
         :key="item._id" 

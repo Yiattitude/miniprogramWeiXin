@@ -4,7 +4,7 @@
       <view class="card-header">
         <text class="card-title">{{ activity.name }}</text>
         <view v-if="activity.isCheckedIn" class="tag-done">✓ 已打卡</view>
-        <view v-elif="activity.status === 'ongoing'" class="tag-ongoing">进行中</view>
+        <view v-else-if="activity.status === 'ongoing'" class="tag-ongoing">进行中</view>
         <view v-else class="tag-status">{{ STATUS_TEXT[activity.status] || '已结束' }}</view>
       </view>
       <view class="meta-row">

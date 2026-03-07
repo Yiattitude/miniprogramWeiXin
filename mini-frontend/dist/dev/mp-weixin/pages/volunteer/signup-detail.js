@@ -6,7 +6,7 @@ if (!Array) {
   const _easycom_uv_loading_icon2 = common_vendor.resolveComponent("uv-loading-icon");
   _easycom_uv_loading_icon2();
 }
-const _easycom_uv_loading_icon = () => "../../node-modules/@climblee/uv-ui/components/uv-loading-icon/uv-loading-icon.js";
+const _easycom_uv_loading_icon = () => "../../components/stub/uv-loading-icon.js";
 if (!Math) {
   _easycom_uv_loading_icon();
 }
@@ -24,20 +24,29 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       ongoing: { text: "进行中", color: "#27ae60", bg: "#e6f9f0" },
       ended: { text: "已结束", color: "#a0aab5", bg: "#f0f2f4" }
     };
-    const isFull = common_vendor.computed(
-      () => activity.value ? activity.value.enrollCount >= activity.value.maxCount : false
-    );
-    const enrollPercent = common_vendor.computed(
-      () => activity.value ? Math.min(activity.value.enrollCount / activity.value.maxCount * 100, 100) : 0
-    );
+    const statusInfo = common_vendor.computed(() => {
+      if (!activity.value)
+        return STATUS_MAP.ended;
+      return STATUS_MAP[activity.value.status] || STATUS_MAP.ended;
+    });
+    const isFull = common_vendor.computed(() => {
+      return activity.value ? activity.value.enrollCount >= activity.value.maxCount : false;
+    });
+    const enrollPercent = common_vendor.computed(() => {
+      if (!activity.value)
+        return 0;
+      return Math.min(activity.value.enrollCount / activity.value.maxCount * 100, 100);
+    });
     common_vendor.onLoad(async (options) => {
-      const id = (options == null ? void 0 : options.activityId) ?? "";
+      const id = (options == null ? void 0 : options.activityId) || "";
       activityId.value = id;
       if (!id)
         return;
       loading.value = true;
       try {
         activity.value = await volunteerStore.fetchActivityById(id);
+      } catch (err) {
+        console.error("[signup-detail] load error:", err);
       } finally {
         loading.value = false;
       }
@@ -47,12 +56,12 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         return;
       actionLoading.value = true;
       try {
-        await volunteerStore.signupActivity(activity.value.id);
+        await volunteerStore.signupActivity(activity.value._id);
         activity.value.isSignedUp = true;
         activity.value.enrollCount++;
         common_vendor.index.showToast({ title: "报名成功！", icon: "success" });
       } catch (e) {
-        console.error("[signup-detail] signupActivity error:", e);
+        console.error("[signup-detail] signup error:", e);
       } finally {
         actionLoading.value = false;
       }
@@ -62,12 +71,12 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         return;
       actionLoading.value = true;
       try {
-        await volunteerStore.cancelSignup(activity.value.id);
+        await volunteerStore.cancelSignup(activity.value._id);
         activity.value.isSignedUp = false;
         activity.value.enrollCount--;
         common_vendor.index.showToast({ title: "已取消报名", icon: "none" });
       } catch (e) {
-        console.error("[signup-detail] cancelSignup error:", e);
+        console.error("[signup-detail] cancel error:", e);
       } finally {
         actionLoading.value = false;
       }
@@ -80,32 +89,34 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
           size: "36"
         })
       } : activity.value ? common_vendor.e({
-        d: common_vendor.t(STATUS_MAP[activity.value.status].text),
-        e: STATUS_MAP[activity.value.status].color,
-        f: STATUS_MAP[activity.value.status].bg,
+        d: common_vendor.t(statusInfo.value.text),
+        e: statusInfo.value.color,
+        f: statusInfo.value.bg,
         g: common_vendor.t(activity.value.name),
         h: common_vendor.t(common_vendor.unref(utils_format.formatActivityTime)(activity.value.startTime, activity.value.endTime)),
         i: common_vendor.t(activity.value.location),
         j: common_vendor.t(common_vendor.unref(utils_format.formatDateTime)(activity.value.createdAt)),
         k: common_vendor.t(activity.value.enrollCount),
         l: common_vendor.t(activity.value.maxCount),
-        m: enrollPercent.value + `%`,
+        m: enrollPercent.value + "%",
         n: isFull.value
       }, isFull.value ? {} : {}, {
         o: common_vendor.t(activity.value.description),
         p: activity.value.isSignedUp
       }, activity.value.isSignedUp ? {
         q: common_vendor.t(actionLoading.value ? "处理中..." : "取消报名"),
-        r: actionLoading.value ? 1 : "",
+        r: actionLoading.value,
         s: common_vendor.o(handleCancel)
-      } : activity.value.status === "ended" ? {} : isFull.value ? {} : {
-        w: common_vendor.t(actionLoading.value ? "报名中..." : "确认报名"),
-        x: actionLoading.value ? 1 : "",
-        y: common_vendor.o(handleSignup)
-      }, {
-        t: activity.value.status === "ended",
-        v: isFull.value
-      }) : {}, {
+      } : common_vendor.e({
+        t: activity.value.status !== "ended" && !isFull.value
+      }, activity.value.status !== "ended" && !isFull.value ? {
+        v: common_vendor.t(actionLoading.value ? "报名中..." : "确认报名"),
+        w: actionLoading.value,
+        x: common_vendor.o(handleSignup)
+      } : activity.value.status === "ended" ? {} : isFull.value ? {} : {}, {
+        y: activity.value.status === "ended",
+        z: isFull.value
+      })) : {}, {
         c: activity.value
       });
     };

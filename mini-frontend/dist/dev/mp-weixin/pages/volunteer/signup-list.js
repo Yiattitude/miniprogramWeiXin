@@ -6,8 +6,8 @@ if (!Array) {
   const _easycom_uv_load_more2 = common_vendor.resolveComponent("uv-load-more");
   (_easycom_uv_loading_icon2 + _easycom_uv_load_more2)();
 }
-const _easycom_uv_loading_icon = () => "../../node-modules/@climblee/uv-ui/components/uv-loading-icon/uv-loading-icon.js";
-const _easycom_uv_load_more = () => "../../node-modules/@climblee/uv-ui/components/uv-load-more/uv-load-more.js";
+const _easycom_uv_loading_icon = () => "../../components/stub/uv-loading-icon.js";
+const _easycom_uv_load_more = () => "../../components/stub/uv-load-more.js";
 if (!Math) {
   (_easycom_uv_loading_icon + ActivityCard + _easycom_uv_load_more)();
 }
@@ -18,8 +18,13 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
     const volunteerStore = stores_volunteer.useVolunteerStore();
     const keyword = common_vendor.ref("");
     const showFilter = common_vendor.ref(false);
-    const selectedTime = common_vendor.ref("");
-    const selectedLocation = common_vendor.ref("");
+    const selectedTime = common_vendor.ref("month");
+    const selectedLocation = common_vendor.ref("全部地点");
+    const timeOptions = [
+      { label: "今天", value: "today" },
+      { label: "本周", value: "week" },
+      { label: "本月", value: "month" }
+    ];
     const locationOptions = ["全部地点", "市中心", "社区服务站", "医院", "学校", "公园"];
     const list = common_vendor.ref([]);
     const total = common_vendor.ref(0);
@@ -30,10 +35,6 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
     common_vendor.onLoad(() => {
       loadList(true);
     });
-    common_vendor.onMounted(() => {
-      if (list.value.length === 0 && !loading.value)
-        loadList(true);
-    });
     async function loadList(reset = false) {
       if (loading.value)
         return;
@@ -42,23 +43,24 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         finished.value = false;
         list.value = [];
       }
-      if (finished.value)
+      if (finished.value && !reset)
         return;
       loading.value = true;
       try {
         volunteerStore.filter.keyword = keyword.value;
-        volunteerStore.filter.timeRange = selectedTime.value || "month";
+        volunteerStore.filter.timeRange = selectedTime.value;
         volunteerStore.filter.location = selectedLocation.value === "全部地点" ? "" : selectedLocation.value;
         const result = await volunteerStore.fetchActivityList(page.value);
         list.value = reset ? result.list : [...list.value, ...result.list];
         total.value = result.total;
-        if (list.value.length >= result.total)
+        if (list.value.length >= result.total) {
           finished.value = true;
-        else
+        } else {
           page.value++;
+        }
       } catch (e) {
         console.error("[signup-list] loadList error:", e);
-        common_vendor.index.showToast({ title: (e == null ? void 0 : e.message) ?? "加载失败", icon: "none" });
+        common_vendor.index.showToast({ title: (e == null ? void 0 : e.message) || "加载失败", icon: "none" });
       } finally {
         loading.value = false;
       }
@@ -68,15 +70,24 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         clearTimeout(debounceTimer);
       debounceTimer = setTimeout(() => loadList(true), 300);
     }
+    function selectTime(val) {
+      selectedTime.value = selectedTime.value === val ? "" : val;
+      loadList(true);
+    }
+    function selectLocation(loc) {
+      selectedLocation.value = selectedLocation.value === loc ? "" : loc;
+      loadList(true);
+    }
     function onCardClick(activity) {
-      common_vendor.index.navigateTo({ url: `/pages/volunteer/signup-detail?activityId=${activity.id}` });
+      common_vendor.index.navigateTo({ url: `/pages/volunteer/signup-detail?activityId=${activity._id}` });
     }
     function onLoadMore() {
       if (!finished.value)
         loadList();
     }
-    common_vendor.onPullDownRefresh(() => {
-      loadList(true).finally(() => common_vendor.index.stopPullDownRefresh());
+    common_vendor.onPullDownRefresh(async () => {
+      await loadList(true);
+      common_vendor.index.stopPullDownRefresh();
     });
     return (_ctx, _cache) => {
       return common_vendor.e({
@@ -86,24 +97,12 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         d: common_vendor.o(($event) => showFilter.value = !showFilter.value),
         e: showFilter.value
       }, showFilter.value ? {
-        f: common_vendor.f([{
-          label: "今天",
-          value: "today"
-        }, {
-          label: "本周",
-          value: "week"
-        }, {
-          label: "本月",
-          value: "month"
-        }], (item, k0, i0) => {
+        f: common_vendor.f(timeOptions, (item, k0, i0) => {
           return {
             a: common_vendor.t(item.label),
             b: item.value,
             c: selectedTime.value === item.value ? 1 : "",
-            d: common_vendor.o(($event) => {
-              selectedTime.value = selectedTime.value === item.value ? "" : item.value;
-              loadList(true);
-            }, item.value)
+            d: common_vendor.o(($event) => selectTime(item.value), item.value)
           };
         }),
         g: common_vendor.f(locationOptions, (loc, k0, i0) => {
@@ -111,10 +110,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
             a: common_vendor.t(loc),
             b: loc,
             c: selectedLocation.value === loc ? 1 : "",
-            d: common_vendor.o(($event) => {
-              selectedLocation.value = selectedLocation.value === loc ? "" : loc;
-              loadList(true);
-            }, loc)
+            d: common_vendor.o(($event) => selectLocation(loc), loc)
           };
         })
       } : {}, {
@@ -127,8 +123,8 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       } : {}, {
         k: common_vendor.f(list.value, (item, k0, i0) => {
           return {
-            a: item.id,
-            b: common_vendor.o(onCardClick, item.id),
+            a: item._id,
+            b: common_vendor.o(onCardClick, item._id),
             c: "85a239f0-1-" + i0,
             d: common_vendor.p({
               activity: item
@@ -137,11 +133,13 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         }),
         l: !loading.value && list.value.length === 0
       }, !loading.value && list.value.length === 0 ? {} : {}, {
-        m: common_vendor.o(onLoadMore),
-        n: common_vendor.p({
+        m: list.value.length > 0
+      }, list.value.length > 0 ? {
+        n: common_vendor.o(onLoadMore),
+        o: common_vendor.p({
           status: finished.value ? "nomore" : loading.value ? "loading" : "loadmore"
         })
-      });
+      } : {});
     };
   }
 });

@@ -43,20 +43,40 @@
     <view class="section-title">快捷入口</view>
     <view class="quick-grid">
       <view class="quick-item" @tap="goPage('/pages/volunteer/signup-list')">
-        <text class="quick-icon">📝</text>
-        <text class="quick-label">活动报名</text>
+        <view class="quick-icon-wrap" style="background: #eef3fc">
+          <text class="quick-icon">📝</text>
+        </view>
+        <view class="quick-text">
+          <text class="quick-label">活动报名</text>
+          <text class="quick-desc">浏览并报名志愿活动</text>
+        </view>
       </view>
       <view class="quick-item" @tap="goPage('/pages/volunteer/checkin-list')">
-        <text class="quick-icon">✅</text>
-        <text class="quick-label">志愿打卡</text>
+        <view class="quick-icon-wrap" style="background: #e6f9f0">
+          <text class="quick-icon">✅</text>
+        </view>
+        <view class="quick-text">
+          <text class="quick-label">志愿打卡</text>
+          <text class="quick-desc">已报名活动打卡记录</text>
+        </view>
       </view>
       <view class="quick-item" @tap="goPage('/pages/volunteer/record')">
-        <text class="quick-icon">📋</text>
-        <text class="quick-label">打卡记录</text>
+        <view class="quick-icon-wrap" style="background: #f3eeff">
+          <text class="quick-icon">📋</text>
+        </view>
+        <view class="quick-text">
+          <text class="quick-label">打卡记录</text>
+          <text class="quick-desc">查看历史打卡记录</text>
+        </view>
       </view>
       <view class="quick-item" @tap="goPage('/pages/volunteer/statistics')">
-        <text class="quick-icon">📊</text>
-        <text class="quick-label">统计报表</text>
+        <view class="quick-icon-wrap" style="background: #fdf0f0">
+          <text class="quick-icon">📊</text>
+        </view>
+        <view class="quick-text">
+          <text class="quick-label">统计报表</text>
+          <text class="quick-desc">个人与团队统计汇总</text>
+        </view>
       </view>
     </view>
   </view>
@@ -244,30 +264,52 @@ function goPage(path: string) {
 /* ── 快捷网格 ── */
 .quick-grid {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   padding: var(--space-sm, 12px) var(--space-md, 16px);
   gap: var(--space-sm, 12px);
 }
 
 .quick-item {
-  flex: 0 0 calc(50% - 6px);
+  width: 100%;
   background: #fff;
   border-radius: var(--radius-md, 10px);
-  padding: 20px 16px;
+  padding: 24px var(--space-md, 16px);
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 8px;
+  gap: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
+.quick-icon-wrap {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .quick-icon {
-  font-size: 28px;
+  font-size: 30px;
+}
+
+.quick-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 .quick-label {
-  font-size: 15px;
-  font-weight: 500;
+  font-size: clamp(15px, 4.2vw, 19px);
+  font-weight: 600;
   color: #1e2a3a;
+}
+
+.quick-desc {
+  font-size: clamp(12px, 3.2vw, 15px);
+  color: #6b7b8d;
+  margin-top: 4px;
 }
 </style>

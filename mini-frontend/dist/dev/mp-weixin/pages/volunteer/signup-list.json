@@ -1,9 +1,9 @@
 {
-  "navigationBarTitleText": "报名",
+  "navigationBarTitleText": "活动报名",
   "enablePullDownRefresh": true,
   "usingComponents": {
-    "uv-loading-icon": "../../node-modules/@climblee/uv-ui/components/uv-loading-icon/uv-loading-icon",
-    "uv-load-more": "../../node-modules/@climblee/uv-ui/components/uv-load-more/uv-load-more",
+    "uv-loading-icon": "../../components/stub/uv-loading-icon",
+    "uv-load-more": "../../components/stub/uv-load-more",
     "activity-card": "../../components/volunteer/ActivityCard"
   }
 }

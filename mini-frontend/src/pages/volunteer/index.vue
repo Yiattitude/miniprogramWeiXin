@@ -10,40 +10,50 @@
         <view class="grid-icon-wrap" style="background: #eef3fc">
           <text class="grid-icon">📝</text>
         </view>
-        <text class="grid-label">活动报名</text>
-        <text class="grid-desc">浏览并报名志愿活动</text>
+        <view class="grid-text">
+          <text class="grid-label">活动报名</text>
+          <text class="grid-desc">浏览并报名志愿活动</text>
+        </view>
       </view>
 
       <view class="grid-item" @tap="goPage('/pages/volunteer/checkin-list')">
         <view class="grid-icon-wrap" style="background: #e6f9f0">
           <text class="grid-icon">✅</text>
         </view>
-        <text class="grid-label">志愿打卡</text>
-        <text class="grid-desc">已报名活动打卡记录</text>
+        <view class="grid-text">
+          <text class="grid-label">志愿打卡</text>
+          <text class="grid-desc">已报名活动打卡记录</text>
+        </view>
       </view>
 
       <view v-if="userStore.isAdmin" class="grid-item" @tap="goPage('/pages/volunteer/publish')">
         <view class="grid-icon-wrap" style="background: #fff3e0">
           <text class="grid-icon">📢</text>
         </view>
-        <text class="grid-label">发布活动</text>
-        <text class="grid-desc">创建新的志愿活动</text>
+        <view class="grid-text">
+          <text class="grid-label">发布活动</text>
+          <text class="grid-desc">创建新的志愿活动</text>
+        </view>
       </view>
 
       <view class="grid-item" @tap="goPage('/pages/volunteer/record')">
         <view class="grid-icon-wrap" style="background: #f3eeff">
           <text class="grid-icon">📋</text>
         </view>
-        <text class="grid-label">打卡记录</text>
-        <text class="grid-desc">查看历史打卡记录</text>
+        <view class="grid-text">
+          <text class="grid-label">打卡记录</text>
+          <text class="grid-desc">查看历史打卡记录</text>
+        </view>
       </view>
 
       <view class="grid-item" @tap="goPage('/pages/volunteer/statistics')">
         <view class="grid-icon-wrap" style="background: #fdf0f0">
           <text class="grid-icon">📊</text>
         </view>
-        <text class="grid-label">统计报表</text>
-        <text class="grid-desc">个人与团队统计汇总</text>
+        <view class="grid-text">
+          <text class="grid-label">统计报表</text>
+          <text class="grid-desc">个人与团队统计汇总</text>
+        </view>
       </view>
     </view>
 
@@ -106,41 +116,48 @@ function goPage(path: string) {
 /* 四格 */
 .grid {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   padding: var(--space-md, 16px);
   gap: var(--space-sm, 12px);
   margin-top: -20px;
 }
 .grid-item {
-  flex: 0 0 calc(50% - 6px);
+  width: 100%;
   background: #fff;
   border-radius: var(--radius-md, 10px);
-  padding: var(--space-md, 16px);
+  padding: 24px var(--space-md, 16px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
 }
 .grid-icon-wrap {
-  width: 48px;
-  height: 48px;
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
   border-radius: var(--radius-sm, 6px);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 4px;
 }
 .grid-icon {
-  font-size: 26px;
+  font-size: 30px;
 }
 .grid-label {
-  font-size: var(--font-base, 17px);
+  font-size: clamp(15px, 4.2vw, 19px);
   font-weight: 600;
   color: var(--color-text-main, #1e2a3a);
 }
 .grid-desc {
-  font-size: var(--font-xs, 13px);
+  font-size: clamp(12px, 3.2vw, 15px);
   color: var(--color-text-sub, #6b7b8d);
+  margin-top: 4px;
+}
+.grid-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 
 /* 汇总卡 */

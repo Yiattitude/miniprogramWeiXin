@@ -29,8 +29,6 @@
   flex-direction: column;
   gap: var(--space-sm, 12px);
 }
-
-/* 记录卡片 */
 .record-card.data-v-aae55db7 {
   background: #fff;
   border-radius: var(--radius-md, 10px);
@@ -71,8 +69,6 @@
   font-size: var(--font-sm, 15px);
   color: var(--color-text-sub, #6b7b8d);
 }
-
-/* 指标区 */
 .metrics-row.data-v-aae55db7 {
   display: flex;
   align-items: center;
@@ -99,79 +95,40 @@
 }
 .metric-divider.data-v-aae55db7 {
   width: 1px;
-  height: 36px;
-  background: var(--color-border, #e2e7ec);
+  height: 24px;
+  background: #e2e7ec;
 }
-
-/* 备注 */
 .remark-row.data-v-aae55db7 {
   display: flex;
-  gap: 4px;
-  margin-top: 8px;
+  margin-top: 10px;
+  background: #fdfaf5;
+  padding: 10px;
+  border-radius: 6px;
 }
 .remark-label.data-v-aae55db7 {
-  font-size: var(--font-sm, 15px);
-  color: var(--color-text-sub, #6b7b8d);
+  font-size: 13px;
+  color: #a0aab5;
   flex-shrink: 0;
 }
 .remark-text.data-v-aae55db7 {
-  font-size: var(--font-sm, 15px);
-  color: var(--color-text-main, #1e2a3a);
-  line-height: 1.5;
+  font-size: 14px;
+  color: #6b7b8d;
 }
-
-/* 照片 */
 .photos-wrap.data-v-aae55db7 {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: var(--space-sm, 12px);
+  margin-top: 12px;
 }
-.photo-thumb.data-v-aae55db7 {
-  width: 80px;
-  height: 80px;
-  border-radius: 8px;
-  background: #f0f0f0;
+.photo-item.data-v-aae55db7 {
+  width: calc((100% - 16px) / 3);
+  height: 90px;
+  border-radius: 4px;
+  background: #f0f2f5;
 }
-
-/* 加载更多 */
-.load-more-wrap.data-v-aae55db7 {
-  display: flex;
-  justify-content: center;
-  padding: var(--space-lg, 24px) 0 40px;
-}
-.load-more-loading.data-v-aae55db7 {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.load-more-text.data-v-aae55db7 {
-  font-size: var(--font-sm, 15px);
-  color: var(--color-text-muted, #a0aab5);
-}
-.load-more-finished.data-v-aae55db7 {
-  font-size: var(--font-sm, 15px);
-  color: var(--color-text-muted, #a0aab5);
-}
-
-/* 空状态 */
-.empty.data-v-aae55db7 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 80px var(--space-md, 16px);
-  gap: 10px;
-}
-.empty-icon.data-v-aae55db7 {
-  font-size: 56px;
-}
-.empty-text.data-v-aae55db7 {
-  font-size: var(--font-lg, 19px);
-  font-weight: 600;
-  color: var(--color-text-main, #1e2a3a);
-}
-.empty-sub.data-v-aae55db7 {
-  font-size: var(--font-sm, 15px);
-  color: var(--color-text-muted, #a0aab5);
+.no-more.data-v-aae55db7 {
   text-align: center;
+  padding: 20px 0;
+  font-size: 13px;
+  color: #ccc;
 }

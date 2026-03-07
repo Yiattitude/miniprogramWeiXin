@@ -100,81 +100,87 @@
 /* ── 大模块卡 ── */
 .module-card.data-v-83a5a03c {
   background: #fff;
-  margin: 0 var(--space-md, 16px) var(--space-md, 16px);
+  margin: 0 var(--space-md, 16px);
   border-radius: var(--radius-md, 10px);
   padding: var(--space-md, 16px);
   display: flex;
   align-items: center;
-  gap: var(--space-sm, 12px);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 .module-icon-wrap.data-v-83a5a03c {
-  width: 52px;
-  height: 52px;
-  border-radius: var(--radius-md, 10px);
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
+  margin-right: 12px;
 }
 .module-icon.data-v-83a5a03c {
-  font-size: 28px;
+  font-size: 26px;
 }
 .module-info.data-v-83a5a03c {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
 }
 .module-name.data-v-83a5a03c {
-  font-size: var(--font-lg, 19px);
+  display: block;
+  font-size: 18px;
   font-weight: 600;
-  color: var(--color-text-main, #1e2a3a);
+  color: #1e2a3a;
+  margin-bottom: 2px;
 }
 .module-desc.data-v-83a5a03c {
-  font-size: var(--font-sm, 15px);
-  color: var(--color-text-sub, #6b7b8d);
+  font-size: 13px;
+  color: #6b7b8d;
 }
 .module-arrow.data-v-83a5a03c {
   font-size: 24px;
-  color: var(--color-text-muted, #a0aab5);
-  flex-shrink: 0;
+  color: #ccc;
+  margin-left: 8px;
 }
 
-/* ── 快捷四格 ── */
+/* ── 快捷网格 ── */
 .quick-grid.data-v-83a5a03c {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: var(--space-sm, 12px);
-  padding: 0 var(--space-md, 16px);
-}
-.quick-item.data-v-83a5a03c {
-  background: #fff;
-  border-radius: var(--radius-md, 10px);
-  padding: var(--space-md, 16px);
   display: flex;
   flex-direction: column;
+  padding: var(--space-sm, 12px) var(--space-md, 16px);
+  gap: var(--space-sm, 12px);
+}
+.quick-item.data-v-83a5a03c {
+  width: 100%;
+  background: #fff;
+  border-radius: var(--radius-md, 10px);
+  padding: 24px var(--space-md, 16px);
+  display: flex;
+  flex-direction: row;
   align-items: center;
-  gap: var(--space-xs, 8px);
+  gap: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-  min-height: 90px;
+}
+.quick-icon-wrap.data-v-83a5a03c {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
   justify-content: center;
 }
 .quick-icon.data-v-83a5a03c {
-  font-size: 32px;
+  font-size: 30px;
+}
+.quick-text.data-v-83a5a03c {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
 }
 .quick-label.data-v-83a5a03c {
-  font-size: var(--font-base, 17px);
-  font-weight: 500;
-  color: var(--color-text-main, #1e2a3a);
+  font-size: clamp(15px, 4.2vw, 19px);
+  font-weight: 600;
+  color: #1e2a3a;
 }
-
-/* ── 底部品牌 ── */
-.footer.data-v-83a5a03c {
-  padding: var(--space-lg, 24px) var(--space-md, 16px) 0;
-  text-align: center;
-}
-.footer-text.data-v-83a5a03c {
-  font-size: var(--font-xs, 13px);
-  color: var(--color-text-muted, #a0aab5);
+.quick-desc.data-v-83a5a03c {
+  font-size: clamp(12px, 3.2vw, 15px);
+  color: #6b7b8d;
+  margin-top: 4px;
 }

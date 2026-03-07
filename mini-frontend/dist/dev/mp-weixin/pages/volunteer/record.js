@@ -5,7 +5,7 @@ if (!Array) {
   const _easycom_uv_loading_icon2 = common_vendor.resolveComponent("uv-loading-icon");
   _easycom_uv_loading_icon2();
 }
-const _easycom_uv_loading_icon = () => "../../node-modules/@climblee/uv-ui/components/uv-loading-icon/uv-loading-icon.js";
+const _easycom_uv_loading_icon = () => "../../components/stub/uv-loading-icon.js";
 if (!Math) {
   _easycom_uv_loading_icon();
 }
@@ -25,7 +25,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       rejected: { text: "已驳回", color: "#e74c3c", bg: "#fde8e8" }
     };
     function statusInfo(status) {
-      return STATUS_MAP[status] ?? { text: status, color: "#a0aab5", bg: "#f0f2f4" };
+      return STATUS_MAP[status] || { text: status, color: "#a0aab5", bg: "#f0f2f4" };
     }
     function formatDate(iso) {
       if (!iso)
@@ -33,8 +33,9 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       return iso.replace("T", " ").slice(0, 16);
     }
     common_vendor.onLoad(() => loadFirst());
-    common_vendor.onPullDownRefresh(() => {
-      loadFirst().finally(() => common_vendor.index.stopPullDownRefresh());
+    common_vendor.onPullDownRefresh(async () => {
+      await loadFirst();
+      common_vendor.index.stopPullDownRefresh();
     });
     async function loadFirst() {
       page.value = 1;
@@ -48,19 +49,24 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       loading.value = true;
       try {
         const result = await volunteerStore.fetchMyRecords(page.value, PAGE_SIZE);
-        list.value.push(...result.list);
+        list.value = page.value === 1 ? result.list : [...list.value, ...result.list];
         total.value = result.total;
         if (list.value.length >= result.total) {
           finished.value = true;
         } else {
           page.value++;
         }
+      } catch (err) {
+        console.error("[record] load error:", err);
       } finally {
         loading.value = false;
       }
     }
     function previewPhoto(photos, index) {
-      common_vendor.index.previewImage({ urls: photos, current: photos[index] });
+      common_vendor.index.previewImage({
+        urls: photos,
+        current: photos[index]
+      });
     }
     return (_ctx, _cache) => {
       return common_vendor.e({
@@ -97,7 +103,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
               };
             })
           } : {}, {
-            m: item.id
+            m: item._id
           });
         })
       }, {
@@ -109,10 +115,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       } : finished.value && list.value.length > 0 ? {} : {}, {
         h: finished.value && list.value.length > 0,
         i: common_vendor.o(loadMore)
-      }), {
-        j: common_vendor.o(() => {
-        })
-      });
+      }));
     };
   }
 });

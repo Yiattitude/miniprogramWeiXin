@@ -1,0 +1,31 @@
+
+.uv-load-more.data-v-aed33775 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24rpx 0 32rpx;
+}
+.row.data-v-aed33775 {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+.spin.data-v-aed33775 {
+  width: 28rpx;
+  height: 28rpx;
+  border: 3rpx solid #e4e7ed;
+  border-top-color: #3a7bd5;
+  border-radius: 50%;
+  animation: spin-aed33775 0.8s linear infinite;
+}
+@keyframes spin-aed33775 {
+to { transform: rotate(360deg);
+}
+}
+.text.data-v-aed33775 {
+  font-size: 26rpx;
+  color: #999;
+}
+.link.data-v-aed33775 {
+  color: #3a7bd5;
+}

@@ -20,9 +20,9 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         f: common_vendor.o(($event) => goPage("/pages/volunteer/statistics")),
         g: common_vendor.unref(userStore).userInfo
       }, common_vendor.unref(userStore).userInfo ? {
-        h: common_vendor.t(common_vendor.unref(userStore).userInfo.totalHours),
-        i: common_vendor.t(common_vendor.unref(userStore).userInfo.totalCount),
-        j: common_vendor.t(common_vendor.unref(userStore).userInfo.totalServed)
+        h: common_vendor.t(common_vendor.unref(userStore).userInfo.totalHours || 0),
+        i: common_vendor.t(common_vendor.unref(userStore).userInfo.totalCount || 0),
+        j: common_vendor.t(common_vendor.unref(userStore).userInfo.totalServed || 0)
       } : {});
     };
   }

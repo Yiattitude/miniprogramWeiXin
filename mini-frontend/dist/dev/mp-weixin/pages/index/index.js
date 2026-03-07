@@ -24,9 +24,9 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         c: common_vendor.t(((_b = common_vendor.unref(userStore).userInfo) == null ? void 0 : _b.unit) || "银发人才平台"),
         d: common_vendor.unref(userStore).isLoggedIn && common_vendor.unref(userStore).userInfo
       }, common_vendor.unref(userStore).isLoggedIn && common_vendor.unref(userStore).userInfo ? {
-        e: common_vendor.t(common_vendor.unref(userStore).userInfo.totalHours),
-        f: common_vendor.t(common_vendor.unref(userStore).userInfo.totalCount),
-        g: common_vendor.t(common_vendor.unref(userStore).userInfo.totalServed)
+        e: common_vendor.t(common_vendor.unref(userStore).userInfo.totalHours || 0),
+        f: common_vendor.t(common_vendor.unref(userStore).userInfo.totalCount || 0),
+        g: common_vendor.t(common_vendor.unref(userStore).userInfo.totalServed || 0)
       } : {}, {
         h: common_vendor.o(goVolunteer),
         i: common_vendor.o(($event) => goPage("/pages/volunteer/signup-list")),

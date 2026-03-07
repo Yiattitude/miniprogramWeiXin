@@ -5,7 +5,7 @@ if (!Array) {
   const _easycom_uv_upload2 = common_vendor.resolveComponent("uv-upload");
   _easycom_uv_upload2();
 }
-const _easycom_uv_upload = () => "../../node-modules/@climblee/uv-ui/components/uv-upload/uv-upload.js";
+const _easycom_uv_upload = () => "../../components/stub/uv-upload.js";
 if (!Math) {
   _easycom_uv_upload();
 }
@@ -22,7 +22,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
     const submitting = common_vendor.ref(false);
     const errors = common_vendor.ref({});
     common_vendor.onLoad(async (options) => {
-      const id = (options == null ? void 0 : options.activityId) ?? "";
+      const id = (options == null ? void 0 : options.activityId) || "";
       activityId.value = id;
       if (!id)
         return;
@@ -30,7 +30,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         const activity = await volunteerStore.fetchActivityById(id);
         activityName.value = activity.name;
       } catch (e) {
-        console.error("[checkin-form] fetchActivityById error:", e);
+        console.error("[checkin-form] fetchActivity error:", e);
       }
     });
     function validate() {
@@ -56,17 +56,18 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         return;
       submitting.value = true;
       try {
+        const photoUrls = fileList.value.map((f) => f.url || f.path);
         await volunteerStore.submitCheckin({
           activityId: activityId.value,
           serviceHours: parseFloat(serviceHours.value),
           serviceCount: parseInt(serviceCount.value),
-          photos: fileList.value.map((f) => f.url),
+          photos: photoUrls,
           remark: remark.value || void 0
         });
         common_vendor.index.showToast({ title: "打卡成功！", icon: "success" });
         setTimeout(() => common_vendor.index.navigateBack(), 1500);
       } catch (e) {
-        console.error("[checkin-form] submitCheckin error:", e);
+        console.error("[checkin-form] submit error:", e);
       } finally {
         submitting.value = false;
       }
@@ -104,7 +105,8 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         q: common_vendor.t(remark.value.length),
         r: common_vendor.t(submitting.value ? "提交中..." : "提交打卡"),
         s: submitting.value ? 1 : "",
-        t: common_vendor.o(handleSubmit)
+        t: submitting.value,
+        v: common_vendor.o(handleSubmit)
       });
     };
   }

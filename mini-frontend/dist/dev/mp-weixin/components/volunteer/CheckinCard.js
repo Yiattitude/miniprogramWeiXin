@@ -26,7 +26,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         a: common_vendor.t(_ctx.activity.name),
         b: _ctx.activity.isCheckedIn
       }, _ctx.activity.isCheckedIn ? {} : _ctx.activity.status === "ongoing" ? {} : {
-        d: common_vendor.t(STATUS_TEXT[_ctx.activity.status])
+        d: common_vendor.t(STATUS_TEXT[_ctx.activity.status] || "已结束")
       }, {
         c: _ctx.activity.status === "ongoing",
         e: common_vendor.t(common_vendor.unref(utils_format.formatActivityTime)(_ctx.activity.startTime, _ctx.activity.endTime)),
