@@ -27,6 +27,35 @@
 | Bun | 最新版 | 用于运行 `bun run` 脚本 |
 | 微信开发者工具 | 最新稳定版 | 预览和调试小程序 |
 
+#### 安装 Node.js（包含 npm）
+
+前往 [https://nodejs.org](https://nodejs.org) 下载 **LTS 版本**安装包，安装完成后验证：
+
+```bash
+node -v   # 应输出 v18.x 或更高
+npm -v    # 应输出 9.x 或更高
+```
+
+#### 安装 Bun
+
+**Windows（PowerShell）：**
+
+```powershell
+powershell -c "irm bun.sh/install.ps1 | iex"
+```
+
+**macOS / Linux：**
+
+```bash
+curl -fsSL https://bun.sh/install | bash
+```
+
+安装完成后验证：
+
+```bash
+bun -v
+```
+
 ### 2. 微信云开发环境
 
 1. 登录 [微信公众平台](https://mp.weixin.qq.com)，确认小程序 AppID 为 `wx2b8ff48151cc1a2b`
@@ -56,7 +85,6 @@
 ---
 
 ## 安装依赖
-### 推荐使用bun，依赖下载速度远高于npm
 
 ```bash
 cd mini-frontend
