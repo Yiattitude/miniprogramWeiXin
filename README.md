@@ -71,6 +71,10 @@ bun install
 ```bash
 bun run dev:mp-weixin
 ```
+# 或
+```bash
+npm run dev:mp-weixin
+```
 
 编译成功后，使用**微信开发者工具**导入以下目录进行预览：
 
