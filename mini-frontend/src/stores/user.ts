@@ -6,6 +6,7 @@ export const useUserStore = defineStore('user', () => {
   const userInfo = ref<any>(null)
 
   const isLoggedIn = computed(() => !!token.value)
+  const isAdmin = computed(() => userInfo.value?.role === 'admin')
 
   async function fetchProfile() {
     // 示例逻辑，后续可调用云函数获取用户信息
@@ -16,6 +17,7 @@ export const useUserStore = defineStore('user', () => {
     token,
     userInfo,
     isLoggedIn,
+    isAdmin,
     fetchProfile
   }
 })
