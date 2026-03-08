@@ -92,7 +92,8 @@ function onLogout() {
     content: '确定要退出登录吗？',
     success(res) {
       if (res.confirm) {
-        userStore.token = ''
+        // Use store logout to clear token + cached user info.
+        userStore.logout()
         uni.reLaunch({ url: '/pages/index/index' })
       }
     },

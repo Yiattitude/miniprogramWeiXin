@@ -86,7 +86,9 @@ const useVolunteerStore = common_vendor.defineStore("volunteer", () => {
     return result;
   }
   async function fetchStatistics() {
-    statistics.value = await api_volunteer.getStatistics();
+    const data = await api_volunteer.getStatistics();
+    statistics.value = data;
+    return data;
   }
   async function exportReport() {
     const { downloadUrl } = await api_volunteer.exportReport();

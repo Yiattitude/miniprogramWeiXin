@@ -304,6 +304,7 @@ function goPage(path: string) {
 .quick-label {
   font-size: clamp(15px, 4.2vw, 19px);
   font-weight: 600;
+  border-radius: 8px;
   color: #1e2a3a;
 }
 

@@ -177,6 +177,7 @@
 .quick-label.data-v-83a5a03c {
   font-size: clamp(15px, 4.2vw, 19px);
   font-weight: 600;
+  border-radius: 8px;
   color: #1e2a3a;
 }
 .quick-desc.data-v-83a5a03c {

@@ -1,6 +1,7 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const stores_volunteer = require("../../stores/volunteer.js");
+const utils_format = require("../../utils/format.js");
 if (!Array) {
   const _easycom_uv_loading_icon2 = common_vendor.resolveComponent("uv-loading-icon");
   _easycom_uv_loading_icon2();
@@ -27,10 +28,13 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
     function statusInfo(status) {
       return STATUS_MAP[status] || { text: status, color: "#a0aab5", bg: "#f0f2f4" };
     }
-    function formatDate(iso) {
-      if (!iso)
+    function formatCheckedAt(value) {
+      if (!value)
         return "";
-      return iso.replace("T", " ").slice(0, 16);
+      const date = value instanceof Date ? value : new Date(value);
+      if (Number.isNaN(date.getTime()))
+        return "";
+      return utils_format.formatDateTime(date);
     }
     common_vendor.onLoad(() => loadFirst());
     common_vendor.onPullDownRefresh(async () => {
@@ -86,7 +90,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
             c: statusInfo(item.status).color,
             d: statusInfo(item.status).bg,
             e: common_vendor.t(item.activityLocation),
-            f: common_vendor.t(formatDate(item.checkedAt)),
+            f: common_vendor.t(formatCheckedAt(item.checkedAt)),
             g: common_vendor.t(item.serviceHours),
             h: common_vendor.t(item.serviceCount),
             i: item.remark

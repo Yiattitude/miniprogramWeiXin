@@ -30,7 +30,7 @@
           </view>
           <view class="card-row">
             <text class="row-icon">🕐</text>
-            <text class="row-text">{{ formatDate(item.checkedAt) }}</text>
+            <text class="row-text">{{ formatCheckedAt(item.checkedAt) }}</text>
           </view>
 
           <view class="metrics-row">
@@ -75,6 +75,7 @@
 import { ref } from 'vue'
 import { onLoad, onPullDownRefresh } from '@dcloudio/uni-app'
 import { useVolunteerStore } from '@/stores/volunteer'
+import { formatDateTime } from '@/utils/format'
 import type { CheckinRecord } from '@/types/volunteer'
 
 const volunteerStore = useVolunteerStore()
@@ -95,9 +96,12 @@ function statusInfo(status: string) {
   return STATUS_MAP[status as keyof typeof STATUS_MAP] || { text: status, color: '#a0aab5', bg: '#f0f2f4' }
 }
 
-function formatDate(iso: string) {
-  if (!iso) return ''
-  return iso.replace('T', ' ').slice(0, 16)
+function formatCheckedAt(value: string | number | Date) {
+  if (!value) return ''
+  const date = value instanceof Date ? value : new Date(value)
+  if (Number.isNaN(date.getTime())) return ''
+  // Avoid string replace on Date objects; format via Date helpers.
+  return formatDateTime(date)
 }
 
 onLoad(() => loadFirst())

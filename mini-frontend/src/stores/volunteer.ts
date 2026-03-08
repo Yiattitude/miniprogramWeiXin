@@ -134,7 +134,10 @@ export const useVolunteerStore = defineStore('volunteer', () => {
    * 获取统计数据
    */
   async function fetchStatistics() {
-    statistics.value = await volunteerApi.getStatistics()
+    const data = await volunteerApi.getStatistics()
+    statistics.value = data
+    // Return data so pages can consume it directly.
+    return data
   }
 
   /**
