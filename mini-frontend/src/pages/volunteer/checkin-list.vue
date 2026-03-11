@@ -65,18 +65,22 @@ function onCheckin(activity: Activity) {
 <style lang="scss" scoped>
 .page {
   min-height: 100vh;
-  background: var(--color-bg-page, #f0f2f5);
-  padding-bottom: 40px;
+  background: linear-gradient(180deg, #f7f9fc 0%, #eef2f7 48%, #e9eef5 100%);
+  padding-bottom: 44px;
+  font-family: "HarmonyOS Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 
 .tip-bar {
-  background: var(--color-primary-bg, #eef3fc);
-  padding: var(--space-sm, 12px) var(--space-md, 16px);
+  background: linear-gradient(135deg, #eef6ff 0%, #e0efff 100%);
+  padding: 14px 16px;
+  box-shadow: 0 2px 12px rgba(47, 98, 198, 0.08);
 }
 
 .tip-text {
-  font-size: var(--font-sm, 15px);
-  color: var(--color-primary, #3a7bd5);
+  font-size: 14px;
+  color: #2f62c6;
+  font-weight: 500;
+  line-height: 1.5;
 }
 
 .loading-wrap {
@@ -86,30 +90,48 @@ function onCheckin(activity: Activity) {
 }
 
 .list-wrap {
-  padding: var(--space-sm, 12px) var(--space-md, 16px);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
 .empty {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 80px var(--space-md, 16px);
-  gap: 10px;
+  padding: 100px 16px;
+  gap: 14px;
+  animation: fadeIn 0.5s ease-out both;
 }
 
 .empty-icon {
-  font-size: 56px;
+  font-size: 72px;
+  opacity: 0.6;
 }
 
 .empty-text {
-  font-size: var(--font-lg, 19px);
-  font-weight: 600;
-  color: var(--color-text-main, #1e2a3a);
+  font-size: 18px;
+  font-weight: 700;
+  color: #1c2431;
 }
 
 .empty-sub {
-  font-size: var(--font-sm, 15px);
-  color: var(--color-text-muted, #a0aab5);
+  font-size: 14px;
+  color: #7a8797;
   text-align: center;
+  line-height: 1.6;
+  max-width: 280px;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>

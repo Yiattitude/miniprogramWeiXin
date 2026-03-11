@@ -175,130 +175,130 @@ onPullDownRefresh(async () => {
 <style lang="scss" scoped>
 .page {
   min-height: 100vh;
-  background: var(--color-bg-page, #f0f2f5);
-  padding-bottom: 40px;
+  background: linear-gradient(180deg, #f7f9fc 0%, #eef2f7 48%, #e9eef5 100%);
+  padding-bottom: 44px;
+  font-family: "HarmonyOS Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 
 /* 搜索栏 */
 .search-bar {
   display: flex;
   align-items: center;
-  gap: var(--space-sm, 12px);
-  padding: var(--space-sm, 12px) var(--space-md, 16px);
+  gap: 12px;
+  padding: 12px 16px;
   background: #fff;
   position: sticky;
   top: 0;
   z-index: 10;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
 }
 
 .search-input-wrap {
   flex: 1;
   display: flex;
   align-items: center;
-  background: var(--color-bg-page, #f0f2f5);
+  background: #f7f9fc;
   border-radius: 22px;
-  padding: 0 14px;
+  padding: 0 16px;
   height: 44px;
   gap: 8px;
+  transition: background 0.2s ease;
 }
 
 .search-icon {
   font-size: 16px;
   flex-shrink: 0;
+  color: #7a8797;
 }
 
 .search-input {
   flex: 1;
-  font-size: var(--font-base, 17px);
-  color: var(--color-text-main, #1e2a3a);
+  font-size: 15px;
+  color: #1c2431;
   background: transparent;
 }
 
 .placeholder {
-  color: var(--color-text-muted, #a0aab5);
+  color: #a0aab5;
 }
 
 .filter-btn {
   display: flex;
   align-items: center;
   gap: 4px;
-  min-width: 56px;
+  min-width: 60px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: #eef3fc;
+  transition: all 0.2s ease;
 }
 
 .filter-text {
-  font-size: var(--font-sm, 15px);
-  color: var(--color-primary, #3a7bd5);
+  font-size: 14px;
+  color: #2f62c6;
+  font-weight: 500;
 }
 
 .filter-arrow {
   font-size: 11px;
-  color: var(--color-primary, #3a7bd5);
+  color: #2f62c6;
 }
 
 /* 筛选面板 */
 .filter-panel {
   background: #fff;
-  padding: var(--space-sm, 12px) var(--space-md, 16px);
-  border-bottom: 1px solid var(--color-border, #e2e7ec);
+  padding: 16px;
+  border-bottom: 1px solid #e6ebf2;
+  animation: slideDown 0.3s ease-out both;
 }
 
 .filter-label {
   display: block;
-  font-size: var(--font-sm, 15px);
+  font-size: 14px;
   font-weight: 600;
-  color: var(--color-text-main, #1e2a3a);
-  margin-bottom: 8px;
+  color: #1c2431;
+  margin-bottom: 10px;
 }
 
 .filter-chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 10px;
 }
 
 .chip {
-  padding: 5px 14px;
+  padding: 6px 16px;
   border-radius: 20px;
-  font-size: var(--font-sm, 15px);
-  color: var(--color-text-sub, #6b7b8d);
-  background: var(--color-bg-page, #f0f2f5);
+  font-size: 14px;
+  color: #7a8797;
+  background: #f7f9fc;
+  transition: all 0.2s ease;
 }
 
 .chip-active {
-  background: var(--color-primary-bg, #eef3fc);
-  color: var(--color-primary, #3a7bd5);
-  font-weight: 500;
+  background: linear-gradient(135deg, #d4e9fc 0%, #c0dffe 100%);
+  color: #2f62c6;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(47, 98, 198, 0.15);
 }
 
 /* 统计 */
 .list-meta {
-  padding: var(--space-sm, 12px) var(--space-md, 16px) var(--space-xs, 8px);
+  padding: 16px 16px 8px;
 }
 
 .meta-text {
-  font-size: var(--font-sm, 15px);
-  color: var(--color-text-sub, #6b7b8d);
+  font-size: 14px;
+  color: #7a8797;
+  font-weight: 500;
 }
 
 /* 列表 */
 .list-wrap {
-  padding: 0 var(--space-md, 16px);
+  padding: 0 16px;
 }
 
 .loading-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 30px 0;
-  gap: 10px;
-}
-
-.loading-text {
-  font-size: 14px;
-  color: #999;
-}
-
-.empty {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -306,12 +306,38 @@ onPullDownRefresh(async () => {
   gap: 12px;
 }
 
+.loading-text {
+  font-size: 14px;
+  color: #7a8797;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80px 0;
+  gap: 14px;
+}
+
 .empty-icon {
-  font-size: 48px;
+  font-size: 64px;
+  opacity: 0.5;
 }
 
 .empty-text {
-  font-size: 15px;
-  color: #999;
+  font-size: 16px;
+  color: #7a8797;
+  font-weight: 500;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 </style>
