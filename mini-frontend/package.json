@@ -4,7 +4,10 @@
   "description": "银发人才平台 - 志愿活动统计小程序",
   "scripts": {
     "dev:mp-weixin": "uni -p mp-weixin",
-    "build:mp-weixin": "uni build -p mp-weixin"
+    "build:mp-weixin": "uni build -p mp-weixin",
+    "fix-font": "node scripts/fix-font-path.js",
+    "copy-static": "node scripts/copy-static.js",
+    "postdev": "npm run copy-static && npm run fix-font"
   },
   "keywords": [],
   "author": "",
