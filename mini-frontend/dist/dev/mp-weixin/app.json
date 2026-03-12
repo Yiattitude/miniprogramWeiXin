@@ -25,15 +25,21 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "首页"
+        "text": "首页",
+        "iconPath": "static/icons/home_3_line.png",
+        "selectedIconPath": "static/icons/home_3_line.png"
       },
       {
         "pagePath": "pages/volunteer/index",
-        "text": "志愿"
+        "text": "志愿",
+        "iconPath": "static/icons/layout_bottom_close_line.png",
+        "selectedIconPath": "static/icons/layout_bottom_close_line.png"
       },
       {
         "pagePath": "pages/volunteer/profile",
-        "text": "我的"
+        "text": "我的",
+        "iconPath": "static/icons/user_4_line.png",
+        "selectedIconPath": "static/icons/user_4_line.png"
       }
     ]
   },

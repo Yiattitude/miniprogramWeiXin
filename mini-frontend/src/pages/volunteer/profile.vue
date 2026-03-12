@@ -29,25 +29,25 @@
 
     <view class="menu-card">
       <view class="menu-item" @tap="navTo('/pages/volunteer/record')">
-        <text class="menu-icon">📋</text>
+        <Icon class="menu-icon" name="list-check-line" size="36rpx" />
         <text class="menu-text">我的打卡记录</text>
-        <text class="menu-arrow">›</text>
+        <Icon class="menu-arrow" name="arrow-right-line" size="36rpx" />
       </view>
       <view class="menu-item" @tap="navTo('/pages/volunteer/checkin-list')">
-        <text class="menu-icon">✅</text>
+        <Icon class="menu-icon" name="checkbox-line" size="36rpx" />
         <text class="menu-text">待打卡活动</text>
-        <text class="menu-arrow">›</text>
+        <Icon class="menu-arrow" name="arrow-right-line" size="36rpx" />
       </view>
       <view v-if="isAdmin" class="menu-item" @tap="navTo('/pages/volunteer/statistics')">
-        <text class="menu-icon">📊</text>
+        <Icon class="menu-icon" name="chart-bar-line" size="36rpx" />
         <text class="menu-text">统计报表</text>
-        <text class="menu-arrow">›</text>
+        <Icon class="menu-arrow" name="arrow-right-line" size="36rpx" />
       </view>
     </view>
 
     <view class="menu-card" style="margin-top: 24rpx;">
       <view class="menu-item logout-item" @tap="onLogout">
-        <text class="menu-icon">🚪</text>
+        <Icon class="menu-icon" name="share-forward-line" size="36rpx" />
         <text class="menu-text logout-text">退出登录</text>
       </view>
     </view>
@@ -56,6 +56,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import Icon from '@/components/common/Icon.vue'
 import { onShow } from '@dcloudio/uni-app'
 import { useUserStore } from '../../stores/user'
 import { getStatistics } from '../../api/volunteer'

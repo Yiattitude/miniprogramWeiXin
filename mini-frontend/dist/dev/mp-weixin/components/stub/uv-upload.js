@@ -1,5 +1,9 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
+if (!Math) {
+  Icon();
+}
+const Icon = () => "../common/Icon.js";
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "uv-upload",
   props: {
@@ -44,14 +48,23 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         a: common_vendor.f(_ctx.fileList, (item, index, i0) => {
           return {
             a: item.url || item.path,
-            b: common_vendor.o(($event) => onRemove(index), index),
-            c: index,
-            d: common_vendor.o(($event) => onPreview(index), index)
+            b: "35716e1f-0-" + i0,
+            c: common_vendor.o(($event) => onRemove(index), index),
+            d: index,
+            e: common_vendor.o(($event) => onPreview(index), index)
           };
         }),
-        b: _ctx.fileList.length < _ctx.maxCount
+        b: common_vendor.p({
+          name: "close-line",
+          size: "32rpx"
+        }),
+        c: _ctx.fileList.length < _ctx.maxCount
       }, _ctx.fileList.length < _ctx.maxCount ? {
-        c: common_vendor.o(onChoose)
+        d: common_vendor.p({
+          name: "add-circle-line",
+          size: "56rpx"
+        }),
+        e: common_vendor.o(onChoose)
       } : {});
     };
   }

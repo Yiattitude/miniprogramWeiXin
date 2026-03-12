@@ -2,6 +2,10 @@
 const common_vendor = require("../../common/vendor.js");
 const stores_user = require("../../stores/user.js");
 const api_volunteer = require("../../api/volunteer.js");
+if (!Math) {
+  Icon();
+}
+const Icon = () => "../../components/common/Icon.js";
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "profile",
   setup(__props) {
@@ -53,13 +57,41 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         e: common_vendor.t(stats.value.totalActivities),
         f: common_vendor.t(stats.value.totalHours),
         g: common_vendor.t(stats.value.totalCount),
-        h: common_vendor.o(($event) => navTo("/pages/volunteer/record")),
-        i: common_vendor.o(($event) => navTo("/pages/volunteer/checkin-list")),
-        j: isAdmin.value
+        h: common_vendor.p({
+          name: "list-check-line",
+          size: "36rpx"
+        }),
+        i: common_vendor.p({
+          name: "arrow-right-line",
+          size: "36rpx"
+        }),
+        j: common_vendor.o(($event) => navTo("/pages/volunteer/record")),
+        k: common_vendor.p({
+          name: "checkbox-line",
+          size: "36rpx"
+        }),
+        l: common_vendor.p({
+          name: "arrow-right-line",
+          size: "36rpx"
+        }),
+        m: common_vendor.o(($event) => navTo("/pages/volunteer/checkin-list")),
+        n: isAdmin.value
       }, isAdmin.value ? {
-        k: common_vendor.o(($event) => navTo("/pages/volunteer/statistics"))
+        o: common_vendor.p({
+          name: "chart-bar-line",
+          size: "36rpx"
+        }),
+        p: common_vendor.p({
+          name: "arrow-right-line",
+          size: "36rpx"
+        }),
+        q: common_vendor.o(($event) => navTo("/pages/volunteer/statistics"))
       } : {}, {
-        l: common_vendor.o(onLogout)
+        r: common_vendor.p({
+          name: "share-forward-line",
+          size: "36rpx"
+        }),
+        s: common_vendor.o(onLogout)
       });
     };
   }

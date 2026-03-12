@@ -7,8 +7,9 @@ if (!Array) {
 }
 const _easycom_uv_loading_icon = () => "../../components/stub/uv-loading-icon.js";
 if (!Math) {
-  _easycom_uv_loading_icon();
+  (_easycom_uv_loading_icon + Icon)();
 }
+const Icon = () => "../../components/common/Icon.js";
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "statistics",
   setup(__props) {
@@ -37,8 +38,13 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         e: common_vendor.t(data.value.totalCheckins ?? 0),
         f: common_vendor.t(data.value.totalHours ?? 0),
         g: !data.value.activities || data.value.activities.length === 0
-      }, !data.value.activities || data.value.activities.length === 0 ? {} : {
-        h: common_vendor.f(data.value.activities, (item, k0, i0) => {
+      }, !data.value.activities || data.value.activities.length === 0 ? {
+        h: common_vendor.p({
+          name: "chart-bar-line",
+          size: "72px"
+        })
+      } : {
+        i: common_vendor.f(data.value.activities, (item, k0, i0) => {
           return {
             a: common_vendor.t(item.name),
             b: item.name,

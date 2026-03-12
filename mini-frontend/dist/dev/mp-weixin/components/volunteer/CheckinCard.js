@@ -1,6 +1,10 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const utils_format = require("../../utils/format.js");
+if (!Math) {
+  Icon();
+}
+const Icon = () => "../common/Icon.js";
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "CheckinCard",
   props: {
@@ -29,13 +33,21 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         d: common_vendor.t(STATUS_TEXT[_ctx.activity.status] || "已结束")
       }, {
         c: _ctx.activity.status === "ongoing",
-        e: common_vendor.t(common_vendor.unref(utils_format.formatActivityTime)(_ctx.activity.startTime, _ctx.activity.endTime)),
-        f: common_vendor.t(_ctx.activity.location),
-        g: _ctx.activity.isCheckedIn
+        e: common_vendor.p({
+          name: "time-line",
+          size: "13px"
+        }),
+        f: common_vendor.t(common_vendor.unref(utils_format.formatActivityTime)(_ctx.activity.startTime, _ctx.activity.endTime)),
+        g: common_vendor.p({
+          name: "location-line",
+          size: "13px"
+        }),
+        h: common_vendor.t(_ctx.activity.location),
+        i: _ctx.activity.isCheckedIn
       }, _ctx.activity.isCheckedIn ? {} : {
-        h: common_vendor.o(handleCheckin)
+        j: common_vendor.o(handleCheckin)
       }, {
-        i: _ctx.activity.isCheckedIn ? 1 : ""
+        k: _ctx.activity.isCheckedIn ? 1 : ""
       });
     };
   }

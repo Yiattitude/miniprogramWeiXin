@@ -3,7 +3,7 @@
     <!-- 搜索栏 -->
     <view class="search-bar">
       <view class="search-input-wrap">
-        <text class="search-icon">🔍</text>
+        <Icon class="search-icon" name="search-line" size="16px" />
         <input 
           class="search-input" 
           placeholder="搜索活动名称或地点" 
@@ -66,7 +66,7 @@
       />
 
       <view v-if="!loading && list.length === 0" class="empty">
-        <text class="empty-icon">📭</text>
+        <Icon class="empty-icon" name="calendar-line" size="64px" />
         <text class="empty-text">暂无符合条件的活动</text>
       </view>
 
@@ -81,6 +81,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import Icon from '@/components/common/Icon.vue'
 import { onPullDownRefresh, onLoad } from '@dcloudio/uni-app'
 import { useVolunteerStore } from '@/stores/volunteer'
 import ActivityCard from '@/components/volunteer/ActivityCard.vue'

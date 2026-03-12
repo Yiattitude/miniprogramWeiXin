@@ -13,7 +13,7 @@
         <text class="act-title">{{ activity.name }}</text>
         
         <view class="info-row">
-          <text class="info-icon">🕐</text>
+          <Icon class="info-icon" name="time-line" size="18px" />
           <view class="info-right">
             <text class="info-label">活动时间</text>
             <text class="info-value">{{ formatActivityTime(activity.startTime, activity.endTime) }}</text>
@@ -21,7 +21,7 @@
         </view>
 
         <view class="info-row">
-          <text class="info-icon">📍</text>
+          <Icon class="info-icon" name="location-line" size="18px" />
           <view class="info-right">
             <text class="info-label">活动地点</text>
             <text class="info-value">{{ activity.location }}</text>
@@ -29,7 +29,7 @@
         </view>
 
         <view class="info-row">
-          <text class="info-icon">📅</text>
+          <Icon class="info-icon" name="calendar-line" size="18px" />
           <view class="info-right">
             <text class="info-label">发布时间</text>
             <text class="info-value">{{ formatDateTime(activity.createdAt) }}</text>
@@ -86,6 +86,7 @@
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import Icon from '@/components/common/Icon.vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { useVolunteerStore } from '@/stores/volunteer'
 import { formatActivityTime, formatDateTime } from '@/utils/format'

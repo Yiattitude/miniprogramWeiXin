@@ -10,7 +10,7 @@
 
     <scroll-view v-else scroll-y class="scroll-wrap" @scrolltolower="loadMore">
       <view v-if="list.length === 0 && !loading" class="empty">
-        <text class="empty-icon">📋</text>
+        <Icon class="empty-icon" name="file-text-line" size="72px" />
         <text class="empty-text">暂无打卡记录</text>
         <text class="empty-sub">参加活动并完成打卡后，记录将显示在这里</text>
       </view>
@@ -25,11 +25,11 @@
           </view>
 
           <view class="card-row">
-            <text class="row-icon">📍</text>
+            <Icon class="row-icon" name="location-line" size="16px" />
             <text class="row-text">{{ item.activityLocation }}</text>
           </view>
           <view class="card-row">
-            <text class="row-icon">🕐</text>
+            <Icon class="row-icon" name="time-line" size="16px" />
             <text class="row-text">{{ formatCheckedAt(item.checkedAt) }}</text>
           </view>
 
@@ -73,6 +73,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import Icon from '@/components/common/Icon.vue'
 import { onLoad, onPullDownRefresh } from '@dcloudio/uni-app'
 import { useVolunteerStore } from '@/stores/volunteer'
 import { formatDateTime } from '@/utils/format'

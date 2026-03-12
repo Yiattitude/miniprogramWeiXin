@@ -8,7 +8,7 @@
     <view class="grid">
       <view class="grid-item" @tap="goPage('/pages/volunteer/signup-list')">
         <view class="grid-icon-wrap" style="background: linear-gradient(135deg, #ffe1dd 0%, #ffd1cc 100%)">
-          <text class="grid-icon">📝</text>
+          <Icon class="grid-icon" name="edit-2-line" size="26px" />
         </view>
         <view class="grid-text">
           <text class="grid-label">活动报名</text>
@@ -18,7 +18,7 @@
 
       <view class="grid-item" @tap="goPage('/pages/volunteer/checkin-list')">
         <view class="grid-icon-wrap" style="background: linear-gradient(135deg, #d7f6e6 0%, #bff0d8 100%)">
-          <text class="grid-icon">✅</text>
+          <Icon class="grid-icon" name="checkbox-line" size="26px" />
         </view>
         <view class="grid-text">
           <text class="grid-label">志愿打卡</text>
@@ -28,7 +28,7 @@
 
       <view v-if="userStore.isAdmin" class="grid-item" @tap="goPage('/pages/volunteer/publish')">
         <view class="grid-icon-wrap" style="background: linear-gradient(135deg, #ffe9c4 0%, #ffdba6 100%)">
-          <text class="grid-icon">📢</text>
+          <Icon class="grid-icon" name="add-circle-line" size="26px" />
         </view>
         <view class="grid-text">
           <text class="grid-label">发布活动</text>
@@ -38,7 +38,7 @@
 
       <view class="grid-item" @tap="goPage('/pages/volunteer/record')">
         <view class="grid-icon-wrap" style="background: linear-gradient(135deg, #f7e0ff 0%, #e7c8ff 100%)">
-          <text class="grid-icon">📋</text>
+          <Icon class="grid-icon" name="list-check-line" size="26px" />
         </view>
         <view class="grid-text">
           <text class="grid-label">打卡记录</text>
@@ -48,7 +48,7 @@
 
       <view class="grid-item" @tap="goPage('/pages/volunteer/statistics')">
         <view class="grid-icon-wrap" style="background: linear-gradient(135deg, #d4e9fc 0%, #c0dffe 100%)">
-          <text class="grid-icon">📊</text>
+          <Icon class="grid-icon" name="chart-bar-line" size="26px" />
         </view>
         <view class="grid-text">
           <text class="grid-label">统计报表</text>
@@ -81,6 +81,7 @@
 
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user'
+import Icon from '@/components/common/Icon.vue'
 
 const userStore = useUserStore()
 

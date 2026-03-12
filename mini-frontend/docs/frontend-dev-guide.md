@@ -1122,10 +1122,7 @@ const emit = defineEmits<{
 <!--
   @component EmptyState
   @description 数据为空时的占位组件（适老化大图标 + 大字提示）
-  @props
-    icon     String  emoji 或图片 URL
-    title    String  主提示文字
-    subtitle String  副提示文字（可省略）
+  @props    iconName String  Mingcute 图标名（推荐，如 calendar-line）    text     String  主提示文字    subText  String  副提示文字（可省略）
 -->
 ```
 

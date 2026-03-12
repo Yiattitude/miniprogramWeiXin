@@ -32,7 +32,7 @@
       <view class="section-title">各活动明细</view>
 
       <view v-if="!data.activities || data.activities.length === 0" class="empty">
-        <text class="empty-icon">📋</text>
+        <Icon class="empty-icon" name="chart-bar-line" size="72px" />
         <text class="empty-text">暂无活动数据</text>
       </view>
 
@@ -60,6 +60,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import Icon from '@/components/common/Icon.vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { getStatistics } from '../../api/volunteer'
 

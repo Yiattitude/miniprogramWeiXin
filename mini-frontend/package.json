@@ -13,6 +13,7 @@
     "@dcloudio/uni-app": "3.0.0-4080420251103001",
     "@dcloudio/uni-mp-weixin": "3.0.0-4080420251103001",
     "dayjs": "^1.11.0",
+    "mingcute_icon": "^2.9.71",
     "pinia": "^2.1.0",
     "vue": "^3.4.21"
   },

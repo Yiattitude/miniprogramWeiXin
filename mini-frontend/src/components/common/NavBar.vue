@@ -5,7 +5,7 @@
   <view class="nav-bar" :style="{ height: navHeight + 'px', paddingTop: statusBarHeight + 'px' }">
     <!-- 左侧返回按钮 -->
     <view v-if="showBack" class="nav-back" @click="handleBack">
-      <text class="nav-back-icon">‹</text>
+      <Icon class="nav-back-icon" name="arrow-right-line" size="28px" :rotate="180" />
       <text class="nav-back-text">返回</text>
     </view>
     <view v-else class="nav-placeholder" />
@@ -24,6 +24,7 @@
  * @description 自定义导航栏（适老化），左侧返回、标题居中，字号 ≥ 20px
  */
 import { ref } from 'vue'
+import Icon from '@/components/common/Icon.vue'
 
 withDefaults(defineProps<{
   title?: string

@@ -8,11 +8,11 @@
         <view v-else class="tag-status">{{ STATUS_TEXT[activity.status] || '已结束' }}</view>
       </view>
       <view class="meta-row">
-        <text class="meta-icon">🕐</text>
+        <Icon class="meta-icon" name="time-line" size="13px" />
         <text class="meta-text">{{ formatActivityTime(activity.startTime, activity.endTime) }}</text>
       </view>
       <view class="meta-row">
-        <text class="meta-icon">📍</text>
+        <Icon class="meta-icon" name="location-line" size="13px" />
         <text class="meta-text">{{ activity.location }}</text>
       </view>
     </view>
@@ -25,6 +25,7 @@
 
 <script setup lang="ts">
 import { formatActivityTime } from '@/utils/format'
+import Icon from '@/components/common/Icon.vue'
 import type { Activity } from '@/types/volunteer'
 
 interface Props {

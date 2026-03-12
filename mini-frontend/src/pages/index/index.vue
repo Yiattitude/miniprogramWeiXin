@@ -4,7 +4,7 @@
       <view class="banner-left">
         <image class="avatar" :src="userStore.userInfo?.avatar || '/static/default-avatar.png'" mode="aspectFill" />
         <view class="user-info">
-          <text class="welcome">{{ userStore.userInfo ? '你好，' + userStore.userInfo.nickname : '欢迎使用' }}</text>
+          <text class="welcome">{{ userStore.userInfo ? '你好，' + userStore.userInfo.nickName : '欢迎使用' }}</text>
           <text class="unit">{{ userStore.userInfo?.unit || '银发人才平台' }}</text>
         </view>
       </view>
@@ -32,13 +32,13 @@
       <text class="section-title">功能模块</text>
       <view class="module-card module-primary" @tap="goVolunteer">
         <view class="module-icon-wrap">
-          <text class="module-icon">🤝</text>
+          <Icon class="module-icon" name="hand-heart-line" size="28px" />
         </view>
         <view class="module-info">
           <text class="module-name">志愿活动</text>
           <text class="module-desc">报名参加、打卡记录、统计报表</text>
         </view>
-        <text class="module-arrow">›</text>
+        <Icon class="module-arrow" name="arrow-right-line" size="24px" />
       </view>
     </view>
 
@@ -47,7 +47,7 @@
       <view class="quick-grid">
         <view class="quick-item" @tap="goPage('/pages/volunteer/signup-list')">
           <view class="quick-icon-wrap quick-icon-1">
-            <text class="quick-icon">📝</text>
+            <Icon class="quick-icon" name="edit-2-line" size="26px" />
           </view>
           <view class="quick-text">
             <text class="quick-label">活动报名</text>
@@ -56,7 +56,7 @@
         </view>
         <view class="quick-item" @tap="goPage('/pages/volunteer/checkin-list')">
           <view class="quick-icon-wrap quick-icon-2">
-            <text class="quick-icon">✅</text>
+            <Icon class="quick-icon" name="checkbox-line" size="26px" />
           </view>
           <view class="quick-text">
             <text class="quick-label">志愿打卡</text>
@@ -65,7 +65,7 @@
         </view>
         <view class="quick-item" @tap="goPage('/pages/volunteer/record')">
           <view class="quick-icon-wrap quick-icon-3">
-            <text class="quick-icon">📋</text>
+            <Icon class="quick-icon" name="list-check-line" size="26px" />
           </view>
           <view class="quick-text">
             <text class="quick-label">打卡记录</text>
@@ -74,7 +74,7 @@
         </view>
         <view class="quick-item" @tap="goPage('/pages/volunteer/statistics')">
           <view class="quick-icon-wrap quick-icon-4">
-            <text class="quick-icon">📊</text>
+            <Icon class="quick-icon" name="chart-bar-line" size="26px" />
           </view>
           <view class="quick-text">
             <text class="quick-label">统计报表</text>
@@ -88,6 +88,7 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
+import Icon from '@/components/common/Icon.vue'
 import { useUserStore } from '@/stores/user'
 
 const userStore = useUserStore()

@@ -10,7 +10,7 @@
       >
         <image :src="item.url || item.path" class="thumb" mode="aspectFill" />
         <view class="remove-btn" @tap.stop="onRemove(index)">
-          <text class="remove-icon">×</text>
+          <Icon class="remove-icon" name="close-line" size="32rpx" />
         </view>
       </view>
 
@@ -20,7 +20,7 @@
         class="add-btn"
         @tap="onChoose"
       >
-        <text class="add-icon">+</text>
+        <Icon class="add-icon" name="add-circle-line" size="56rpx" />
         <text class="add-text">照片</text>
       </view>
     </view>
@@ -28,6 +28,8 @@
 </template>
 
 <script setup lang="ts">
+
+import Icon from '@/components/common/Icon.vue'
 const props = withDefaults(
   defineProps<{
     fileList?: any[]

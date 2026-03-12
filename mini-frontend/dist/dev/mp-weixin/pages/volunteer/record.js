@@ -8,8 +8,9 @@ if (!Array) {
 }
 const _easycom_uv_loading_icon = () => "../../components/stub/uv-loading-icon.js";
 if (!Math) {
-  _easycom_uv_loading_icon();
+  (_easycom_uv_loading_icon + Icon)();
 }
+const Icon = () => "../../components/common/Icon.js";
 const PAGE_SIZE = 10;
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "record",
@@ -82,24 +83,31 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         })
       } : common_vendor.e({
         d: list.value.length === 0 && !loading.value
-      }, list.value.length === 0 && !loading.value ? {} : {
-        e: common_vendor.f(list.value, (item, k0, i0) => {
+      }, list.value.length === 0 && !loading.value ? {
+        e: common_vendor.p({
+          name: "file-text-line",
+          size: "72px"
+        })
+      } : {
+        f: common_vendor.f(list.value, (item, k0, i0) => {
           return common_vendor.e({
             a: common_vendor.t(item.activityName),
             b: common_vendor.t(statusInfo(item.status).text),
             c: statusInfo(item.status).color,
             d: statusInfo(item.status).bg,
-            e: common_vendor.t(item.activityLocation),
-            f: common_vendor.t(formatCheckedAt(item.checkedAt)),
-            g: common_vendor.t(item.serviceHours),
-            h: common_vendor.t(item.serviceCount),
-            i: item.remark
+            e: "aae55db7-2-" + i0,
+            f: common_vendor.t(item.activityLocation),
+            g: "aae55db7-3-" + i0,
+            h: common_vendor.t(formatCheckedAt(item.checkedAt)),
+            i: common_vendor.t(item.serviceHours),
+            j: common_vendor.t(item.serviceCount),
+            k: item.remark
           }, item.remark ? {
-            j: common_vendor.t(item.remark)
+            l: common_vendor.t(item.remark)
           } : {}, {
-            k: item.photos && item.photos.length > 0
+            m: item.photos && item.photos.length > 0
           }, item.photos && item.photos.length > 0 ? {
-            l: common_vendor.f(item.photos, (url, idx, i1) => {
+            n: common_vendor.f(item.photos, (url, idx, i1) => {
               return {
                 a: idx,
                 b: url,
@@ -107,18 +115,26 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
               };
             })
           } : {}, {
-            m: item._id
+            o: item._id
           });
+        }),
+        g: common_vendor.p({
+          name: "location-line",
+          size: "16px"
+        }),
+        h: common_vendor.p({
+          name: "time-line",
+          size: "16px"
         })
       }, {
-        f: loading.value
+        i: loading.value
       }, loading.value ? {
-        g: common_vendor.p({
+        j: common_vendor.p({
           size: "28"
         })
       } : finished.value && list.value.length > 0 ? {} : {}, {
-        h: finished.value && list.value.length > 0,
-        i: common_vendor.o(loadMore)
+        k: finished.value && list.value.length > 0,
+        l: common_vendor.o(loadMore)
       }));
     };
   }

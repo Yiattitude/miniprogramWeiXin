@@ -1,22 +1,26 @@
 <template>
   <view class="empty-state">
-    <text class="empty-icon">{{ icon }}</text>
+    <Icon v-if="iconName" class="empty-icon" :name="iconName" size="64px" />
+    <text v-else class="empty-icon">{{ icon }}</text>
     <text class="empty-text">{{ text }}</text>
     <text v-if="subText" class="empty-sub">{{ subText }}</text>
   </view>
 </template>
 
 <script setup lang="ts">
+import Icon from '@/components/common/Icon.vue'
 /**
  * @component EmptyState
  * @description 数据为空时占位组件，适老化大图标 + 大字提示
  */
 withDefaults(defineProps<{
+  iconName?: string
   icon?: string
   text?: string
   subText?: string
 }>(), {
-  icon: '📭',
+  iconName: 'folder-line',
+  icon: '',
   text: '暂无数据',
   subText: '',
 })

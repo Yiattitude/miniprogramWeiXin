@@ -11,15 +11,15 @@
     
     <view class="card-meta">
       <view class="meta-row">
-        <text class="meta-icon">🕐</text>
+        <Icon class="meta-icon" name="time-line" size="14px" />
         <text class="meta-text">{{ formatActivityTime(activity.startTime, activity.endTime) }}</text>
       </view>
       <view class="meta-row">
-        <text class="meta-icon">📍</text>
+        <Icon class="meta-icon" name="location-line" size="14px" />
         <text class="meta-text">{{ activity.location }}</text>
       </view>
       <view class="meta-row">
-        <text class="meta-icon">👥</text>
+        <Icon class="meta-icon" name="group-line" size="14px" />
         <text class="meta-text">已报名 {{ activity.enrollCount }} / {{ activity.maxCount }} 人</text>
       </view>
     </view>
@@ -32,6 +32,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import Icon from '@/components/common/Icon.vue'
 import { formatActivityTime } from '@/utils/format'
 import type { Activity } from '@/types/volunteer'
 

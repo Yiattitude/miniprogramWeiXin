@@ -4,6 +4,7 @@
   "usingComponents": {
     "uv-loading-icon": "../../components/stub/uv-loading-icon",
     "uv-load-more": "../../components/stub/uv-load-more",
+    "icon": "../../components/common/Icon",
     "activity-card": "../../components/volunteer/ActivityCard"
   }
 }

@@ -4,7 +4,7 @@
     <view v-for="(url, index) in modelValue" :key="url" class="upload-item">
       <image class="upload-img" :src="url" mode="aspectFill" @click="previewImage(index)" />
       <view class="upload-delete" @click="remove(index)">
-        <text class="upload-delete-icon">✕</text>
+        <Icon class="upload-delete-icon" name="close-line" size="12px" />
       </view>
     </view>
 
@@ -14,7 +14,7 @@
       class="upload-add"
       @click="chooseImage"
     >
-      <text class="upload-add-icon">＋</text>
+      <Icon class="upload-add-icon" name="add-circle-line" size="28px" />
       <text class="upload-add-text">上传照片</text>
       <text class="upload-add-hint">{{ modelValue.length }}/{{ max }}</text>
     </view>
@@ -22,6 +22,8 @@
 </template>
 
 <script setup lang="ts">
+
+import Icon from '@/components/common/Icon.vue'
 /**
  * @component UploadImage
  * @description v-model 绑定 URL 数组，最多 max 张，选后直接使用本地临时路径

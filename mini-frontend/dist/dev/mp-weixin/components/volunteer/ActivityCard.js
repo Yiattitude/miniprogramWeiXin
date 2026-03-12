@@ -1,6 +1,10 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const utils_format = require("../../utils/format.js");
+if (!Math) {
+  Icon();
+}
+const Icon = () => "../common/Icon.js";
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "ActivityCard",
   props: {
@@ -35,12 +39,24 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         d: statusInfo.value.bg,
         e: _ctx.activity.isSignedUp
       }, _ctx.activity.isSignedUp ? {} : {}, {
-        f: common_vendor.t(common_vendor.unref(utils_format.formatActivityTime)(_ctx.activity.startTime, _ctx.activity.endTime)),
-        g: common_vendor.t(_ctx.activity.location),
-        h: common_vendor.t(_ctx.activity.enrollCount),
-        i: common_vendor.t(_ctx.activity.maxCount),
-        j: enrollPercent.value + "%",
-        k: common_vendor.o(handleClick)
+        f: common_vendor.p({
+          name: "time-line",
+          size: "14px"
+        }),
+        g: common_vendor.t(common_vendor.unref(utils_format.formatActivityTime)(_ctx.activity.startTime, _ctx.activity.endTime)),
+        h: common_vendor.p({
+          name: "location-line",
+          size: "14px"
+        }),
+        i: common_vendor.t(_ctx.activity.location),
+        j: common_vendor.p({
+          name: "group-line",
+          size: "14px"
+        }),
+        k: common_vendor.t(_ctx.activity.enrollCount),
+        l: common_vendor.t(_ctx.activity.maxCount),
+        m: enrollPercent.value + "%",
+        n: common_vendor.o(handleClick)
       });
     };
   }

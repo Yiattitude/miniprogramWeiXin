@@ -7,8 +7,9 @@ if (!Array) {
 }
 const _easycom_uv_loading_icon = () => "../../components/stub/uv-loading-icon.js";
 if (!Math) {
-  (_easycom_uv_loading_icon + CheckinCard)();
+  (_easycom_uv_loading_icon + CheckinCard + Icon)();
 }
+const Icon = () => "../../components/common/Icon.js";
 const CheckinCard = () => "../../components/volunteer/CheckinCard.js";
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "checkin-list",
@@ -55,7 +56,12 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
             })
           };
         })
-      } : {}, {
+      } : {
+        e: common_vendor.p({
+          name: "check-circle-line",
+          size: "72px"
+        })
+      }, {
         c: list.value.length > 0
       });
     };

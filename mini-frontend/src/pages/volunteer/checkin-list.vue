@@ -18,7 +18,7 @@
     </view>
     
     <view v-else class="empty">
-      <text class="empty-icon">🎉</text>
+      <Icon class="empty-icon" name="check-circle-line" size="72px" />
       <text class="empty-text">暂无待打卡的活动</text>
       <text class="empty-sub">所有活动都已打卡完成，或暂未报名</text>
     </view>
@@ -27,6 +27,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import Icon from '@/components/common/Icon.vue'
 import { onLoad, onPullDownRefresh } from '@dcloudio/uni-app'
 import { useVolunteerStore } from '@/stores/volunteer'
 import CheckinCard from '@/components/volunteer/CheckinCard.vue'

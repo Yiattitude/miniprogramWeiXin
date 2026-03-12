@@ -2,6 +2,7 @@
   "navigationBarTitleText": "打卡记录",
   "enablePullDownRefresh": true,
   "usingComponents": {
-    "uv-loading-icon": "../../components/stub/uv-loading-icon"
+    "uv-loading-icon": "../../components/stub/uv-loading-icon",
+    "icon": "../../components/common/Icon"
   }
 }

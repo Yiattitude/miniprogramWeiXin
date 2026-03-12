@@ -8,8 +8,9 @@ if (!Array) {
 }
 const _easycom_uv_loading_icon = () => "../../components/stub/uv-loading-icon.js";
 if (!Math) {
-  _easycom_uv_loading_icon();
+  (_easycom_uv_loading_icon + Icon)();
 }
+const Icon = () => "../../components/common/Icon.js";
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "signup-detail",
   setup(__props) {
@@ -93,29 +94,41 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         e: statusInfo.value.color,
         f: statusInfo.value.bg,
         g: common_vendor.t(activity.value.name),
-        h: common_vendor.t(common_vendor.unref(utils_format.formatActivityTime)(activity.value.startTime, activity.value.endTime)),
-        i: common_vendor.t(activity.value.location),
-        j: common_vendor.t(common_vendor.unref(utils_format.formatDateTime)(activity.value.createdAt)),
-        k: common_vendor.t(activity.value.enrollCount),
-        l: common_vendor.t(activity.value.maxCount),
-        m: enrollPercent.value + "%",
-        n: isFull.value
+        h: common_vendor.p({
+          name: "time-line",
+          size: "18px"
+        }),
+        i: common_vendor.t(common_vendor.unref(utils_format.formatActivityTime)(activity.value.startTime, activity.value.endTime)),
+        j: common_vendor.p({
+          name: "location-line",
+          size: "18px"
+        }),
+        k: common_vendor.t(activity.value.location),
+        l: common_vendor.p({
+          name: "calendar-line",
+          size: "18px"
+        }),
+        m: common_vendor.t(common_vendor.unref(utils_format.formatDateTime)(activity.value.createdAt)),
+        n: common_vendor.t(activity.value.enrollCount),
+        o: common_vendor.t(activity.value.maxCount),
+        p: enrollPercent.value + "%",
+        q: isFull.value
       }, isFull.value ? {} : {}, {
-        o: common_vendor.t(activity.value.description),
-        p: activity.value.isSignedUp
+        r: common_vendor.t(activity.value.description),
+        s: activity.value.isSignedUp
       }, activity.value.isSignedUp ? {
-        q: common_vendor.t(actionLoading.value ? "处理中..." : "取消报名"),
-        r: actionLoading.value,
-        s: common_vendor.o(handleCancel)
+        t: common_vendor.t(actionLoading.value ? "处理中..." : "取消报名"),
+        v: actionLoading.value,
+        w: common_vendor.o(handleCancel)
       } : common_vendor.e({
-        t: activity.value.status !== "ended" && !isFull.value
+        x: activity.value.status !== "ended" && !isFull.value
       }, activity.value.status !== "ended" && !isFull.value ? {
-        v: common_vendor.t(actionLoading.value ? "报名中..." : "确认报名"),
-        w: actionLoading.value,
-        x: common_vendor.o(handleSignup)
+        y: common_vendor.t(actionLoading.value ? "报名中..." : "确认报名"),
+        z: actionLoading.value,
+        A: common_vendor.o(handleSignup)
       } : activity.value.status === "ended" ? {} : isFull.value ? {} : {}, {
-        y: activity.value.status === "ended",
-        z: isFull.value
+        B: activity.value.status === "ended",
+        C: isFull.value
       })) : {}, {
         c: activity.value
       });
