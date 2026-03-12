@@ -1,4 +1,5 @@
 <template>
+  <page-meta root-font-size="system"/>
   <view class="page">
     <view v-if="loading" class="loading-wrap">
       <uv-loading-icon size="36" />

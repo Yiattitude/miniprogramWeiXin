@@ -1,4 +1,5 @@
 <template>
+  <page-meta root-font-size="system"/>
   <view class="page">
     <!-- 搜索栏 -->
     <view class="search-bar">

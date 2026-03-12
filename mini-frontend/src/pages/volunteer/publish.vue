@@ -1,4 +1,5 @@
 <template>
+  <page-meta root-font-size="system"/>
   <view class="page">
     <view class="form-card">
       <view class="form-item">

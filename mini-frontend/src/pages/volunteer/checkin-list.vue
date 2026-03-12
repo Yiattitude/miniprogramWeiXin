@@ -1,4 +1,5 @@
 <template>
+  <page-meta root-font-size="system"/>
   <view class="page">
     <view class="tip-bar">
       <text class="tip-text">📌 已报名的活动，点击"去打卡"填报本次服务记录</text>

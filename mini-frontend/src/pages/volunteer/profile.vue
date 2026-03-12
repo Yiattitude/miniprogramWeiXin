@@ -1,4 +1,5 @@
 <template>
+  <page-meta root-font-size="system"/>
   <view class="page">
     <view class="profile-header">
       <image class="avatar" :src="avatar" mode="aspectFill" />

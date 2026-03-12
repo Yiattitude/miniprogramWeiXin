@@ -1,4 +1,5 @@
 <template>
+  <page-meta root-font-size="system"/>
   <view class="page">
     <view class="stat-bar">
       <text class="stat-bar-text">共 {{ total }} 条打卡记录</text>

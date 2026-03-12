@@ -1,4 +1,5 @@
 <template>
+  <page-meta root-font-size="system"/>
   <view class="page">
     <view class="header">
       <text class="header-title">志愿活动</text>

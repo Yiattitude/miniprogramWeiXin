@@ -1,4 +1,5 @@
 <template>
+  <page-meta root-font-size="system"/>
   <view class="page">
     <view v-if="activityName" class="activity-bar">
       <text class="activity-name">{{ activityName }}</text>
