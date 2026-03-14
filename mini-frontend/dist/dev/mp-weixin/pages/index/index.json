@@ -1,4 +1,6 @@
 {
   "navigationBarTitleText": "银发人才平台",
-  "usingComponents": {}
+  "usingComponents": {
+    "icon": "../../components/common/Icon"
+  }
 }

@@ -1,1 +1,56 @@
-<view class="page data-v-dd49826d"><view class="profile-header data-v-dd49826d"><image class="avatar data-v-dd49826d" src="{{a}}" mode="aspectFill"/><view class="user-meta data-v-dd49826d"><text class="nickname data-v-dd49826d">{{b}}</text><view class="unit-row data-v-dd49826d"><text class="unit-icon data-v-dd49826d">🏢</text><text class="unit-text data-v-dd49826d">{{c}}</text></view><view class="{{['data-v-dd49826d', 'role-badge', e]}}">{{d}}</view></view></view><view class="stat-card data-v-dd49826d"><view class="stat-item data-v-dd49826d"><text class="stat-num data-v-dd49826d">{{f}}</text><text class="stat-label data-v-dd49826d">志愿时长(h)</text></view><view class="stat-divider data-v-dd49826d"/><view class="stat-item data-v-dd49826d"><text class="stat-num data-v-dd49826d">{{g}}</text><text class="stat-label data-v-dd49826d">参与次数</text></view><view class="stat-divider data-v-dd49826d"/><view class="stat-item data-v-dd49826d"><text class="stat-num data-v-dd49826d">{{h}}</text><text class="stat-label data-v-dd49826d">服务人次</text></view></view><view class="menu-section data-v-dd49826d"><view class="section-title data-v-dd49826d">我的功能</view><view class="menu-card data-v-dd49826d"><view class="menu-item data-v-dd49826d" bindtap="{{i}}"><view class="menu-icon-wrap data-v-dd49826d" style="background:#e6f9f0"><text class="menu-icon data-v-dd49826d">📋</text></view><text class="menu-label data-v-dd49826d">打卡记录</text><text class="menu-arrow data-v-dd49826d">›</text></view><view class="menu-divider data-v-dd49826d"/><view class="menu-item data-v-dd49826d" bindtap="{{j}}"><view class="menu-icon-wrap data-v-dd49826d" style="background:#eef3fc"><text class="menu-icon data-v-dd49826d">📊</text></view><text class="menu-label data-v-dd49826d">统计报表</text><text class="menu-arrow data-v-dd49826d">›</text></view><view class="menu-divider data-v-dd49826d"/><view class="menu-item data-v-dd49826d" bindtap="{{k}}"><view class="menu-icon-wrap data-v-dd49826d" style="background:#fff3e0"><text class="menu-icon data-v-dd49826d">✅</text></view><text class="menu-label data-v-dd49826d">我的报名</text><text class="menu-arrow data-v-dd49826d">›</text></view><view class="menu-divider data-v-dd49826d"/><view class="menu-item data-v-dd49826d" bindtap="{{l}}"><view class="menu-icon-wrap data-v-dd49826d" style="background:#fde8e8"><text class="menu-icon data-v-dd49826d">📝</text></view><text class="menu-label data-v-dd49826d">浏览活动</text><text class="menu-arrow data-v-dd49826d">›</text></view><block wx:if="{{m}}"><view class="menu-divider data-v-dd49826d"/><view class="menu-item data-v-dd49826d" bindtap="{{n}}"><view class="menu-icon-wrap data-v-dd49826d" style="background:#fff3cd"><text class="menu-icon data-v-dd49826d">📢</text></view><text class="menu-label data-v-dd49826d">发布活动</text><view class="admin-tag data-v-dd49826d">管理员</view><text class="menu-arrow data-v-dd49826d">›</text></view></block></view></view><view class="logout-wrap data-v-dd49826d"><view class="btn-logout data-v-dd49826d" bindtap="{{o}}">退出登录</view></view><view class="footer data-v-dd49826d"><text class="footer-text data-v-dd49826d">银发人才平台 · 志愿活动统计</text></view></view>
+<page-meta class="data-v-dd49826d" root-font-size="system" />
+<view class="page data-v-dd49826d">
+    <view class="profile-header data-v-dd49826d">
+        <button class="avatar-btn data-v-dd49826d" open-type="chooseAvatar" bindchooseavatar="{{aa}}">
+            <image class="avatar data-v-dd49826d" src="{{a}}" mode="aspectFill" />
+            <view class="edit-tip data-v-dd49826d">点击更换</view>
+        </button>
+        <view class="user-info data-v-dd49826d">
+            <view class="nickname-row data-v-dd49826d" bindtap="{{be}}">
+                <text class="nickname data-v-dd49826d">{{b}}</text>
+                <text class="edit-icon data-v-dd49826d">编辑</text>
+            </view>
+            <view class="{{['role-badge', 'data-v-dd49826d', d]}}">{{c}}</view>
+        </view>
+    </view>
+    
+    <!-- 昵称编辑弹窗 -->
+    <view wx:if="{{ba}}" class="nickname-modal data-v-dd49826d">
+        <view class="modal-mask data-v-dd49826d" bindtap="{{bd}}"></view>
+        <view class="modal-content data-v-dd49826d">
+            <view class="modal-title data-v-dd49826d">修改昵称</view>
+            <input class="modal-input data-v-dd49826d" type="nickname" value="{{bb}}" placeholder="请输入昵称" bindinput="{{bf}}" bindconfirm="{{bc}}" bindblur="{{bc}}" focus="{{ba}}" />
+            <view class="modal-btns data-v-dd49826d">
+                <view class="modal-btn cancel data-v-dd49826d" bindtap="{{bd}}">取消</view>
+                <view class="modal-btn confirm data-v-dd49826d" bindtap="{{bc}}">确定</view>
+            </view>
+        </view>
+    </view>
+    
+    <view class="stat-card data-v-dd49826d">
+        <view class="stat-item data-v-dd49826d"><text class="stat-num data-v-dd49826d">{{e}}</text><text class="stat-label data-v-dd49826d">参与活动</text></view>
+        <view class="stat-divider data-v-dd49826d" />
+        <view class="stat-item data-v-dd49826d"><text class="stat-num data-v-dd49826d">{{f}}</text><text class="stat-label data-v-dd49826d">服务时长(h)</text></view>
+        <view class="stat-divider data-v-dd49826d" />
+        <view class="stat-item data-v-dd49826d"><text class="stat-num data-v-dd49826d">{{g}}</text><text class="stat-label data-v-dd49826d">服务人次</text></view>
+    </view>
+    <view class="menu-card data-v-dd49826d">
+        <view class="menu-item data-v-dd49826d" bindtap="{{j}}">
+            <icon wx:if="{{h}}" class="menu-icon data-v-dd49826d" u-i="dd49826d-0" bind:__l="__l" u-p="{{h}}" /><text class="menu-text data-v-dd49826d">我的打卡记录</text>
+            <icon wx:if="{{i}}" class="menu-arrow data-v-dd49826d" u-i="dd49826d-1" bind:__l="__l" u-p="{{i}}" />
+        </view>
+        <view class="menu-item data-v-dd49826d" bindtap="{{m}}">
+            <icon wx:if="{{k}}" class="menu-icon data-v-dd49826d" u-i="dd49826d-2" bind:__l="__l" u-p="{{k}}" /><text class="menu-text data-v-dd49826d">待打卡活动</text>
+            <icon wx:if="{{l}}" class="menu-arrow data-v-dd49826d" u-i="dd49826d-3" bind:__l="__l" u-p="{{l}}" />
+        </view>
+        <view wx:if="{{n}}" class="menu-item data-v-dd49826d" bindtap="{{q}}">
+            <icon wx:if="{{o}}" class="menu-icon data-v-dd49826d" u-i="dd49826d-4" bind:__l="__l" u-p="{{o}}" /><text class="menu-text data-v-dd49826d">统计报表</text>
+            <icon wx:if="{{p}}" class="menu-arrow data-v-dd49826d" u-i="dd49826d-5" bind:__l="__l" u-p="{{p}}" />
+        </view>
+    </view>
+    <view class="menu-card data-v-dd49826d" style="margin-top:24rpx">
+        <view class="menu-item logout-item data-v-dd49826d" bindtap="{{s}}">
+            <icon wx:if="{{r}}" class="menu-icon data-v-dd49826d" u-i="dd49826d-6" bind:__l="__l" u-p="{{r}}" /><text class="menu-text logout-text data-v-dd49826d">退出登录</text>
+        </view>
+    </view>
+</view>

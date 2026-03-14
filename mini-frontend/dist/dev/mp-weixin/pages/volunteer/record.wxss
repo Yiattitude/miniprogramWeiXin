@@ -1,17 +1,19 @@
 .page.data-v-aae55db7 {
   min-height: 100vh;
-  background: var(--color-bg-page, #f0f2f5);
+  background: linear-gradient(180deg, #f7f9fc 0%, #eef2f7 48%, #e9eef5 100%);
   display: flex;
   flex-direction: column;
+  font-family: "HarmonyOS Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 .stat-bar.data-v-aae55db7 {
-  background: var(--color-primary-bg, #eef3fc);
-  padding: var(--space-sm, 12px) var(--space-md, 16px);
+  background: linear-gradient(135deg, #eef6ff 0%, #e0efff 100%);
+  padding: 14px 16px;
+  box-shadow: 0 2px 12px rgba(47, 98, 198, 0.08);
 }
 .stat-bar-text.data-v-aae55db7 {
-  font-size: var(--font-sm, 15px);
-  color: var(--color-primary, #3a7bd5);
-  font-weight: 600;
+  font-size: 14px;
+  color: #2f62c6;
+  font-weight: 700;
 }
 .scroll-wrap.data-v-aae55db7 {
   flex: 1;
@@ -24,154 +26,175 @@
   padding: 80px 0;
 }
 .list-wrap.data-v-aae55db7 {
-  padding: var(--space-sm, 12px) var(--space-md, 16px);
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm, 12px);
+  gap: 14px;
 }
-
-/* 记录卡片 */
 .record-card.data-v-aae55db7 {
   background: #fff;
-  border-radius: var(--radius-md, 10px);
-  padding: var(--space-md, 16px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 10px 20px rgba(20, 28, 46, 0.08);
+  animation: riseIn-aae55db7 0.45s ease-out both;
+  transition: transform 0.2s ease;
+}
+.record-card.data-v-aae55db7:active {
+  transform: scale(0.99);
 }
 .card-head.data-v-aae55db7 {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 8px;
-  margin-bottom: var(--space-sm, 12px);
+  gap: 10px;
+  margin-bottom: 14px;
 }
 .activity-name.data-v-aae55db7 {
   flex: 1;
-  font-size: var(--font-lg, 19px);
+  font-size: 18px;
   font-weight: 700;
-  color: var(--color-text-main, #1e2a3a);
+  color: #1c2431;
   line-height: 1.4;
 }
 .status-badge.data-v-aae55db7 {
   flex-shrink: 0;
-  font-size: var(--font-xs, 13px);
-  font-weight: 600;
-  padding: 3px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 12px;
   border-radius: 20px;
+  letter-spacing: 0.5px;
 }
 .card-row.data-v-aae55db7 {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 8px;
+  gap: 8px;
+  margin-bottom: 10px;
 }
 .row-icon.data-v-aae55db7 {
   font-size: 16px;
+  width: 20px;
+  text-align: center;
 }
 .row-text.data-v-aae55db7 {
-  font-size: var(--font-sm, 15px);
-  color: var(--color-text-sub, #6b7b8d);
+  font-size: 14px;
+  color: #7a8797;
+  line-height: 1.5;
 }
-
-/* 指标区 */
 .metrics-row.data-v-aae55db7 {
   display: flex;
   align-items: center;
-  background: var(--color-bg-page, #f0f2f5);
-  border-radius: 8px;
-  padding: var(--space-sm, 12px) 0;
-  margin: var(--space-sm, 12px) 0 8px;
+  background: linear-gradient(135deg, #f7f9fc 0%, #eef3fc 100%);
+  border-radius: 14px;
+  padding: 16px 0;
+  margin: 14px 0 10px;
+  box-shadow: 0 2px 8px rgba(47, 98, 198, 0.06);
 }
 .metric-item.data-v-aae55db7 {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
 }
 .metric-num.data-v-aae55db7 {
-  font-size: var(--font-xl, 22px);
+  font-size: 24px;
   font-weight: 700;
-  color: var(--color-primary, #3a7bd5);
+  color: #2f62c6;
 }
 .metric-label.data-v-aae55db7 {
-  font-size: var(--font-xs, 13px);
-  color: var(--color-text-sub, #6b7b8d);
+  font-size: 12px;
+  color: #7a8797;
+  font-weight: 500;
 }
 .metric-divider.data-v-aae55db7 {
   width: 1px;
-  height: 36px;
-  background: var(--color-border, #e2e7ec);
+  height: 32px;
+  background: #e6ebf2;
 }
-
-/* 备注 */
 .remark-row.data-v-aae55db7 {
   display: flex;
-  gap: 4px;
-  margin-top: 8px;
+  margin-top: 12px;
+  background: linear-gradient(135deg, #fffcf5 0%, #fff9eb 100%);
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #f5ead4;
 }
 .remark-label.data-v-aae55db7 {
-  font-size: var(--font-sm, 15px);
-  color: var(--color-text-sub, #6b7b8d);
+  font-size: 13px;
+  color: #a0aab5;
   flex-shrink: 0;
+  font-weight: 600;
 }
 .remark-text.data-v-aae55db7 {
-  font-size: var(--font-sm, 15px);
-  color: var(--color-text-main, #1e2a3a);
-  line-height: 1.5;
+  font-size: 14px;
+  color: #6b7b8d;
+  line-height: 1.6;
 }
-
-/* 照片 */
 .photos-wrap.data-v-aae55db7 {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: var(--space-sm, 12px);
+  gap: 10px;
+  margin-top: 14px;
 }
-.photo-thumb.data-v-aae55db7 {
-  width: 80px;
-  height: 80px;
-  border-radius: 8px;
-  background: #f0f0f0;
+.photo-item.data-v-aae55db7 {
+  width: calc((100% - 20px) / 3);
+  height: 90px;
+  border-radius: 10px;
+  background: #f7f9fc;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: transform 0.2s ease;
 }
-
-/* 加载更多 */
-.load-more-wrap.data-v-aae55db7 {
-  display: flex;
-  justify-content: center;
-  padding: var(--space-lg, 24px) 0 40px;
+.photo-item.data-v-aae55db7:active {
+  transform: scale(0.95);
 }
-.load-more-loading.data-v-aae55db7 {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.load-more-text.data-v-aae55db7 {
-  font-size: var(--font-sm, 15px);
-  color: var(--color-text-muted, #a0aab5);
-}
-.load-more-finished.data-v-aae55db7 {
-  font-size: var(--font-sm, 15px);
-  color: var(--color-text-muted, #a0aab5);
-}
-
-/* 空状态 */
 .empty.data-v-aae55db7 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 80px var(--space-md, 16px);
-  gap: 10px;
+  padding: 100px 16px;
+  gap: 14px;
+  animation: fadeIn-aae55db7 0.5s ease-out both;
 }
 .empty-icon.data-v-aae55db7 {
-  font-size: 56px;
+  font-size: 72px;
+  opacity: 0.5;
 }
 .empty-text.data-v-aae55db7 {
-  font-size: var(--font-lg, 19px);
-  font-weight: 600;
-  color: var(--color-text-main, #1e2a3a);
+  font-size: 18px;
+  font-weight: 700;
+  color: #1c2431;
 }
 .empty-sub.data-v-aae55db7 {
-  font-size: var(--font-sm, 15px);
-  color: var(--color-text-muted, #a0aab5);
+  font-size: 14px;
+  color: #7a8797;
   text-align: center;
+  line-height: 1.6;
+  max-width: 280px;
+}
+.no-more.data-v-aae55db7 {
+  text-align: center;
+  padding: 24px 0;
+  font-size: 13px;
+  color: #a0aab5;
+  font-weight: 500;
+}
+@keyframes riseIn-aae55db7 {
+from {
+    opacity: 0;
+    transform: translateY(8px);
+}
+to {
+    opacity: 1;
+    transform: translateY(0);
+}
+}
+@keyframes fadeIn-aae55db7 {
+from {
+    opacity: 0;
+    transform: translateY(10px);
+}
+to {
+    opacity: 1;
+    transform: translateY(0);
+}
 }

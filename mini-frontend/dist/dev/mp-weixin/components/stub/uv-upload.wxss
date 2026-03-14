@@ -1,0 +1,58 @@
+
+.uv-upload.data-v-35716e1f {
+  width: 100%;
+}
+.grid.data-v-35716e1f {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
+.thumb-wrap.data-v-35716e1f {
+  position: relative;
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+.thumb.data-v-35716e1f {
+  width: 100%;
+  height: 100%;
+}
+.remove-btn.data-v-35716e1f {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 44rpx;
+  height: 44rpx;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-bottom-left-radius: 8rpx;
+}
+.remove-icon.data-v-35716e1f {
+  color: #fff;
+  font-size: 32rpx;
+  line-height: 1;
+}
+.add-btn.data-v-35716e1f {
+  width: 200rpx;
+  height: 200rpx;
+  background: #f5f7fa;
+  border: 2rpx dashed #d0d5dd;
+  border-radius: 8rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+}
+.add-icon.data-v-35716e1f {
+  font-size: 56rpx;
+  color: #aab;
+  line-height: 1;
+}
+.add-text.data-v-35716e1f {
+  font-size: 24rpx;
+  color: #aab;
+}

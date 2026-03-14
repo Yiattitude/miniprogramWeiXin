@@ -4,16 +4,19 @@
   "description": "银发人才平台 - 志愿活动统计小程序",
   "scripts": {
     "dev:mp-weixin": "uni -p mp-weixin",
-    "build:mp-weixin": "uni build -p mp-weixin"
+    "build:mp-weixin": "uni build -p mp-weixin",
+    "fix-font": "node scripts/fix-font-path.js",
+    "copy-static": "node scripts/copy-static.js",
+    "postdev": "npm run copy-static && npm run fix-font"
   },
   "keywords": [],
   "author": "",
   "license": "",
   "dependencies": {
-    "@climblee/uv-ui": "^1.1.20",
     "@dcloudio/uni-app": "3.0.0-4080420251103001",
     "@dcloudio/uni-mp-weixin": "3.0.0-4080420251103001",
     "dayjs": "^1.11.0",
+    "mingcute_icon": "^2.9.71",
     "pinia": "^2.1.0",
     "vue": "^3.4.21"
   },

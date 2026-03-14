@@ -1,6 +1,10 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const utils_format = require("../../utils/format.js");
+if (!Math) {
+  Icon();
+}
+const Icon = () => "../common/Icon.js";
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "CheckinCard",
   props: {
@@ -11,10 +15,10 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
     const props = __props;
     const emit = __emit;
     const STATUS_TEXT = {
-      recruiting: "招募中",
-      upcoming: "即将开始",
-      ongoing: "进行中",
-      ended: "已结束"
+      recruiting: "\u62db\u52df\u4e2d",
+      upcoming: "\u5373\u5c06\u5f00\u59cb",
+      ongoing: "\u8fdb\u884c\u4e2d",
+      ended: "\u5df2\u7ed3\u675f"
     };
     function handleCheckin() {
       if (!props.activity.isCheckedIn) {
@@ -26,16 +30,24 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         a: common_vendor.t(_ctx.activity.name),
         b: _ctx.activity.isCheckedIn
       }, _ctx.activity.isCheckedIn ? {} : _ctx.activity.status === "ongoing" ? {} : {
-        d: common_vendor.t(STATUS_TEXT[_ctx.activity.status])
+        d: common_vendor.t(STATUS_TEXT[_ctx.activity.status] || "\u5df2\u7ed3\u675f")
       }, {
         c: _ctx.activity.status === "ongoing",
-        e: common_vendor.t(common_vendor.unref(utils_format.formatActivityTime)(_ctx.activity.startTime, _ctx.activity.endTime)),
-        f: common_vendor.t(_ctx.activity.location),
-        g: _ctx.activity.isCheckedIn
+        e: common_vendor.p({
+          name: "time-line",
+          size: "13px"
+        }),
+        f: common_vendor.t(common_vendor.unref(utils_format.formatActivityTime)(_ctx.activity.startTime, _ctx.activity.endTime)),
+        g: common_vendor.p({
+          name: "location-line",
+          size: "13px"
+        }),
+        h: common_vendor.t(_ctx.activity.location),
+        i: _ctx.activity.isCheckedIn
       }, _ctx.activity.isCheckedIn ? {} : {
-        h: common_vendor.o(handleCheckin)
+        j: common_vendor.o(handleCheckin)
       }, {
-        i: _ctx.activity.isCheckedIn ? 1 : ""
+        k: _ctx.activity.isCheckedIn ? 1 : ""
       });
     };
   }

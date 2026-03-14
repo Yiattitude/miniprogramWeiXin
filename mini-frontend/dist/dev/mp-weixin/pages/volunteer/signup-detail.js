@@ -6,10 +6,11 @@ if (!Array) {
   const _easycom_uv_loading_icon2 = common_vendor.resolveComponent("uv-loading-icon");
   _easycom_uv_loading_icon2();
 }
-const _easycom_uv_loading_icon = () => "../../node-modules/@climblee/uv-ui/components/uv-loading-icon/uv-loading-icon.js";
+const _easycom_uv_loading_icon = () => "../../components/stub/uv-loading-icon.js";
 if (!Math) {
-  _easycom_uv_loading_icon();
+  (_easycom_uv_loading_icon + Icon)();
 }
+const Icon = () => "../../components/common/Icon.js";
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "signup-detail",
   setup(__props) {
@@ -19,25 +20,34 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
     const loading = common_vendor.ref(false);
     const actionLoading = common_vendor.ref(false);
     const STATUS_MAP = {
-      recruiting: { text: "招募中", color: "#3a7bd5", bg: "#eef3fc" },
-      upcoming: { text: "即将开始", color: "#e67e22", bg: "#fff3e0" },
-      ongoing: { text: "进行中", color: "#27ae60", bg: "#e6f9f0" },
-      ended: { text: "已结束", color: "#a0aab5", bg: "#f0f2f4" }
+      recruiting: { text: "\u62db\u52df\u4e2d", color: "#3a7bd5", bg: "#eef3fc" },
+      upcoming: { text: "\u5373\u5c06\u5f00\u59cb", color: "#e67e22", bg: "#fff3e0" },
+      ongoing: { text: "\u8fdb\u884c\u4e2d", color: "#27ae60", bg: "#e6f9f0" },
+      ended: { text: "\u5df2\u7ed3\u675f", color: "#a0aab5", bg: "#f0f2f4" }
     };
-    const isFull = common_vendor.computed(
-      () => activity.value ? activity.value.enrollCount >= activity.value.maxCount : false
-    );
-    const enrollPercent = common_vendor.computed(
-      () => activity.value ? Math.min(activity.value.enrollCount / activity.value.maxCount * 100, 100) : 0
-    );
+    const statusInfo = common_vendor.computed(() => {
+      if (!activity.value)
+        return STATUS_MAP.ended;
+      return STATUS_MAP[activity.value.status] || STATUS_MAP.ended;
+    });
+    const isFull = common_vendor.computed(() => {
+      return activity.value ? activity.value.enrollCount >= activity.value.maxCount : false;
+    });
+    const enrollPercent = common_vendor.computed(() => {
+      if (!activity.value)
+        return 0;
+      return Math.min(activity.value.enrollCount / activity.value.maxCount * 100, 100);
+    });
     common_vendor.onLoad(async (options) => {
-      const id = (options == null ? void 0 : options.activityId) ?? "";
+      const id = (options == null ? void 0 : options.activityId) || "";
       activityId.value = id;
       if (!id)
         return;
       loading.value = true;
       try {
         activity.value = await volunteerStore.fetchActivityById(id);
+      } catch (err) {
+        console.error("[signup-detail] load error:", err);
       } finally {
         loading.value = false;
       }
@@ -47,12 +57,12 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         return;
       actionLoading.value = true;
       try {
-        await volunteerStore.signupActivity(activity.value.id);
+        await volunteerStore.signupActivity(activity.value._id);
         activity.value.isSignedUp = true;
         activity.value.enrollCount++;
-        common_vendor.index.showToast({ title: "报名成功！", icon: "success" });
+        common_vendor.index.showToast({ title: "\u62a5\u540d\u6210\u529f", icon: "success" });
       } catch (e) {
-        console.error("[signup-detail] signupActivity error:", e);
+        console.error("[signup-detail] signup error:", e);
       } finally {
         actionLoading.value = false;
       }
@@ -62,12 +72,12 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         return;
       actionLoading.value = true;
       try {
-        await volunteerStore.cancelSignup(activity.value.id);
+        await volunteerStore.cancelSignup(activity.value._id);
         activity.value.isSignedUp = false;
         activity.value.enrollCount--;
-        common_vendor.index.showToast({ title: "已取消报名", icon: "none" });
+        common_vendor.index.showToast({ title: "\u5df2\u53d6\u6d88\u62a5\u540d", icon: "none" });
       } catch (e) {
-        console.error("[signup-detail] cancelSignup error:", e);
+        console.error("[signup-detail] cancel error:", e);
       } finally {
         actionLoading.value = false;
       }
@@ -80,32 +90,46 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
           size: "36"
         })
       } : activity.value ? common_vendor.e({
-        d: common_vendor.t(STATUS_MAP[activity.value.status].text),
-        e: STATUS_MAP[activity.value.status].color,
-        f: STATUS_MAP[activity.value.status].bg,
+        d: common_vendor.t(statusInfo.value.text),
+        e: statusInfo.value.color,
+        f: statusInfo.value.bg,
         g: common_vendor.t(activity.value.name),
-        h: common_vendor.t(common_vendor.unref(utils_format.formatActivityTime)(activity.value.startTime, activity.value.endTime)),
-        i: common_vendor.t(activity.value.location),
-        j: common_vendor.t(common_vendor.unref(utils_format.formatDateTime)(activity.value.createdAt)),
-        k: common_vendor.t(activity.value.enrollCount),
-        l: common_vendor.t(activity.value.maxCount),
-        m: enrollPercent.value + `%`,
-        n: isFull.value
+        h: common_vendor.p({
+          name: "time-line",
+          size: "18px"
+        }),
+        i: common_vendor.t(common_vendor.unref(utils_format.formatActivityTime)(activity.value.startTime, activity.value.endTime)),
+        j: common_vendor.p({
+          name: "location-line",
+          size: "18px"
+        }),
+        k: common_vendor.t(activity.value.location),
+        l: common_vendor.p({
+          name: "calendar-line",
+          size: "18px"
+        }),
+        m: common_vendor.t(common_vendor.unref(utils_format.formatDateTime)(activity.value.createdAt)),
+        n: common_vendor.t(activity.value.enrollCount),
+        o: common_vendor.t(activity.value.maxCount),
+        p: enrollPercent.value + "%",
+        q: isFull.value
       }, isFull.value ? {} : {}, {
-        o: common_vendor.t(activity.value.description),
-        p: activity.value.isSignedUp
+        r: common_vendor.t(activity.value.description),
+        s: activity.value.isSignedUp
       }, activity.value.isSignedUp ? {
-        q: common_vendor.t(actionLoading.value ? "处理中..." : "取消报名"),
-        r: actionLoading.value ? 1 : "",
-        s: common_vendor.o(handleCancel)
-      } : activity.value.status === "ended" ? {} : isFull.value ? {} : {
-        w: common_vendor.t(actionLoading.value ? "报名中..." : "确认报名"),
-        x: actionLoading.value ? 1 : "",
-        y: common_vendor.o(handleSignup)
-      }, {
-        t: activity.value.status === "ended",
-        v: isFull.value
-      }) : {}, {
+        t: common_vendor.t(actionLoading.value ? "处理中..." : "取消报名"),
+        v: actionLoading.value,
+        w: common_vendor.o(handleCancel)
+      } : common_vendor.e({
+        x: activity.value.status !== "ended" && !isFull.value
+      }, activity.value.status !== "ended" && !isFull.value ? {
+        y: common_vendor.t(actionLoading.value ? "报名中..." : "确认报名"),
+        z: actionLoading.value,
+        A: common_vendor.o(handleSignup)
+      } : activity.value.status === "ended" ? {} : isFull.value ? {} : {}, {
+        B: activity.value.status === "ended",
+        C: isFull.value
+      })) : {}, {
         c: activity.value
       });
     };

@@ -1,0 +1,26 @@
+<view class="page">
+  <view class="hero">
+    <view class="hero-badge">银发人才服务平台</view>
+    <text class="hero-title">欢迎加入银发志愿服务</text>
+    <text class="hero-sub">新用户需先完成微信登录后才能使用全部功能</text>
+  </view>
+
+  <view class="card">
+    <view class="card-header">
+      <view class="avatar-wrap">
+        <image class="avatar" src="/static/default-avatar.png" mode="aspectFill" />
+      </view>
+      <text class="card-title">微信一键登录</text>
+      <text class="card-desc">授权后即可报名活动、提交打卡与查看服务记录</text>
+    </view>
+
+    <button class="wechat-btn" loading="{{loading}}" disabled="{{loading}}" bindtap="handleWechatLogin">
+      {{loading ? '登录中...' : '微信授权登录'}}
+    </button>
+
+    <view class="tip-list">
+      <view class="tip-item">仅用于展示头像昵称与统计信息</view>
+      <view class="tip-item">平台不会保存微信密码</view>
+    </view>
+  </view>
+</view>

@@ -1,14 +1,16 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const stores_volunteer = require("../../stores/volunteer.js");
+const utils_format = require("../../utils/format.js");
 if (!Array) {
   const _easycom_uv_loading_icon2 = common_vendor.resolveComponent("uv-loading-icon");
   _easycom_uv_loading_icon2();
 }
-const _easycom_uv_loading_icon = () => "../../node-modules/@climblee/uv-ui/components/uv-loading-icon/uv-loading-icon.js";
+const _easycom_uv_loading_icon = () => "../../components/stub/uv-loading-icon.js";
 if (!Math) {
-  _easycom_uv_loading_icon();
+  (_easycom_uv_loading_icon + Icon)();
 }
+const Icon = () => "../../components/common/Icon.js";
 const PAGE_SIZE = 10;
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "record",
@@ -20,21 +22,25 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
     const list = common_vendor.ref([]);
     const total = common_vendor.ref(0);
     const STATUS_MAP = {
-      pending: { text: "审核中", color: "#e67e22", bg: "#fff3e0" },
-      approved: { text: "已通过", color: "#27ae60", bg: "#e6f9f0" },
-      rejected: { text: "已驳回", color: "#e74c3c", bg: "#fde8e8" }
+      pending: { text: "\u5ba1\u6838\u4e2d", color: "#e67e22", bg: "#fff3e0" },
+      approved: { text: "\u5df2\u901a\u8fc7", color: "#27ae60", bg: "#e6f9f0" },
+      rejected: { text: "\u5df2\u9a73\u56de", color: "#e74c3c", bg: "#fde8e8" }
     };
     function statusInfo(status) {
-      return STATUS_MAP[status] ?? { text: status, color: "#a0aab5", bg: "#f0f2f4" };
+      return STATUS_MAP[status] || { text: status, color: "#a0aab5", bg: "#f0f2f4" };
     }
-    function formatDate(iso) {
-      if (!iso)
+    function formatCheckedAt(value) {
+      if (!value)
         return "";
-      return iso.replace("T", " ").slice(0, 16);
+      const date = value instanceof Date ? value : new Date(value);
+      if (Number.isNaN(date.getTime()))
+        return "";
+      return utils_format.formatDateTime(date);
     }
     common_vendor.onLoad(() => loadFirst());
-    common_vendor.onPullDownRefresh(() => {
-      loadFirst().finally(() => common_vendor.index.stopPullDownRefresh());
+    common_vendor.onPullDownRefresh(async () => {
+      await loadFirst();
+      common_vendor.index.stopPullDownRefresh();
     });
     async function loadFirst() {
       page.value = 1;
@@ -48,19 +54,24 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       loading.value = true;
       try {
         const result = await volunteerStore.fetchMyRecords(page.value, PAGE_SIZE);
-        list.value.push(...result.list);
+        list.value = page.value === 1 ? result.list : [...list.value, ...result.list];
         total.value = result.total;
         if (list.value.length >= result.total) {
           finished.value = true;
         } else {
           page.value++;
         }
+      } catch (err) {
+        console.error("[record] load error:", err);
       } finally {
         loading.value = false;
       }
     }
     function previewPhoto(photos, index) {
-      common_vendor.index.previewImage({ urls: photos, current: photos[index] });
+      common_vendor.index.previewImage({
+        urls: photos,
+        current: photos[index]
+      });
     }
     return (_ctx, _cache) => {
       return common_vendor.e({
@@ -72,24 +83,31 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         })
       } : common_vendor.e({
         d: list.value.length === 0 && !loading.value
-      }, list.value.length === 0 && !loading.value ? {} : {
-        e: common_vendor.f(list.value, (item, k0, i0) => {
+      }, list.value.length === 0 && !loading.value ? {
+        e: common_vendor.p({
+          name: "file-text-line",
+          size: "72px"
+        })
+      } : {
+        f: common_vendor.f(list.value, (item, k0, i0) => {
           return common_vendor.e({
             a: common_vendor.t(item.activityName),
             b: common_vendor.t(statusInfo(item.status).text),
             c: statusInfo(item.status).color,
             d: statusInfo(item.status).bg,
-            e: common_vendor.t(item.activityLocation),
-            f: common_vendor.t(formatDate(item.checkedAt)),
-            g: common_vendor.t(item.serviceHours),
-            h: common_vendor.t(item.serviceCount),
-            i: item.remark
+            e: "aae55db7-2-" + i0,
+            f: common_vendor.t(item.activityLocation),
+            g: "aae55db7-3-" + i0,
+            h: common_vendor.t(formatCheckedAt(item.checkedAt)),
+            i: common_vendor.t(item.serviceHours),
+            j: common_vendor.t(item.serviceCount),
+            k: item.remark
           }, item.remark ? {
-            j: common_vendor.t(item.remark)
+            l: common_vendor.t(item.remark)
           } : {}, {
-            k: item.photos && item.photos.length > 0
+            m: item.photos && item.photos.length > 0
           }, item.photos && item.photos.length > 0 ? {
-            l: common_vendor.f(item.photos, (url, idx, i1) => {
+            n: common_vendor.f(item.photos, (url, idx, i1) => {
               return {
                 a: idx,
                 b: url,
@@ -97,22 +115,27 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
               };
             })
           } : {}, {
-            m: item.id
+            o: item._id
           });
+        }),
+        g: common_vendor.p({
+          name: "location-line",
+          size: "16px"
+        }),
+        h: common_vendor.p({
+          name: "time-line",
+          size: "16px"
         })
       }, {
-        f: loading.value
+        i: loading.value
       }, loading.value ? {
-        g: common_vendor.p({
+        j: common_vendor.p({
           size: "28"
         })
       } : finished.value && list.value.length > 0 ? {} : {}, {
-        h: finished.value && list.value.length > 0,
-        i: common_vendor.o(loadMore)
-      }), {
-        j: common_vendor.o(() => {
-        })
-      });
+        k: finished.value && list.value.length > 0,
+        l: common_vendor.o(loadMore)
+      }));
     };
   }
 });

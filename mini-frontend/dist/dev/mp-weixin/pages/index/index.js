@@ -1,6 +1,10 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const stores_user = require("../../stores/user.js");
+if (!Math) {
+  Icon();
+}
+const Icon = () => "../../components/common/Icon.js";
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "index",
   setup(__props) {
@@ -20,19 +24,43 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       var _a, _b;
       return common_vendor.e({
         a: ((_a = common_vendor.unref(userStore).userInfo) == null ? void 0 : _a.avatar) || "/static/default-avatar.png",
-        b: common_vendor.t(common_vendor.unref(userStore).userInfo ? "你好，" + common_vendor.unref(userStore).userInfo.nickname : "欢迎使用"),
-        c: common_vendor.t(((_b = common_vendor.unref(userStore).userInfo) == null ? void 0 : _b.unit) || "银发人才平台"),
+        b: common_vendor.t(common_vendor.unref(userStore).userInfo ? "\u4f60\u597d\uff0c" + common_vendor.unref(userStore).userInfo.nickName : "\u6b22\u8fce\u4f7f\u7528"),
+        c: common_vendor.t(((_b = common_vendor.unref(userStore).userInfo) == null ? void 0 : _b.unit) || "\u94f6\u53d1\u4eba\u624d\u5e73\u53f0"),
         d: common_vendor.unref(userStore).isLoggedIn && common_vendor.unref(userStore).userInfo
       }, common_vendor.unref(userStore).isLoggedIn && common_vendor.unref(userStore).userInfo ? {
-        e: common_vendor.t(common_vendor.unref(userStore).userInfo.totalHours),
-        f: common_vendor.t(common_vendor.unref(userStore).userInfo.totalCount),
-        g: common_vendor.t(common_vendor.unref(userStore).userInfo.totalServed)
+        e: common_vendor.t(common_vendor.unref(userStore).userInfo.totalHours || 0),
+        f: common_vendor.t(common_vendor.unref(userStore).userInfo.totalCount || 0),
+        g: common_vendor.t(common_vendor.unref(userStore).userInfo.totalServed || 0)
       } : {}, {
-        h: common_vendor.o(goVolunteer),
-        i: common_vendor.o(($event) => goPage("/pages/volunteer/signup-list")),
-        j: common_vendor.o(($event) => goPage("/pages/volunteer/checkin-list")),
-        k: common_vendor.o(($event) => goPage("/pages/volunteer/record")),
-        l: common_vendor.o(($event) => goPage("/pages/volunteer/statistics"))
+        h: common_vendor.p({
+          name: "hand-heart-line",
+          size: "28px"
+        }),
+        i: common_vendor.p({
+          name: "arrow-right-line",
+          size: "24px"
+        }),
+        j: common_vendor.o(goVolunteer),
+        k: common_vendor.p({
+          name: "edit-2-line",
+          size: "26px"
+        }),
+        l: common_vendor.o(($event) => goPage("/pages/volunteer/signup-list")),
+        m: common_vendor.p({
+          name: "checkbox-line",
+          size: "26px"
+        }),
+        n: common_vendor.o(($event) => goPage("/pages/volunteer/checkin-list")),
+        o: common_vendor.p({
+          name: "list-check-line",
+          size: "26px"
+        }),
+        p: common_vendor.o(($event) => goPage("/pages/volunteer/record")),
+        q: common_vendor.p({
+          name: "chart-bar-line",
+          size: "26px"
+        }),
+        r: common_vendor.o(($event) => goPage("/pages/volunteer/statistics"))
       });
     };
   }

@@ -2,14 +2,15 @@
   "pages": [
     "pages/index/index",
     "pages/volunteer/index",
+    "pages/volunteer/profile",
     "pages/volunteer/publish",
     "pages/volunteer/signup-list",
     "pages/volunteer/signup-detail",
     "pages/volunteer/checkin-list",
     "pages/volunteer/checkin-form",
     "pages/volunteer/record",
-    "pages/volunteer/profile",
-    "pages/volunteer/statistics"
+    "pages/volunteer/statistics",
+    "pages/auth/login"
   ],
   "window": {
     "navigationBarTextStyle": "black",
@@ -20,19 +21,26 @@
   "tabBar": {
     "color": "#6b7b8d",
     "selectedColor": "#3a7bd5",
+    "borderStyle": "black",
     "backgroundColor": "#ffffff",
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "首页"
+        "text": "首页",
+        "iconPath": "static/icons/home_3_line.png",
+        "selectedIconPath": "static/icons/home_3_line.png"
       },
       {
         "pagePath": "pages/volunteer/index",
-        "text": "志愿"
+        "text": "志愿",
+        "iconPath": "static/icons/layout_bottom_close_line.png",
+        "selectedIconPath": "static/icons/layout_bottom_close_line.png"
       },
       {
         "pagePath": "pages/volunteer/profile",
-        "text": "我的"
+        "text": "我的",
+        "iconPath": "static/icons/user_4_line.png",
+        "selectedIconPath": "static/icons/user_4_line.png"
       }
     ]
   },

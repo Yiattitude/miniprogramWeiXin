@@ -1,6 +1,6 @@
 {
-  "navigationBarTitleText": "打卡详情",
+  "navigationBarTitleText": "打卡填报",
   "usingComponents": {
-    "uv-upload": "../../node-modules/@climblee/uv-ui/components/uv-upload/uv-upload"
+    "uv-upload": "../../components/stub/uv-upload"
   }
 }

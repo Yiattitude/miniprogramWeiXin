@@ -1,0 +1,11 @@
+
+.uv-loading-spin.data-v-ce1c84ac {
+  border: 3rpx solid #e4e7ed;
+  border-top-color: #3a7bd5;
+  border-radius: 50%;
+  animation: uv-spin-ce1c84ac 0.8s linear infinite;
+}
+@keyframes uv-spin-ce1c84ac {
+to { transform: rotate(360deg);
+}
+}

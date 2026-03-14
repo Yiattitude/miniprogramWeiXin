@@ -1,0 +1,1 @@
+<view class="uv-load-more data-v-aed33775"><view wx:if="{{a}}" class="row data-v-aed33775"><view class="spin data-v-aed33775"/><text class="text data-v-aed33775">加载中...</text></view><text wx:elif="{{b}}" class="text data-v-aed33775">没有更多了</text><text wx:else class="text link data-v-aed33775" bindtap="{{c}}">点击加载更多</text></view>
