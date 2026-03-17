@@ -1,9 +1,11 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const api_volunteer = require("../../api/volunteer.js");
+const composables_useAuth = require("../../composables/useAuth.js");
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "publish",
   setup(__props) {
+    const { requireLogin } = composables_useAuth.useAuth();
     const form = common_vendor.ref({
       name: "",
       location: "",
@@ -20,6 +22,11 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       form.value.endTime = e.detail.value;
     }
     async function onSubmit() {
+      const ok = await requireLogin({
+        content: "发布活动需要先登录，是否立即登录？"
+      });
+      if (!ok)
+        return;
       const { name, location, startTime, endTime, maxCount } = form.value;
       if (!name.trim())
         return common_vendor.index.showToast({ title: "请填写活动名称", icon: "none" });

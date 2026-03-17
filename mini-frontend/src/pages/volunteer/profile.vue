@@ -96,7 +96,10 @@ function onLogout() {
       if (res.confirm) {
         // Use store logout to clear token + cached user info.
         userStore.logout()
-        uni.reLaunch({ url: '/pages/index/index' })
+        // 小程序端更稳定的方式：跳转到登录页，登录成功后再回到当前 tab。
+        uni.redirectTo({
+          url: `/pages/auth/login?redirect=${encodeURIComponent('/pages/index/index')}`,
+        })
       }
     },
   })

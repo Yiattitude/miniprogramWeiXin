@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 
 export const useUserStore = defineStore('user', () => {
   const token = ref(uni.getStorageSync('token') || '')
@@ -7,6 +7,16 @@ export const useUserStore = defineStore('user', () => {
 
   const isLoggedIn = computed(() => !!token.value)
   const isAdmin = computed(() => resolveRole(userInfo.value) === 'admin')
+
+  // Keep token in sync with local storage for app relaunch.
+  watch(
+    token,
+    (val) => {
+      if (val) uni.setStorageSync('token', val)
+      else uni.removeStorageSync('token')
+    },
+    { immediate: true }
+  )
 
   function resolveRole(profile: any) {
     // Sync backend users.role to top-level role for consistent admin checks.
@@ -37,6 +47,8 @@ export const useUserStore = defineStore('user', () => {
     userInfo.value = null
     uni.removeStorageSync('token')
     uni.removeStorageSync('userInfo')
+    // Some flows may cache combined auth payloads.
+    uni.removeStorageSync('auth_info')
   }
 
   return {

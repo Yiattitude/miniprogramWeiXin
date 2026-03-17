@@ -12,7 +12,19 @@
     {
       "path": "pages/index/index",
       "style": {
-        "navigationBarTitleText": "银发人才平台"
+        "navigationBarTitleText": "银才荟-志愿服务平台"
+      }
+    },
+    {
+      "path": "pages/auth/login",
+      "style": {
+        "navigationBarTitleText": "登录"
+      }
+    },
+    {
+      "path": "pages/auth/bind",
+      "style": {
+        "navigationBarTitleText": "完善信息"
       }
     },
     {
@@ -75,7 +87,7 @@
   ],
   "globalStyle": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "银发人才平台",
+    "navigationBarTitleText": "银才荟-志愿服务平台",
     "navigationBarBackgroundColor": "#ffffff",
     "backgroundColor": "#f0f2f5"
   },

@@ -1,0 +1,110 @@
+.bind-page.data-v-6f0ac6de {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f7f9fc 0%, #eef2f7 100%);
+  padding-bottom: 44px;
+}
+.header.data-v-6f0ac6de {
+  text-align: center;
+  padding: 60px 32px 40px;
+}
+.header .header-title.data-v-6f0ac6de {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #1c2431;
+  margin: 24px 0 12px 0;
+}
+.header .header-sub.data-v-6f0ac6de {
+  font-size: 26rpx;
+  color: #7a8797;
+  line-height: 1.5;
+}
+.form-wrap.data-v-6f0ac6de {
+  margin: 0 32px;
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 32px 24px;
+  box-shadow: 0 8px 32px rgba(20, 28, 46, 0.08);
+}
+.form-item.data-v-6f0ac6de {
+  margin-bottom: 32px;
+}
+.form-item .form-label.data-v-6f0ac6de {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #1c2431;
+  margin-bottom: 12px;
+}
+.form-item .form-label .required.data-v-6f0ac6de {
+  color: #ff4d4f;
+  margin-left: 4px;
+}
+.form-item .form-input.data-v-6f0ac6de {
+  width: 100%;
+  height: 88rpx;
+  border: 2px solid #e6ebf2;
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  color: #1c2431;
+  background: #fff;
+  transition: border-color 0.2s ease;
+}
+.form-item .form-input.data-v-6f0ac6de:focus {
+  border-color: #2f62c6;
+  outline: none;
+}
+.form-item .error-msg.data-v-6f0ac6de {
+  display: block;
+  font-size: 24rpx;
+  color: #ff4d4f;
+  margin-top: 8px;
+}
+.form-actions.data-v-6f0ac6de {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 16px;
+}
+.form-actions .submit-btn.data-v-6f0ac6de {
+  height: 88rpx;
+  background: linear-gradient(135deg, #2f62c6 0%, #3e7ae4 100%);
+  color: #fff;
+  border-radius: 44rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  transition: transform 0.2s ease;
+}
+.form-actions .submit-btn.data-v-6f0ac6de:active:not(:disabled) {
+  transform: scale(0.98);
+}
+.form-actions .submit-btn[disabled].data-v-6f0ac6de {
+  opacity: 0.6;
+}
+.form-actions .cancel-btn.data-v-6f0ac6de {
+  height: 88rpx;
+  background: #f5f7fa;
+  color: #7a8797;
+  border-radius: 44rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+}
+.tip-section.data-v-6f0ac6de {
+  margin: 40px 32px 0;
+  background: #f8fafc;
+  border-radius: 16rpx;
+  padding: 24px;
+}
+.tip-section .tip-title.data-v-6f0ac6de {
+  display: block;
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #2f62c6;
+  margin-bottom: 12px;
+}
+.tip-section .tip-content.data-v-6f0ac6de {
+  font-size: 24rpx;
+  color: #7a8797;
+  line-height: 1.6;
+}

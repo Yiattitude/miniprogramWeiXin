@@ -61,6 +61,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { publishActivity } from '../../api/volunteer'
+import { useAuth } from '@/composables/useAuth'
+
+const { requireLogin } = useAuth()
 
 const form = ref({
   name: '',
@@ -82,6 +85,11 @@ function onEndTimeChange(e: any) {
 }
 
 async function onSubmit() {
+  const ok = await requireLogin({
+    content: '发布活动需要先登录，是否立即登录？'
+  })
+  if (!ok) return
+
   const { name, location, startTime, endTime, maxCount } = form.value
   if (!name.trim()) return uni.showToast({ title: '请填写活动名称', icon: 'none' })
   if (!location.trim()) return uni.showToast({ title: '请填写活动地点', icon: 'none' })

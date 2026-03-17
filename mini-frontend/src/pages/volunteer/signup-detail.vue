@@ -90,10 +90,12 @@ import { ref, computed } from 'vue'
 import Icon from '@/components/common/Icon.vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { useVolunteerStore } from '@/stores/volunteer'
+import { useAuth } from '@/composables/useAuth'
 import { formatActivityTime, formatDateTime } from '@/utils/format'
 import type { Activity } from '@/types/volunteer'
 
 const volunteerStore = useVolunteerStore()
+const { requireLogin } = useAuth()
 const activityId = ref('')
 const activity = ref<Activity | null>(null)
 const loading = ref(false)
@@ -137,6 +139,10 @@ onLoad(async (options: any) => {
 
 async function handleSignup() {
   if (!activity.value) return
+  const ok = await requireLogin({
+    content: '报名需要先登录，是否立即登录？'
+  })
+  if (!ok) return
   actionLoading.value = true
   try {
     await volunteerStore.signupActivity(activity.value._id)

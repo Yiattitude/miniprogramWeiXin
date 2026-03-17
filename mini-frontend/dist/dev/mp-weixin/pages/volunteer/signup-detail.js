@@ -1,6 +1,7 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const stores_volunteer = require("../../stores/volunteer.js");
+const composables_useAuth = require("../../composables/useAuth.js");
 const utils_format = require("../../utils/format.js");
 if (!Array) {
   const _easycom_uv_loading_icon2 = common_vendor.resolveComponent("uv-loading-icon");
@@ -15,6 +16,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "signup-detail",
   setup(__props) {
     const volunteerStore = stores_volunteer.useVolunteerStore();
+    const { requireLogin } = composables_useAuth.useAuth();
     const activityId = common_vendor.ref("");
     const activity = common_vendor.ref(null);
     const loading = common_vendor.ref(false);
@@ -54,6 +56,11 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
     });
     async function handleSignup() {
       if (!activity.value)
+        return;
+      const ok = await requireLogin({
+        content: "报名需要先登录，是否立即登录？"
+      });
+      if (!ok)
         return;
       actionLoading.value = true;
       try {

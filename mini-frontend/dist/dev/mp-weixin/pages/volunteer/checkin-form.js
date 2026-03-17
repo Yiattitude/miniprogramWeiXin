@@ -1,6 +1,7 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const stores_volunteer = require("../../stores/volunteer.js");
+const composables_useAuth = require("../../composables/useAuth.js");
 if (!Array) {
   const _easycom_uv_upload2 = common_vendor.resolveComponent("uv-upload");
   _easycom_uv_upload2();
@@ -13,6 +14,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "checkin-form",
   setup(__props) {
     const volunteerStore = stores_volunteer.useVolunteerStore();
+    const { requireLogin } = composables_useAuth.useAuth();
     const activityId = common_vendor.ref("");
     const activityName = common_vendor.ref("");
     const serviceHours = common_vendor.ref("");
@@ -52,6 +54,11 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       return Object.keys(errors.value).length === 0;
     }
     async function handleSubmit() {
+      const ok = await requireLogin({
+        content: "提交打卡需要先登录，是否立即登录？"
+      });
+      if (!ok)
+        return;
       if (!validate())
         return;
       submitting.value = true;

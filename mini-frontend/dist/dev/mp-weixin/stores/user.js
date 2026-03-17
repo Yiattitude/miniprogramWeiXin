@@ -5,6 +5,16 @@ const useUserStore = common_vendor.defineStore("user", () => {
   const userInfo = common_vendor.ref(common_vendor.index.getStorageSync("userInfo") || null);
   const isLoggedIn = common_vendor.computed(() => !!token.value);
   const isAdmin = common_vendor.computed(() => resolveRole(userInfo.value) === "admin");
+  common_vendor.watch(
+    token,
+    (val) => {
+      if (val)
+        common_vendor.index.setStorageSync("token", val);
+      else
+        common_vendor.index.removeStorageSync("token");
+    },
+    { immediate: true }
+  );
   function resolveRole(profile) {
     var _a, _b;
     const role = (profile == null ? void 0 : profile.role) ?? ((_a = profile == null ? void 0 : profile.users) == null ? void 0 : _a.role) ?? ((_b = profile == null ? void 0 : profile.user) == null ? void 0 : _b.role);
@@ -30,6 +40,7 @@ const useUserStore = common_vendor.defineStore("user", () => {
     userInfo.value = null;
     common_vendor.index.removeStorageSync("token");
     common_vendor.index.removeStorageSync("userInfo");
+    common_vendor.index.removeStorageSync("auth_info");
   }
   return {
     token,

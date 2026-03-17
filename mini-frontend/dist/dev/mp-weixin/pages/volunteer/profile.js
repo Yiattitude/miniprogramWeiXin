@@ -43,7 +43,9 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         success(res) {
           if (res.confirm) {
             userStore.logout();
-            common_vendor.index.reLaunch({ url: "/pages/index/index" });
+            common_vendor.index.redirectTo({
+              url: `/pages/auth/login?redirect=${encodeURIComponent("/pages/index/index")}`
+            });
           }
         }
       });

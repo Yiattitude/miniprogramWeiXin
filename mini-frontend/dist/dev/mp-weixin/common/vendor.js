@@ -8150,4 +8150,5 @@ exports.resolveComponent = resolveComponent;
 exports.s = s;
 exports.t = t;
 exports.unref = unref;
+exports.watch = watch;
 exports.wx$1 = wx$1;

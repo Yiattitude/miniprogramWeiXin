@@ -82,8 +82,10 @@
 import { ref } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { useVolunteerStore } from '@/stores/volunteer'
+import { useAuth } from '@/composables/useAuth'
 
 const volunteerStore = useVolunteerStore()
+const { requireLogin } = useAuth()
 const activityId = ref('')
 const activityName = ref('')
 const serviceHours = ref('')
@@ -128,6 +130,11 @@ function validate() {
 }
 
 async function handleSubmit() {
+  const ok = await requireLogin({
+    content: '提交打卡需要先登录，是否立即登录？'
+  })
+  if (!ok) return
+
   if (!validate()) return
   submitting.value = true
   try {

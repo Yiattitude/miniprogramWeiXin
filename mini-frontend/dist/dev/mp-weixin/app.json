@@ -1,6 +1,8 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/auth/login",
+    "pages/auth/bind",
     "pages/volunteer/index",
     "pages/volunteer/profile",
     "pages/volunteer/publish",
@@ -13,7 +15,7 @@
   ],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "银发人才平台",
+    "navigationBarTitleText": "银才荟-志愿服务平台",
     "navigationBarBackgroundColor": "#ffffff",
     "backgroundColor": "#f0f2f5"
   },

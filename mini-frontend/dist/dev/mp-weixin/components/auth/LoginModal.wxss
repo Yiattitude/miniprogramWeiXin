@@ -1,0 +1,101 @@
+.login-modal.data-v-f765fec6 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+.login-modal.show.data-v-f765fec6 {
+  opacity: 1;
+  pointer-events: auto;
+}
+.login-modal .modal-mask.data-v-f765fec6 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.62);
+}
+.login-modal .modal-content.data-v-f765fec6 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 86%;
+  max-width: 560rpx;
+  background: #fff;
+  border-radius: 28rpx;
+  padding: 56rpx 36rpx 44rpx;
+  text-align: center;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
+}
+.login-modal .modal-content .login-btn.data-v-f765fec6 {
+  width: 100%;
+  min-height: 52px;
+  height: 52px;
+  border-radius: 26px;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  transition: transform 0.2s ease;
+}
+.login-modal .modal-content .login-btn.is-disabled.data-v-f765fec6 {
+  opacity: 0.6;
+}
+.login-modal .modal-content .login-btn.data-v-f765fec6:active {
+  transform: scale(0.98);
+}
+.login-modal .modal-content .modal-tip.data-v-f765fec6 {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 16px;
+  color: #3b4654;
+  line-height: 1.6;
+  padding: 6px 0;
+}
+.login-modal .modal-content .modal-tip .agree-box.data-v-f765fec6 {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 2px solid #7a8797;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.login-modal .modal-content .modal-tip .agree-box.checked.data-v-f765fec6 {
+  border-color: #2f62c6;
+  background: rgba(47, 98, 198, 0.08);
+}
+.login-modal .modal-content .modal-tip .check-mark.data-v-f765fec6 {
+  width: 8px;
+  height: 12px;
+  border-right: 3px solid #2f62c6;
+  border-bottom: 3px solid #2f62c6;
+  transform: rotate(45deg);
+  margin-top: -2px;
+}
+.login-modal .modal-content .modal-tip .tip-text.data-v-f765fec6 {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8rpx;
+  text-align: left;
+}
+.login-modal .modal-content .modal-tip .tip-link.data-v-f765fec6 {
+  color: #1f5ed6;
+  font-weight: 700;
+}
