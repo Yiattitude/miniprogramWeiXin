@@ -5,7 +5,6 @@ const useVolunteerStore = common_vendor.defineStore("volunteer", () => {
   const activityList = common_vendor.ref([]);
   const activityTotal = common_vendor.ref(0);
   const currentActivity = common_vendor.ref(null);
-  const mySignups = common_vendor.ref([]);
   const myRecords = common_vendor.ref([]);
   const recordTotal = common_vendor.ref(0);
   const statistics = common_vendor.ref(null);
@@ -42,36 +41,15 @@ const useVolunteerStore = common_vendor.defineStore("volunteer", () => {
     const activity = await api_volunteer.publishActivity(form);
     return activity;
   }
-  async function signupActivity(activityId) {
-    var _a;
-    await api_volunteer.signup(activityId);
-    const idx = activityList.value.findIndex((a) => a._id === activityId);
-    if (idx !== -1) {
-      activityList.value[idx] = { ...activityList.value[idx], isSignedUp: true };
-    }
-    if (((_a = currentActivity.value) == null ? void 0 : _a._id) === activityId) {
-      currentActivity.value = { ...currentActivity.value, isSignedUp: true };
-    }
-  }
-  async function cancelSignup(activityId) {
-    var _a;
-    await api_volunteer.cancelSignup(activityId);
-    const idx = activityList.value.findIndex((a) => a._id === activityId);
-    if (idx !== -1) {
-      activityList.value[idx] = { ...activityList.value[idx], isSignedUp: false };
-    }
-    if (((_a = currentActivity.value) == null ? void 0 : _a._id) === activityId) {
-      currentActivity.value = { ...currentActivity.value, isSignedUp: false };
-    }
-  }
-  async function fetchMySignups() {
-    mySignups.value = await api_volunteer.getMySignups();
-  }
   async function submitCheckin(form) {
+    var _a;
     const record = await api_volunteer.submitCheckin(form);
-    const idx = mySignups.value.findIndex((a) => a._id === form.activityId);
+    const idx = activityList.value.findIndex((a) => a._id === form.activityId);
     if (idx !== -1) {
-      mySignups.value[idx] = { ...mySignups.value[idx], isCheckedIn: true };
+      activityList.value[idx] = { ...activityList.value[idx], isCheckedIn: true };
+    }
+    if (((_a = currentActivity.value) == null ? void 0 : _a._id) === form.activityId) {
+      currentActivity.value = { ...currentActivity.value, isCheckedIn: true };
     }
     return record;
   }
@@ -105,7 +83,6 @@ const useVolunteerStore = common_vendor.defineStore("volunteer", () => {
     activityList,
     activityTotal,
     currentActivity,
-    mySignups,
     myRecords,
     recordTotal,
     statistics,
@@ -113,9 +90,6 @@ const useVolunteerStore = common_vendor.defineStore("volunteer", () => {
     fetchActivityList,
     fetchActivityById,
     publishActivity,
-    signupActivity,
-    cancelSignup,
-    fetchMySignups,
     submitCheckin,
     fetchMyRecords,
     fetchStatistics,

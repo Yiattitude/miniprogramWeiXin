@@ -15,38 +15,33 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
     return (_ctx, _cache) => {
       return common_vendor.e({
         a: common_vendor.p({
-          name: "edit-2-line",
-          size: "26px"
-        }),
-        b: common_vendor.o(($event) => goPage("/pages/volunteer/signup-list")),
-        c: common_vendor.p({
           name: "checkbox-line",
           size: "26px"
         }),
-        d: common_vendor.o(($event) => goPage("/pages/volunteer/checkin-list")),
-        e: common_vendor.unref(userStore).isAdmin
+        b: common_vendor.o(($event) => goPage("/pages/volunteer/checkin-list")),
+        c: common_vendor.unref(userStore).isAdmin
       }, common_vendor.unref(userStore).isAdmin ? {
-        f: common_vendor.p({
+        d: common_vendor.p({
           name: "add-circle-line",
           size: "26px"
         }),
-        g: common_vendor.o(($event) => goPage("/pages/volunteer/publish"))
+        e: common_vendor.o(($event) => goPage("/pages/volunteer/publish"))
       } : {}, {
-        h: common_vendor.p({
+        f: common_vendor.p({
           name: "list-check-line",
           size: "26px"
         }),
-        i: common_vendor.o(($event) => goPage("/pages/volunteer/record")),
-        j: common_vendor.p({
+        g: common_vendor.o(($event) => goPage("/pages/volunteer/record")),
+        h: common_vendor.p({
           name: "chart-bar-line",
           size: "26px"
         }),
-        k: common_vendor.o(($event) => goPage("/pages/volunteer/statistics")),
-        l: common_vendor.unref(userStore).userInfo
+        i: common_vendor.o(($event) => goPage("/pages/volunteer/statistics")),
+        j: common_vendor.unref(userStore).userInfo
       }, common_vendor.unref(userStore).userInfo ? {
-        m: common_vendor.t(common_vendor.unref(userStore).userInfo.totalHours || 0),
-        n: common_vendor.t(common_vendor.unref(userStore).userInfo.totalCount || 0),
-        o: common_vendor.t(common_vendor.unref(userStore).userInfo.totalServed || 0)
+        k: common_vendor.t(common_vendor.unref(userStore).userInfo.totalHours || 0),
+        l: common_vendor.t(common_vendor.unref(userStore).userInfo.totalCount || 0),
+        m: common_vendor.t(common_vendor.unref(userStore).userInfo.totalServed || 0)
       } : {});
     };
   }

@@ -16,7 +16,7 @@
           </view>
           <view class="summary-item">
             <text class="summary-num">{{ data.totalSignups ?? 0 }}</text>
-            <text class="summary-label">报名总数</text>
+            <text class="summary-label">参与总数</text>
           </view>
           <view class="summary-item">
             <text class="summary-num">{{ data.totalCheckins ?? 0 }}</text>
@@ -40,7 +40,7 @@
       <view v-else class="table-card">
         <view class="table-header">
           <text class="col-name">活动名称</text>
-          <text class="col-num">报名</text>
+          <text class="col-num">参与</text>
           <text class="col-num">打卡</text>
           <text class="col-num">时长(h)</text>
         </view>

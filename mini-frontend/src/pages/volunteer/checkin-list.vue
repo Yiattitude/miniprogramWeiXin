@@ -2,10 +2,10 @@
   <page-meta root-font-size="system"/>
   <view class="page">
     <view class="tip-bar">
-      <text class="tip-text">📌 已报名的活动，点击"去打卡"填报本次服务记录</text>
+      <text class="tip-text">📌 直接选择活动，点击"去打卡"填报本次服务记录</text>
     </view>
 
-    <view v-if="loading" class="loading-wrap">
+    <view v-if="loading && list.length === 0" class="loading-wrap">
       <uv-loading-icon size="36" />
     </view>
     
@@ -16,12 +16,16 @@
         :activity="item" 
         @checkin="onCheckin" 
       />
+      <uv-load-more
+        :status="finished ? 'nomore' : loading ? 'loading' : 'loadmore'"
+        @loadmore="onLoadMore"
+      />
     </view>
     
     <view v-else class="empty">
       <Icon class="empty-icon" name="check-circle-line" size="72px" />
       <text class="empty-text">暂无待打卡的活动</text>
-      <text class="empty-sub">所有活动都已打卡完成，或暂未报名</text>
+      <text class="empty-sub">暂无可打卡的活动，稍后再来看看</text>
     </view>
   </view>
 </template>
@@ -29,7 +33,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import Icon from '@/components/common/Icon.vue'
-import { onLoad, onPullDownRefresh } from '@dcloudio/uni-app'
+import { onLoad, onPullDownRefresh, onReachBottom } from '@dcloudio/uni-app'
 import { useVolunteerStore } from '@/stores/volunteer'
 import CheckinCard from '@/components/volunteer/CheckinCard.vue'
 import type { Activity } from '@/types/volunteer'
@@ -37,26 +41,76 @@ import type { Activity } from '@/types/volunteer'
 const volunteerStore = useVolunteerStore()
 const list = ref<Activity[]>([])
 const loading = ref(false)
+const page = ref(1)
+const finished = ref(false)
+const PAGE_SIZE = 10
 
 onLoad(() => {
-  fetchList()
+  loadList(true)
 })
 
 onPullDownRefresh(async () => {
-  await fetchList()
+  await loadList(true)
   uni.stopPullDownRefresh()
 })
 
-async function fetchList() {
+onReachBottom(() => {
+  if (!finished.value) {
+    loadList()
+  }
+})
+
+function getPublishTime(activity: Activity) {
+  const ts = Date.parse(activity.createdAt || activity.startTime || activity.endTime || '')
+  return Number.isFinite(ts) ? ts : 0
+}
+
+function mergeActivities(current: Activity[], incoming: Activity[]) {
+  const map = new Map<string, Activity>()
+  current.forEach(item => map.set(item._id, item))
+  incoming.forEach(item => map.set(item._id, item))
+  return Array.from(map.values()).sort(
+    (a, b) => getPublishTime(b) - getPublishTime(a)
+  )
+}
+
+async function loadList(reset = false) {
+  if (loading.value) return
+  if (reset) {
+    page.value = 1
+    finished.value = false
+    list.value = []
+    volunteerStore.resetFilter()
+  }
+  if (finished.value) return
+
   loading.value = true
   try {
-    await volunteerStore.fetchMySignups()
-    list.value = volunteerStore.mySignups
+    const result = await volunteerStore.fetchActivityList(page.value, PAGE_SIZE)
+    const incoming = Array.isArray(result.list) ? result.list : []
+    const merged = mergeActivities(list.value, incoming)
+    list.value = merged
+
+    const totalFromResult = typeof result.total === 'number' ? result.total : null
+    const reachedTotal = totalFromResult !== null
+      ? merged.length >= totalFromResult
+      : incoming.length < PAGE_SIZE
+
+    if (reachedTotal || incoming.length === 0) {
+      finished.value = true
+    } else {
+      page.value += 1
+    }
   } catch (e: any) {
     console.error('[checkin-list] fetch error:', e)
+    uni.showToast({ title: e?.message || '加载失败', icon: 'none' })
   } finally {
     loading.value = false
   }
+}
+
+function onLoadMore() {
+  if (!finished.value) loadList()
 }
 
 function onCheckin(activity: Activity) {

@@ -6,8 +6,6 @@
     "pages/volunteer/index",
     "pages/volunteer/profile",
     "pages/volunteer/publish",
-    "pages/volunteer/signup-list",
-    "pages/volunteer/signup-detail",
     "pages/volunteer/checkin-list",
     "pages/volunteer/checkin-form",
     "pages/volunteer/record",

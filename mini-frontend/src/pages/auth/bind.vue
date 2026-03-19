@@ -65,7 +65,11 @@ const openid = ref('')
 const redirect = ref('/pages/index/index')
 
 onLoad((query) => {
-  openid.value = decodeURIComponent((query?.openid as string) || '')
+  const queryOpenId = decodeURIComponent((query?.openid as string) || '')
+  openid.value = queryOpenId || uni.getStorageSync('openid') || ''
+  if (queryOpenId) {
+    uni.setStorageSync('openid', queryOpenId)
+  }
   const r = (query?.redirect as string) || ''
   if (r) redirect.value = decodeURIComponent(r)
 })

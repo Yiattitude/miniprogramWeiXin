@@ -37,8 +37,8 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         b: common_vendor.t(statusInfo.value.text),
         c: statusInfo.value.color,
         d: statusInfo.value.bg,
-        e: _ctx.activity.isSignedUp
-      }, _ctx.activity.isSignedUp ? {} : {}, {
+        e: _ctx.activity.isCheckedIn
+      }, _ctx.activity.isCheckedIn ? {} : {}, {
         f: common_vendor.p({
           name: "time-line",
           size: "14px"

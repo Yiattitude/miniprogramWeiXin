@@ -9,8 +9,6 @@ if (!Math) {
   "./pages/volunteer/index.js";
   "./pages/volunteer/profile.js";
   "./pages/volunteer/publish.js";
-  "./pages/volunteer/signup-list.js";
-  "./pages/volunteer/signup-detail.js";
   "./pages/volunteer/checkin-list.js";
   "./pages/volunteer/checkin-form.js";
   "./pages/volunteer/record.js";

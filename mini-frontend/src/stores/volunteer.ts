@@ -12,7 +12,6 @@ export const useVolunteerStore = defineStore('volunteer', () => {
   const activityList = ref<Activity[]>([])
   const activityTotal = ref(0)
   const currentActivity = ref<Activity | null>(null)
-  const mySignups = ref<Activity[]>([])
   const myRecords = ref<CheckinRecord[]>([])
   const recordTotal = ref(0)
   const statistics = ref<StatisticsData | null>(null)
@@ -65,53 +64,18 @@ export const useVolunteerStore = defineStore('volunteer', () => {
   }
 
   /**
-   * 报名活动
-   */
-  async function signupActivity(activityId: string) {
-    await volunteerApi.signup(activityId)
-    
-    // 更新本地状态
-    const idx = activityList.value.findIndex(a => a._id === activityId)
-    if (idx !== -1) {
-      activityList.value[idx] = { ...activityList.value[idx], isSignedUp: true }
-    }
-    if (currentActivity.value?._id === activityId) {
-      currentActivity.value = { ...currentActivity.value, isSignedUp: true }
-    }
-  }
-
-  /**
-   * 取消报名
-   */
-  async function cancelSignup(activityId: string) {
-    await volunteerApi.cancelSignup(activityId)
-    
-    const idx = activityList.value.findIndex(a => a._id === activityId)
-    if (idx !== -1) {
-      activityList.value[idx] = { ...activityList.value[idx], isSignedUp: false }
-    }
-    if (currentActivity.value?._id === activityId) {
-      currentActivity.value = { ...currentActivity.value, isSignedUp: false }
-    }
-  }
-
-  /**
-   * 获取我的报名
-   */
-  async function fetchMySignups() {
-    mySignups.value = await volunteerApi.getMySignups()
-  }
-
-  /**
    * 提交打卡
    */
   async function submitCheckin(form: any) {
     const record = await volunteerApi.submitCheckin(form)
     
-    // 更新本地状态：在我的报名中标记已打卡
-    const idx = mySignups.value.findIndex(a => a._id === form.activityId)
+    // 更新本地状态：标记该活动已打卡
+    const idx = activityList.value.findIndex(a => a._id === form.activityId)
     if (idx !== -1) {
-      mySignups.value[idx] = { ...mySignups.value[idx], isCheckedIn: true }
+      activityList.value[idx] = { ...activityList.value[idx], isCheckedIn: true }
+    }
+    if (currentActivity.value?._id === form.activityId) {
+      currentActivity.value = { ...currentActivity.value, isCheckedIn: true }
     }
     return record
   }
@@ -163,7 +127,6 @@ export const useVolunteerStore = defineStore('volunteer', () => {
     activityList,
     activityTotal,
     currentActivity,
-    mySignups,
     myRecords,
     recordTotal,
     statistics,
@@ -171,9 +134,6 @@ export const useVolunteerStore = defineStore('volunteer', () => {
     fetchActivityList,
     fetchActivityById,
     publishActivity,
-    signupActivity,
-    cancelSignup,
-    fetchMySignups,
     submitCheckin,
     fetchMyRecords,
     fetchStatistics,

@@ -1,5 +1,5 @@
 <template>
-  <view class="checkin-card" :class="{ 'is-checked': activity.isCheckedIn }">
+  <view class="checkin-card" :class="{ 'is-checked': activity.isCheckedIn }" @tap="handleCheckin">
     <view class="card-body">
       <view class="card-header">
         <text class="card-title">{{ activity.name }}</text>
@@ -17,8 +17,7 @@
       </view>
     </view>
     <view class="card-action">
-      <view v-if="activity.isCheckedIn" class="btn-checked">已完成</view>
-      <view v-else class="btn-checkin" @tap="handleCheckin">去打卡</view>
+      <view class="btn-checkin" @tap.stop="handleCheckin">去打卡</view>
     </view>
   </view>
 </template>
@@ -43,9 +42,7 @@ const STATUS_TEXT: Record<string, string> = {
 }
 
 function handleCheckin() {
-  if (!props.activity.isCheckedIn) {
-    emit('checkin', props.activity)
-  }
+  emit('checkin', props.activity)
 }
 </script>
 
@@ -151,15 +148,4 @@ function handleCheckin() {
   padding: 0 16px;
 }
 
-.btn-checked {
-  min-width: 72px;
-  height: 44px;
-  line-height: 44px;
-  text-align: center;
-  background: #f0f2f4;
-  color: #a0aab5;
-  font-size: var(--font-sm, 15px);
-  border-radius: var(--radius-md, 10px);
-  padding: 0 16px;
-}
 </style>

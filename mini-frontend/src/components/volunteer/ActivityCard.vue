@@ -7,7 +7,7 @@
       </view>
     </view>
     
-    <view v-if="activity.isSignedUp" class="tag-signed">✓ 已报名</view>
+    <view v-if="activity.isCheckedIn" class="tag-signed">✓ 已打卡</view>
     
     <view class="card-meta">
       <view class="meta-row">
@@ -20,7 +20,7 @@
       </view>
       <view class="meta-row">
         <Icon class="meta-icon" name="group-line" size="14px" />
-        <text class="meta-text">已报名 {{ activity.enrollCount }} / {{ activity.maxCount }} 人</text>
+        <text class="meta-text">参与人数 {{ activity.enrollCount }} / {{ activity.maxCount }} 人</text>
       </view>
     </view>
     

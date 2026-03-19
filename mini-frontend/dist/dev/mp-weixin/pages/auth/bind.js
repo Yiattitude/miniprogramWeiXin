@@ -14,7 +14,11 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
     const openid = common_vendor.ref("");
     const redirect = common_vendor.ref("/pages/index/index");
     common_vendor.onLoad((query) => {
-      openid.value = decodeURIComponent((query == null ? void 0 : query.openid) || "");
+      const queryOpenId = decodeURIComponent((query == null ? void 0 : query.openid) || "");
+      openid.value = queryOpenId || common_vendor.index.getStorageSync("openid") || "";
+      if (queryOpenId) {
+        common_vendor.index.setStorageSync("openid", queryOpenId);
+      }
       const r = (query == null ? void 0 : query.redirect) || "";
       if (r)
         redirect.value = decodeURIComponent(r);

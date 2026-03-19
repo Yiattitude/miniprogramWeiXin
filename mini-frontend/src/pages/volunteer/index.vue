@@ -3,27 +3,17 @@
   <view class="page">
     <view class="header">
       <text class="header-title">志愿活动</text>
-      <text class="header-sub">参与志愿服务，传递银发力量</text>
+      <text class="header-sub">参与志愿服务，传递人才力量</text>
     </view>
 
     <view class="grid">
-      <view class="grid-item" @tap="goPage('/pages/volunteer/signup-list')">
-        <view class="grid-icon-wrap" style="background: linear-gradient(135deg, #ffe1dd 0%, #ffd1cc 100%)">
-          <Icon class="grid-icon" name="edit-2-line" size="26px" />
-        </view>
-        <view class="grid-text">
-          <text class="grid-label">活动报名</text>
-          <text class="grid-desc">浏览并报名志愿活动</text>
-        </view>
-      </view>
-
       <view class="grid-item" @tap="goPage('/pages/volunteer/checkin-list')">
         <view class="grid-icon-wrap" style="background: linear-gradient(135deg, #d7f6e6 0%, #bff0d8 100%)">
           <Icon class="grid-icon" name="checkbox-line" size="26px" />
         </view>
         <view class="grid-text">
           <text class="grid-label">志愿打卡</text>
-          <text class="grid-desc">已报名活动打卡记录</text>
+          <text class="grid-desc">活动打卡记录</text>
         </view>
       </view>
 
@@ -53,7 +43,7 @@
         </view>
         <view class="grid-text">
           <text class="grid-label">统计报表</text>
-          <text class="grid-desc">个人与团队统计汇总</text>
+          <text class="grid-desc">个人统计汇总</text>
         </view>
       </view>
     </view>
@@ -163,7 +153,6 @@ function goPage(path: string) {
 .grid-item:nth-child(2) { animation-delay: 0.1s; }
 .grid-item:nth-child(3) { animation-delay: 0.15s; }
 .grid-item:nth-child(4) { animation-delay: 0.2s; }
-.grid-item:nth-child(5) { animation-delay: 0.25s; }
 
 .grid-item:active {
   transform: scale(0.98);

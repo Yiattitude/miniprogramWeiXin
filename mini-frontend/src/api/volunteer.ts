@@ -43,27 +43,6 @@ export async function publishActivity(form: {
 }
 
 /**
- * 报名活动
- */
-export async function signup(activityId: string) {
-  return await cloudCall<null>('signup', { activityId })
-}
-
-/**
- * 取消报名
- */
-export async function cancelSignup(activityId: string) {
-  return await cloudCall<null>('cancelSignup', { activityId })
-}
-
-/**
- * 获取我的报名列表
- */
-export async function getMySignups() {
-  return await cloudCall<Activity[]>('getMySignups')
-}
-
-/**
  * 提交打卡
  */
 export async function submitCheckin(data: {

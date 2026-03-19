@@ -10,12 +10,11 @@ export interface Activity {
   endTime: string
   location: string
   description: string
-  maxCount: number           // 最大报名人数
-  enrollCount: number        // 当前已报名人数
+  maxCount: number           // 最大参与人数
+  enrollCount: number        // 当前参与人数
   status: 'recruiting' | 'upcoming' | 'ongoing' | 'ended'
   publisherId: string
   createdAt: string
-  isSignedUp?: boolean       // 当前登录用户是否已报名
   isCheckedIn?: boolean      // 当前登录用户是否已打卡
 }
 

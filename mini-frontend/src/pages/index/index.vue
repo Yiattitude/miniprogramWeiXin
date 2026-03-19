@@ -6,7 +6,7 @@
         <image class="avatar" :src="userStore.userInfo?.avatar || '/static/default-avatar.png'" mode="aspectFill" />
         <view class="user-info">
           <text class="welcome">{{ userStore.userInfo ? '你好，' + userStore.userInfo.nickName : '欢迎使用' }}</text>
-          <text class="unit">{{ userStore.userInfo?.unit || '银发人才平台' }}</text>
+          <text class="unit">{{ userStore.userInfo?.unit || '银才荟-志愿服务平台' }}</text>
         </view>
       </view>
       <view class="banner-logo-text">志愿</view>
@@ -37,50 +37,38 @@
         </view>
         <view class="module-info">
           <text class="module-name">志愿活动</text>
-          <text class="module-desc">报名参加、打卡记录、统计报表</text>
+          <text class="module-desc">活动打卡、打卡记录、统计报表</text>
         </view>
         <Icon class="module-arrow" name="arrow-right-line" size="24px" />
       </view>
     </view>
 
     <view class="section">
-      <text class="section-title">快捷入口</text>
-      <view class="quick-grid">
-        <view class="quick-item" @tap="goPage('/pages/volunteer/signup-list')">
-          <view class="quick-icon-wrap quick-icon-1">
-            <Icon class="quick-icon" name="edit-2-line" size="26px" />
-          </view>
-          <view class="quick-text">
-            <text class="quick-label">活动报名</text>
-            <text class="quick-desc">浏览并报名志愿活动</text>
-          </view>
+      <text class="section-title">活动一览</text>
+      <view class="activity-list">
+        <view v-if="activityLoading && activities.length === 0" class="loading-wrap">
+          <uv-loading-icon size="36" />
+          <text class="loading-text">加载中...</text>
         </view>
-        <view class="quick-item" @tap="goPage('/pages/volunteer/checkin-list')">
-          <view class="quick-icon-wrap quick-icon-2">
-            <Icon class="quick-icon" name="checkbox-line" size="26px" />
-          </view>
-          <view class="quick-text">
-            <text class="quick-label">志愿打卡</text>
-            <text class="quick-desc">已报名活动打卡记录</text>
-          </view>
+
+        <ActivityCard
+          v-for="item in activities"
+          :key="item._id"
+          :activity="item"
+          @click="onCheckin"
+        />
+
+        <view v-if="!activityLoading && activities.length === 0" class="empty">
+          <text class="empty-text">暂无已发布的活动</text>
         </view>
-        <view class="quick-item" @tap="goPage('/pages/volunteer/record')">
-          <view class="quick-icon-wrap quick-icon-3">
-            <Icon class="quick-icon" name="list-check-line" size="26px" />
+
+        <view v-if="activities.length > 0" class="load-more">
+          <view v-if="activityLoading" class="load-more-row">
+            <uv-loading-icon size="26" />
+            <text class="load-more-text">加载中...</text>
           </view>
-          <view class="quick-text">
-            <text class="quick-label">打卡记录</text>
-            <text class="quick-desc">查看历史打卡记录</text>
-          </view>
-        </view>
-        <view class="quick-item" @tap="goPage('/pages/volunteer/statistics')">
-          <view class="quick-icon-wrap quick-icon-4">
-            <Icon class="quick-icon" name="chart-bar-line" size="26px" />
-          </view>
-          <view class="quick-text">
-            <text class="quick-label">统计报表</text>
-            <text class="quick-desc">查看个人服务统计</text>
-          </view>
+          <text v-else-if="activityFinished" class="load-more-text">已加载全部活动</text>
+          <text v-else class="load-more-text">上拉加载更多</text>
         </view>
       </view>
     </view>
@@ -88,11 +76,22 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted, ref } from 'vue'
 import Icon from '@/components/common/Icon.vue'
 import { useUserStore } from '@/stores/user'
+import { useVolunteerStore } from '@/stores/volunteer'
+import { onLoad, onReachBottom } from '@dcloudio/uni-app'
+import ActivityCard from '@/components/volunteer/ActivityCard.vue'
+import type { Activity } from '@/types/volunteer'
 
 const userStore = useUserStore()
+const volunteerStore = useVolunteerStore()
+
+const activities = ref<Activity[]>([])
+const activityPage = ref(1)
+const activityPageSize = ref(4)
+const activityLoading = ref(false)
+const activityFinished = ref(false)
 
 onMounted(async () => {
   if (userStore.isLoggedIn && !userStore.userInfo) {
@@ -100,12 +99,87 @@ onMounted(async () => {
   }
 })
 
+onLoad(() => {
+  computePageSize()
+  loadActivities(true)
+})
+
+onReachBottom(() => {
+  if (!activityFinished.value) {
+    loadActivities()
+  }
+})
+
 function goVolunteer() {
   uni.switchTab({ url: '/pages/volunteer/index' })
 }
 
-function goPage(path: string) {
-  uni.navigateTo({ url: path })
+function onCheckin(activity: Activity) {
+  uni.navigateTo({ url: `/pages/volunteer/checkin-form?activityId=${activity._id}` })
+}
+
+function computePageSize() {
+  try {
+    const { windowHeight } = uni.getSystemInfoSync()
+    const reservedHeight = 380
+    const cardHeight = 140
+    const count = Math.ceil((windowHeight - reservedHeight) / cardHeight)
+    activityPageSize.value = Math.min(8, Math.max(3, count))
+  } catch (e) {
+    activityPageSize.value = 4
+  }
+}
+
+function getPublishTime(activity: Activity) {
+  const ts = Date.parse(activity.createdAt || activity.startTime || activity.endTime || '')
+  return Number.isFinite(ts) ? ts : 0
+}
+
+function mergeActivities(current: Activity[], incoming: Activity[]) {
+  const map = new Map<string, Activity>()
+  current.forEach(item => map.set(item._id, item))
+  incoming.forEach(item => map.set(item._id, item))
+  return Array.from(map.values()).sort(
+    (a, b) => getPublishTime(b) - getPublishTime(a)
+  )
+}
+
+async function loadActivities(reset = false) {
+  if (activityLoading.value) return
+  if (reset) {
+    activityPage.value = 1
+    activityFinished.value = false
+    activities.value = []
+    volunteerStore.resetFilter()
+  }
+  if (activityFinished.value) return
+
+  activityLoading.value = true
+  try {
+    const result = await volunteerStore.fetchActivityList(
+      activityPage.value,
+      activityPageSize.value
+    )
+    const incoming = Array.isArray(result.list) ? result.list : []
+    const merged = mergeActivities(activities.value, incoming)
+    activities.value = merged
+
+    const totalFromResult = typeof result.total === 'number' ? result.total : null
+    const reachedTotal = totalFromResult !== null
+      ? merged.length >= totalFromResult
+      : incoming.length < activityPageSize.value
+
+    if (reachedTotal || incoming.length === 0) {
+      activityFinished.value = true
+    } else {
+      activityPage.value += 1
+    }
+  } catch (e: any) {
+    console.error('[index] loadActivities error:', e)
+    uni.showToast({ title: e?.message || '加载失败', icon: 'none' })
+  } finally {
+    activityLoading.value = false
+  }
 }
 </script>
 
@@ -288,73 +362,50 @@ function goPage(path: string) {
   margin-left: 6px;
 }
 
-.quick-grid {
+.activity-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
 }
 
-.quick-item {
-  background: #fff;
-  border-radius: 18px;
-  padding: 18px 16px;
+.loading-wrap {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 16px;
-  box-shadow: 0 10px 20px rgba(20, 28, 46, 0.08);
-  animation: riseIn 0.5s ease-out both;
+  padding: 48px 0;
+  gap: 10px;
 }
 
-.quick-item:nth-child(1) { animation-delay: 0.12s; }
-.quick-item:nth-child(2) { animation-delay: 0.16s; }
-.quick-item:nth-child(3) { animation-delay: 0.2s; }
-.quick-item:nth-child(4) { animation-delay: 0.24s; }
+.loading-text {
+  font-size: 14px;
+  color: #7a8797;
+}
 
-.quick-icon-wrap {
-  width: 52px;
-  height: 52px;
-  border-radius: 16px;
+.empty {
   display: flex;
+  flex-direction: column;
   align-items: center;
+  padding: 56px 0;
+}
+
+.empty-text {
+  font-size: 15px;
+  color: #7a8797;
+  font-weight: 500;
+}
+
+.load-more {
+  display: flex;
   justify-content: center;
-  flex-shrink: 0;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.6);
+  padding: 8px 0 4px;
 }
 
-.quick-icon-1 {
-  background: linear-gradient(135deg, #ffe1dd 0%, #ffd1cc 100%);
-}
-
-.quick-icon-2 {
-  background: linear-gradient(135deg, #d7f6e6 0%, #bff0d8 100%);
-}
-
-.quick-icon-3 {
-  background: linear-gradient(135deg, #ffe9c4 0%, #ffdba6 100%);
-}
-
-.quick-icon-4 {
-  background: linear-gradient(135deg, #f7e0ff 0%, #e7c8ff 100%);
-}
-
-.quick-icon {
-  font-size: 26px;
-}
-
-.quick-text {
-  flex: 1;
+.load-more-row {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  align-items: center;
+  gap: 8px;
 }
 
-.quick-label {
-  font-size: 16px;
-  font-weight: 600;
-  color: #1c2431;
-}
-
-.quick-desc {
+.load-more-text {
   font-size: 13px;
   color: #7a8797;
 }

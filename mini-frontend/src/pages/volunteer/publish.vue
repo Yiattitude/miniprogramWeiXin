@@ -36,7 +36,7 @@
           class="form-input"
           v-model.number="form.maxCount"
           type="number"
-          placeholder="请输入报名人数上限"
+          placeholder="请输入活动人数上限"
         />
       </view>
 

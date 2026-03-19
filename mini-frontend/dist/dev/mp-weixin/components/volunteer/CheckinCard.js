@@ -21,9 +21,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       ended: "已结束"
     };
     function handleCheckin() {
-      if (!props.activity.isCheckedIn) {
-        emit("checkin", props.activity);
-      }
+      emit("checkin", props.activity);
     }
     return (_ctx, _cache) => {
       return common_vendor.e({
@@ -43,11 +41,9 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
           size: "13px"
         }),
         h: common_vendor.t(_ctx.activity.location),
-        i: _ctx.activity.isCheckedIn
-      }, _ctx.activity.isCheckedIn ? {} : {
-        j: common_vendor.o(handleCheckin)
-      }, {
-        k: _ctx.activity.isCheckedIn ? 1 : ""
+        i: common_vendor.o(handleCheckin),
+        j: _ctx.activity.isCheckedIn ? 1 : "",
+        k: common_vendor.o(handleCheckin)
       });
     };
   }

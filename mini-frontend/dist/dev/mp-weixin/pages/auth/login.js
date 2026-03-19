@@ -32,6 +32,16 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
     function isTabPage(url) {
       return url === "/pages/index/index" || url === "/pages/volunteer/index" || url === "/pages/volunteer/profile";
     }
+    function needProfileBind(info) {
+      const userInfo = info || {};
+      const realName = String(
+        userInfo.realName ?? userInfo.real_name ?? userInfo.fullName ?? userInfo.full_name ?? ""
+      ).trim();
+      const phone = String(
+        userInfo.phone ?? userInfo.mobile ?? userInfo.phoneNumber ?? userInfo.tel ?? ""
+      ).trim();
+      return !realName || !phone;
+    }
     async function onWechatCode(code) {
       try {
         common_vendor.index.showLoading({ title: "登录中..." });
@@ -44,8 +54,11 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
           return;
         }
         const res = await api_user.api.wechatLogin({ code });
+        const openid = res.openid || "";
+        if (openid) {
+          common_vendor.index.setStorageSync("openid", openid);
+        }
         if (res.needBinding) {
-          const openid = res.openid || "";
           if (!openid) {
             common_vendor.index.showToast({ title: "获取用户标识失败，请重试", icon: "none" });
             return;
@@ -59,6 +72,18 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         }
         if (!res.token) {
           common_vendor.index.showToast({ title: "登录失败，请重试", icon: "none" });
+          return;
+        }
+        if (needProfileBind(res.userInfo)) {
+          if (!openid) {
+            common_vendor.index.showToast({ title: "获取用户标识失败，请重试", icon: "none" });
+            return;
+          }
+          common_vendor.index.navigateTo({
+            url: `/pages/auth/bind?openid=${encodeURIComponent(openid)}&redirect=${encodeURIComponent(
+              redirect.value || "/pages/index/index"
+            )}`
+          });
           return;
         }
         userStore.token = res.token;

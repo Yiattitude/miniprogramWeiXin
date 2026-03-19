@@ -46,19 +46,6 @@
       }
     },
     {
-      "path": "pages/volunteer/signup-list",
-      "style": {
-        "navigationBarTitleText": "活动报名",
-        "enablePullDownRefresh": true
-      }
-    },
-    {
-      "path": "pages/volunteer/signup-detail",
-      "style": {
-        "navigationBarTitleText": "活动详情"
-      }
-    },
-    {
       "path": "pages/volunteer/checkin-list",
       "style": {
         "navigationBarTitleText": "志愿打卡",
