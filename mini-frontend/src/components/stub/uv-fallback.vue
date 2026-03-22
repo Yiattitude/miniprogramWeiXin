@@ -3,5 +3,8 @@
 </template>
 
 <script setup lang="ts">
-defineProps<Record<string, any>>()
+interface Props {
+  [key: string]: any
+}
+defineProps<Props>()
 </script>

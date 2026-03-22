@@ -9,7 +9,13 @@
     "pages/volunteer/checkin-list",
     "pages/volunteer/checkin-form",
     "pages/volunteer/record",
-    "pages/volunteer/statistics"
+    "pages/volunteer/statistics",
+    "pages/volunteer/honor-submit",
+    "pages/admin/checkin-audit",
+    "pages/admin/honor-audit",
+    "pages/admin/user-manage",
+    "pages/admin/user-detail",
+    "pages/admin/statistics"
   ],
   "window": {
     "navigationBarTextStyle": "black",

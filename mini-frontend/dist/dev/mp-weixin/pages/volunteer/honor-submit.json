@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "荣誉上传",
+  "usingComponents": {
+    "uv-upload": "../../components/stub/uv-upload",
+    "icon": "../../components/common/Icon"
+  }
+}

@@ -80,20 +80,47 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         n: isAdmin.value
       }, isAdmin.value ? {
         o: common_vendor.p({
-          name: "chart-bar-line",
+          name: "check-circle-line",
           size: "36rpx"
         }),
         p: common_vendor.p({
           name: "arrow-right-line",
           size: "36rpx"
         }),
-        q: common_vendor.o(($event) => navTo("/pages/volunteer/statistics"))
-      } : {}, {
+        q: common_vendor.o(($event) => navTo("/pages/admin/checkin-audit")),
         r: common_vendor.p({
+          name: "medal-line",
+          size: "36rpx"
+        }),
+        s: common_vendor.p({
+          name: "arrow-right-line",
+          size: "36rpx"
+        }),
+        t: common_vendor.o(($event) => navTo("/pages/admin/honor-audit")),
+        v: common_vendor.p({
+          name: "user-setting-line",
+          size: "36rpx"
+        }),
+        w: common_vendor.p({
+          name: "arrow-right-line",
+          size: "36rpx"
+        }),
+        x: common_vendor.o(($event) => navTo("/pages/admin/user-manage")),
+        y: common_vendor.p({
+          name: "chart-pie-line",
+          size: "36rpx"
+        }),
+        z: common_vendor.p({
+          name: "arrow-right-line",
+          size: "36rpx"
+        }),
+        A: common_vendor.o(($event) => navTo("/pages/admin/statistics"))
+      } : {}, {
+        B: common_vendor.p({
           name: "share-forward-line",
           size: "36rpx"
         }),
-        s: common_vendor.o(onLogout)
+        C: common_vendor.o(onLogout)
       });
     };
   }

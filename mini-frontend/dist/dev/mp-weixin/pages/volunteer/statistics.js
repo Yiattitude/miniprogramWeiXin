@@ -25,6 +25,18 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         loading.value = false;
       }
     });
+    function statusText(status) {
+      if (status === "approved")
+        return "已通过";
+      if (status === "rejected")
+        return "已驳回";
+      return "审核中";
+    }
+    function formatShortDate(value) {
+      if (!value)
+        return "";
+      return value.slice(0, 10);
+    }
     return (_ctx, _cache) => {
       return common_vendor.e({
         a: loading.value
@@ -33,25 +45,42 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
           size: "36"
         })
       } : common_vendor.e({
-        c: common_vendor.t(data.value.totalActivities ?? 0),
-        d: common_vendor.t(data.value.totalSignups ?? 0),
-        e: common_vendor.t(data.value.totalCheckins ?? 0),
-        f: common_vendor.t(data.value.totalHours ?? 0),
-        g: !data.value.activities || data.value.activities.length === 0
-      }, !data.value.activities || data.value.activities.length === 0 ? {
-        h: common_vendor.p({
-          name: "chart-bar-line",
+        c: common_vendor.t(data.value.totalPoints ?? 0),
+        d: common_vendor.t(data.value.totalCheckins ?? 0),
+        e: common_vendor.t(data.value.totalHonors ?? 0),
+        f: !data.value.checkinRecords || data.value.checkinRecords.length === 0
+      }, !data.value.checkinRecords || data.value.checkinRecords.length === 0 ? {
+        g: common_vendor.p({
+          name: "list-check-line",
           size: "72px"
         })
       } : {
-        i: common_vendor.f(data.value.activities, (item, k0, i0) => {
+        h: common_vendor.f(data.value.checkinRecords, (item, k0, i0) => {
           return {
-            a: common_vendor.t(item.name),
-            b: item.name,
-            c: common_vendor.t(item.signupCount ?? 0),
-            d: common_vendor.t(item.checkinCount ?? 0),
-            e: common_vendor.t(item.totalHours ?? 0),
-            f: item._id
+            a: common_vendor.t(item.activityName),
+            b: item.activityName,
+            c: common_vendor.t(item.points ?? item.declaredPoints ?? 0),
+            d: common_vendor.t(statusText(item.status)),
+            e: common_vendor.t(formatShortDate(item.checkedAt)),
+            f: item._id || item.id
+          };
+        })
+      }, {
+        i: !data.value.honorRecords || data.value.honorRecords.length === 0
+      }, !data.value.honorRecords || data.value.honorRecords.length === 0 ? {
+        j: common_vendor.p({
+          name: "medal-line",
+          size: "72px"
+        })
+      } : {
+        k: common_vendor.f(data.value.honorRecords, (item, k0, i0) => {
+          return {
+            a: common_vendor.t(item.honorLevel),
+            b: item.honorLevel,
+            c: common_vendor.t(item.honorPoints ?? 0),
+            d: common_vendor.t(statusText(item.status)),
+            e: common_vendor.t(formatShortDate(item.createdAt)),
+            f: item.id || item._id
           };
         })
       }));

@@ -70,6 +70,46 @@
       "style": {
         "navigationBarTitleText": "统计报表"
       }
+    },
+    {
+      "path": "pages/volunteer/honor-submit",
+      "style": {
+        "navigationBarTitleText": "荣誉上传"
+      }
+    },
+    {
+      "path": "pages/admin/checkin-audit",
+      "style": {
+        "navigationBarTitleText": "打卡审核",
+        "backgroundColor": "#f0f2f5"
+      }
+    },
+    {
+      "path": "pages/admin/honor-audit",
+      "style": {
+        "navigationBarTitleText": "荣誉审核",
+        "backgroundColor": "#f0f2f5"
+      }
+    },
+    {
+      "path": "pages/admin/user-manage",
+      "style": {
+        "navigationBarTitleText": "积分与用户管理",
+        "backgroundColor": "#f0f2f5"
+      }
+    },
+    {
+      "path": "pages/admin/user-detail",
+      "style": {
+        "navigationBarTitleText": "用户明细"
+      }
+    },
+    {
+      "path": "pages/admin/statistics",
+      "style": {
+        "navigationBarTitleText": "全站数据总览",
+        "backgroundColor": "#f0f2f5"
+      }
     }
   ],
   "globalStyle": {

@@ -72,6 +72,9 @@
 .grid-item.data-v-9c01f5c3:nth-child(4) {
   animation-delay: 0.2s;
 }
+.grid-item.data-v-9c01f5c3:nth-child(5) {
+  animation-delay: 0.25s;
+}
 .grid-item.data-v-9c01f5c3:active {
   transform: scale(0.98);
 }

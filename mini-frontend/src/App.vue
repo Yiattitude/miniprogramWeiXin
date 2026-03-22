@@ -2,6 +2,7 @@
 declare const wx: any
 import { onMounted } from 'vue'
 import { useUserStore } from './stores/user'
+import { onLaunch } from '@dcloudio/uni-app'
 
 const userStore = useUserStore()
 

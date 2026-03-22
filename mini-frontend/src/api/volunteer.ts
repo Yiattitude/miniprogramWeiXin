@@ -33,6 +33,7 @@ export async function getActivityById(id: string) {
  */
 export async function publishActivity(form: {
   name: string
+  category: string
   startTime: string
   endTime: string
   location: string
@@ -47,8 +48,8 @@ export async function publishActivity(form: {
  */
 export async function submitCheckin(data: {
   activityId: string
-  serviceHours: number
-  serviceCount: number
+  declaredPoints: number
+  activityCategory: string
   photos: string[]
   remark?: string
 }) {
@@ -70,6 +71,18 @@ export async function getStatistics() {
 }
 
 /**
+ * 提交荣誉信息（后端待实现）
+ */
+export async function submitHonor(data: {
+  userId: string
+  honorLevel: string
+  honorPoints: number
+  proofs?: string[]
+}) {
+  return await cloudCall<any>('submitHonor', data)
+}
+
+/**
  * 导出报表 (示例逻辑，云开发可通过云函数生成并返回文件 ID)
  */
 export async function exportReport() {
@@ -77,6 +90,7 @@ export async function exportReport() {
   const fileID = await cloudCall<string>('exportReport')
   
   // 转换为临时下载地址
+  declare const wx: any
   const { fileList } = await wx.cloud.getTempFileURL({
     fileList: [fileID]
   })

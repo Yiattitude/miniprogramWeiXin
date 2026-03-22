@@ -77,6 +77,13 @@
 .picker-display.placeholder.data-v-9a77e90c {
   color: #a0aab5;
 }
+.time-row.data-v-9a77e90c {
+  display: flex;
+  gap: 12px;
+}
+.time-row .picker-display.data-v-9a77e90c {
+  flex: 1;
+}
 .btn-group.data-v-9a77e90c {
   margin-top: 32px;
   animation: riseIn-9a77e90c 0.45s ease-out both;

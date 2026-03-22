@@ -1,0 +1,129 @@
+.page.data-v-463ac47f {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f7f9fc 0%, #eef2f7 48%, #e9eef5 100%);
+  padding: 16px;
+  padding-bottom: 44px;
+  font-family: "HarmonyOS Sans", "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+.honor-card.data-v-463ac47f {
+  background: #fff;
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: 0 12px 24px rgba(29, 55, 107, 0.1);
+  animation: riseIn-463ac47f 0.45s ease-out both;
+}
+.honor-title.data-v-463ac47f {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1c2431;
+  margin-bottom: 16px;
+}
+.form-item.data-v-463ac47f {
+  margin-bottom: 16px;
+}
+.form-label.data-v-463ac47f {
+  display: block;
+  font-size: 14px;
+  color: #1c2431;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+.required.data-v-463ac47f {
+  color: #e74c3c;
+}
+.form-hint.data-v-463ac47f {
+  display: block;
+  font-size: 12px;
+  color: #7a8797;
+  margin-bottom: 10px;
+}
+.picker-display.data-v-463ac47f {
+  height: 48px;
+  line-height: 48px;
+  background: #f7f9fc;
+  border-radius: 12px;
+  padding: 0 14px;
+  font-size: 15px;
+  color: #1c2431;
+  transition: all 0.2s ease;
+}
+.picker-display.placeholder.data-v-463ac47f {
+  color: #a0aab5;
+}
+.points-display.data-v-463ac47f {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  background: #f7f9fc;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #2f62c6;
+}
+.proof-actions.data-v-463ac47f {
+  margin-top: 10px;
+  display: flex;
+  gap: 12px;
+}
+.proof-btn.data-v-463ac47f {
+  flex: 1;
+  height: 42px;
+  line-height: 42px;
+  border-radius: 10px;
+  background: #eef6ff;
+  color: #3a7bd5;
+  font-size: 14px;
+  font-weight: 600;
+}
+.proof-files.data-v-463ac47f {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.proof-file.data-v-463ac47f {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  background: #f7f9fc;
+  border-radius: 10px;
+}
+.proof-name.data-v-463ac47f {
+  flex: 1;
+  font-size: 13px;
+  color: #5b6774;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.proof-remove.data-v-463ac47f {
+  padding: 4px;
+}
+.honor-submit.data-v-463ac47f {
+  width: 100%;
+  height: 50px;
+  background: linear-gradient(135deg, #2f62c6 0%, #3e7ae4 100%);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  border-radius: 26px;
+  border: none;
+  box-shadow: 0 8px 20px rgba(47, 98, 198, 0.3);
+  letter-spacing: 1px;
+  transition: all 0.2s ease;
+}
+.honor-submit.data-v-463ac47f:active {
+  transform: scale(0.98);
+}
+@keyframes riseIn-463ac47f {
+from {
+    opacity: 0;
+    transform: translateY(8px);
+}
+to {
+    opacity: 1;
+    transform: translateY(0);
+}
+}

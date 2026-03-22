@@ -39,9 +39,28 @@
         <text class="menu-text">待打卡活动</text>
         <Icon class="menu-arrow" name="arrow-right-line" size="36rpx" />
       </view>
-      <view v-if="isAdmin" class="menu-item" @tap="navTo('/pages/volunteer/statistics')">
-        <Icon class="menu-icon" name="chart-bar-line" size="36rpx" />
-        <text class="menu-text">统计报表</text>
+    </view>
+
+    <!-- 管理员专属工具 -->
+    <view v-if="isAdmin" class="menu-card" style="margin-top: 24rpx;">
+      <view class="menu-item" @tap="navTo('/pages/admin/checkin-audit')">
+        <Icon class="menu-icon" name="check-circle-line" size="36rpx" />
+        <text class="menu-text">打卡审核</text>
+        <Icon class="menu-arrow" name="arrow-right-line" size="36rpx" />
+      </view>
+      <view class="menu-item" @tap="navTo('/pages/admin/honor-audit')">
+        <Icon class="menu-icon" name="medal-line" size="36rpx" />
+        <text class="menu-text">荣誉审核</text>
+        <Icon class="menu-arrow" name="arrow-right-line" size="36rpx" />
+      </view>
+      <view class="menu-item" @tap="navTo('/pages/admin/user-manage')">
+        <Icon class="menu-icon" name="user-setting-line" size="36rpx" />
+        <text class="menu-text">积分与用户管理</text>
+        <Icon class="menu-arrow" name="arrow-right-line" size="36rpx" />
+      </view>
+      <view class="menu-item" @tap="navTo('/pages/admin/statistics')">
+        <Icon class="menu-icon" name="chart-pie-line" size="36rpx" />
+        <text class="menu-text">全站数据总览</text>
         <Icon class="menu-arrow" name="arrow-right-line" size="36rpx" />
       </view>
     </view>

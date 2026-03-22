@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "积分与用户管理",
+  "backgroundColor": "#f0f2f5",
+  "usingComponents": {
+    "uv-loading-icon": "../../components/stub/uv-loading-icon",
+    "icon": "../../components/common/Icon"
+  }
+}

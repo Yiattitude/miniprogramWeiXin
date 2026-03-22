@@ -7,34 +7,21 @@
 
     <view class="form-wrap">
       <view class="form-item">
-        <text class="form-label">服务时长 <text class="required">*</text></text>
-        <view class="input-wrap" :class="{ 'input-error': errors.hours }">
-          <input 
-            class="form-input" 
-            type="digit" 
-            placeholder="请输入服务时长（小时，步长 0.5）" 
-            placeholder-class="placeholder" 
-            v-model="serviceHours"
-          />
-          <text class="input-unit">小时</text>
-        </view>
-        <text v-if="errors.hours" class="error-msg">{{ errors.hours }}</text>
-        <text class="form-hint">范围 0.5 ~ 24 小时，步长 0.5</text>
-      </view>
-
-      <view class="form-item">
-        <text class="form-label">服务人数 <text class="required">*</text></text>
-        <view class="input-wrap" :class="{ 'input-error': errors.count }">
+        <text class="form-label">申报积分 <text class="required">*</text></text>
+        <view class="input-wrap" :class="{ 'input-error': errors.points }">
           <input 
             class="form-input" 
             type="number" 
-            placeholder="请输入服务人数" 
+            placeholder="请输入申报积分" 
             placeholder-class="placeholder" 
-            v-model="serviceCount"
+            v-model="declaredPoints"
           />
-          <text class="input-unit">人</text>
+          <text class="input-unit">分</text>
         </view>
-        <text v-if="errors.count" class="error-msg">{{ errors.count }}</text>
+        <text v-if="errors.points" class="error-msg">{{ errors.points }}</text>
+        <text class="form-hint" v-if="activityCategory">
+          当前活动分类: {{ activityCategory }} (可申报 {{ pointsLimitText }} 分)
+        </text>
       </view>
 
       <view class="form-item">
@@ -79,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { useVolunteerStore } from '@/stores/volunteer'
 import { useAuth } from '@/composables/useAuth'
@@ -88,12 +75,18 @@ const volunteerStore = useVolunteerStore()
 const { requireLogin } = useAuth()
 const activityId = ref('')
 const activityName = ref('')
-const serviceHours = ref('')
-const serviceCount = ref('')
+const activityCategory = ref('')
+const declaredPoints = ref('')
 const remark = ref('')
 const fileList = ref<any[]>([])
 const submitting = ref(false)
 const errors = ref<Record<string, string>>({})
+
+const pointsLimitText = computed(() => {
+  const cat = activityCategory.value
+  if (cat === '传承红色文化' || cat === '服务企业发展') return '3-10'
+  return '1-5' // 参与基层治理, 实施以老助老, 其他服务
+})
 
 onLoad(async (options: any) => {
   const id = options?.activityId || ''
@@ -103,6 +96,7 @@ onLoad(async (options: any) => {
   try {
     const activity = await volunteerStore.fetchActivityById(id)
     activityName.value = activity.name
+    activityCategory.value = activity.category || '其他服务'
   } catch (e) {
     console.error('[checkin-form] fetchActivity error:', e)
   }
@@ -110,20 +104,22 @@ onLoad(async (options: any) => {
 
 function validate() {
   errors.value = {}
-  const hours = parseFloat(serviceHours.value)
-  if (!serviceHours.value) {
-    errors.value.hours = '请填写服务时长'
-  } else if (isNaN(hours) || hours < 0.5 || hours > 24) {
-    errors.value.hours = '服务时长须在 0.5 ~ 24 小时之间'
-  } else if ((hours * 10) % 5 !== 0) {
-    errors.value.hours = '步长为 0.5 小时'
-  }
-
-  const count = parseInt(serviceCount.value)
-  if (!serviceCount.value) {
-    errors.value.count = '请填写服务人数'
-  } else if (isNaN(count) || count < 1) {
-    errors.value.count = '服务人数至少 1 人'
+  const points = parseInt(declaredPoints.value)
+  if (!declaredPoints.value) {
+    errors.value.points = '请填写申报积分'
+  } else if (isNaN(points)) {
+    errors.value.points = '申报积分必须为数字'
+  } else {
+    let min = 1
+    let max = 5
+    const cat = activityCategory.value
+    if (cat === '传承红色文化' || cat === '服务企业发展') {
+      min = 3
+      max = 10
+    }
+    if (points < min || points > max) {
+      errors.value.points = `申报积分须在 ${min} ~ ${max} 之间`
+    }
   }
 
   return Object.keys(errors.value).length === 0
@@ -143,8 +139,8 @@ async function handleSubmit() {
     
     await volunteerStore.submitCheckin({
       activityId: activityId.value,
-      serviceHours: parseFloat(serviceHours.value),
-      serviceCount: parseInt(serviceCount.value),
+      declaredPoints: parseInt(declaredPoints.value),
+      activityCategory: activityCategory.value,
       photos: photoUrls,
       remark: remark.value || undefined
     })

@@ -26,30 +26,16 @@
   letter-spacing: 0.5px;
 }
 .summary-grid.data-v-d20f47c1 {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
 }
 .summary-item.data-v-d20f47c1 {
-  width: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 18px 0;
   position: relative;
-}
-.summary-item.data-v-d20f47c1:nth-child(odd):not(:last-child)::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 1px;
-  height: 40px;
-  background: #e6ebf2;
-}
-.summary-item.data-v-d20f47c1:nth-child(1),
-.summary-item.data-v-d20f47c1:nth-child(2) {
-  border-bottom: 1px solid #e6ebf2;
 }
 .summary-num.data-v-d20f47c1 {
   font-size: 36px;

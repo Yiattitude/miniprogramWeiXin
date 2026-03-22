@@ -218,4 +218,103 @@ Response data：`{ "downloadUrl": "https://..." }`
 
 ---
 
+## 4. 荣誉上传（新增）
+
+> 说明：该模块用于用户提交荣誉信息，管理员审核后发放积分。
+
+### 4.1 数据库设计（MySQL）
+
+**表名：`user_honors`**
+
+| 字段名 | 类型 | 说明 |
+|-------|------|------|
+| id | bigint PK | 主键 |
+| user_id | bigint / varchar | 用户 ID |
+| honor_level | varchar(20) | 荣誉级别 |
+| honor_points | int | 荣誉积分 |
+| created_at | datetime | 创建时间 |
+
+**建议扩展字段（支持审核流程）**
+
+| 字段名 | 类型 | 说明 |
+|-------|------|------|
+| status | varchar(10) | `pending/approved/rejected` |
+| audit_by | bigint / varchar | 审核管理员 ID |
+| audit_at | datetime | 审核时间 |
+| reject_reason | varchar(255) | 驳回原因 |
+| proofs | text | 证明材料 URL 列表（JSON 数组） |
+
+### 4.2 荣誉级别与积分映射（固定规则）
+
+| 荣誉级别 | 积分 |
+|---------|------|
+| 国家级荣誉 | 20 |
+| 省部级荣誉 | 16 |
+| 厅局级荣誉 | 12 |
+| 厂处级荣誉 | 10 |
+
+### 4.3 提交荣誉（用户端）
+
+```
+POST /api/volunteer/honors
+```
+
+Body：
+```json
+{
+  "userId": "string",
+  "honorLevel": "国家级荣誉",
+  "honorPoints": 20,
+  "proofs": ["https://cdn.example.com/a.jpg", "https://cdn.example.com/b.pdf"]
+}
+```
+
+Response：
+```json
+{ "code": 0, "message": "success", "data": { "id": 123 } }
+```
+
+### 4.4 审核列表（管理员端）
+
+```
+GET /api/admin/honors
+```
+Query：`page`, `pageSize`, `status?`  
+Response data：
+```json
+{
+  "list": [
+    {
+      "id": 1,
+      "userName": "张三",
+      "phone": "13800138000",
+      "honorLevel": "省部级荣誉",
+      "honorPoints": 16,
+      "status": "pending",
+      "createdAt": "2026-03-23T08:00:00.000Z"
+    }
+  ],
+  "total": 1
+}
+```
+
+### 4.5 审核操作（管理员端）
+
+```
+POST /api/admin/honors/:id/audit
+```
+
+Body：
+```json
+{
+  "pass": true,
+  "rejectReason": ""
+}
+```
+
+处理逻辑：
+- `pass=true`：将荣誉积分计入用户积分总数，并写入积分流水日志
+- `pass=false`：记录驳回原因，不变更用户积分
+
+
 

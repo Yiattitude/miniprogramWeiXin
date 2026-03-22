@@ -19,6 +19,9 @@ async function getMyRecords(params) {
 async function getStatistics() {
   return await api_http.cloudCall("getStatistics");
 }
+async function submitHonor(data) {
+  return await api_http.cloudCall("submitHonor", data);
+}
 async function exportReport() {
   const fileID = await api_http.cloudCall("exportReport");
   const { fileList } = await common_vendor.wx$1.cloud.getTempFileURL({
@@ -33,3 +36,4 @@ exports.getMyRecords = getMyRecords;
 exports.getStatistics = getStatistics;
 exports.publishActivity = publishActivity;
 exports.submitCheckin = submitCheckin;
+exports.submitHonor = submitHonor;

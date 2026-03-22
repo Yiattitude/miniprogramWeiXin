@@ -37,6 +37,16 @@
         </view>
       </view>
 
+      <view class="grid-item" @tap="goPage('/pages/volunteer/honor-submit')">
+        <view class="grid-icon-wrap" style="background: linear-gradient(135deg, #ffe6ea 0%, #ffd0d8 100%)">
+          <Icon class="grid-icon" name="medal-line" size="26px" />
+        </view>
+        <view class="grid-text">
+          <text class="grid-label">荣誉上传</text>
+          <text class="grid-desc">提交个人荣誉证明</text>
+        </view>
+      </view>
+
       <view class="grid-item" @tap="goPage('/pages/volunteer/statistics')">
         <view class="grid-icon-wrap" style="background: linear-gradient(135deg, #d4e9fc 0%, #c0dffe 100%)">
           <Icon class="grid-icon" name="chart-bar-line" size="26px" />
@@ -153,6 +163,7 @@ function goPage(path: string) {
 .grid-item:nth-child(2) { animation-delay: 0.1s; }
 .grid-item:nth-child(3) { animation-delay: 0.15s; }
 .grid-item:nth-child(4) { animation-delay: 0.2s; }
+.grid-item:nth-child(5) { animation-delay: 0.25s; }
 
 .grid-item:active {
   transform: scale(0.98);

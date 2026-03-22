@@ -33,15 +33,20 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         }),
         g: common_vendor.o(($event) => goPage("/pages/volunteer/record")),
         h: common_vendor.p({
+          name: "medal-line",
+          size: "26px"
+        }),
+        i: common_vendor.o(($event) => goPage("/pages/volunteer/honor-submit")),
+        j: common_vendor.p({
           name: "chart-bar-line",
           size: "26px"
         }),
-        i: common_vendor.o(($event) => goPage("/pages/volunteer/statistics")),
-        j: common_vendor.unref(userStore).userInfo
+        k: common_vendor.o(($event) => goPage("/pages/volunteer/statistics")),
+        l: common_vendor.unref(userStore).userInfo
       }, common_vendor.unref(userStore).userInfo ? {
-        k: common_vendor.t(common_vendor.unref(userStore).userInfo.totalHours || 0),
-        l: common_vendor.t(common_vendor.unref(userStore).userInfo.totalCount || 0),
-        m: common_vendor.t(common_vendor.unref(userStore).userInfo.totalServed || 0)
+        m: common_vendor.t(common_vendor.unref(userStore).userInfo.totalHours || 0),
+        n: common_vendor.t(common_vendor.unref(userStore).userInfo.totalCount || 0),
+        o: common_vendor.t(common_vendor.unref(userStore).userInfo.totalServed || 0)
       } : {});
     };
   }

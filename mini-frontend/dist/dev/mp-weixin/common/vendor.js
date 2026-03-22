@@ -8117,6 +8117,11 @@ const onShow = /* @__PURE__ */ createLifeCycleHook(
   1 | 2
   /* HookFlags.PAGE */
 );
+const onLaunch = /* @__PURE__ */ createLifeCycleHook(
+  ON_LAUNCH,
+  1
+  /* HookFlags.APP */
+);
 const onLoad = /* @__PURE__ */ createLifeCycleHook(
   ON_LOAD,
   2
@@ -8144,6 +8149,7 @@ exports.index = index;
 exports.m = m;
 exports.n = n;
 exports.o = o;
+exports.onLaunch = onLaunch;
 exports.onLoad = onLoad;
 exports.onMounted = onMounted;
 exports.onPullDownRefresh = onPullDownRefresh;

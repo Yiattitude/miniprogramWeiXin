@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "用户明细",
+  "usingComponents": {
+    "uv-loading-icon": "../../components/stub/uv-loading-icon",
+    "icon": "../../components/common/Icon"
+  }
+}

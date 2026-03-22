@@ -13,12 +13,18 @@ if (!Math) {
   "./pages/volunteer/checkin-form.js";
   "./pages/volunteer/record.js";
   "./pages/volunteer/statistics.js";
+  "./pages/volunteer/honor-submit.js";
+  "./pages/admin/checkin-audit.js";
+  "./pages/admin/honor-audit.js";
+  "./pages/admin/user-manage.js";
+  "./pages/admin/user-detail.js";
+  "./pages/admin/statistics.js";
 }
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "App",
   setup(__props) {
     const userStore = stores_user.useUserStore();
-    onLaunch(() => {
+    common_vendor.onLaunch(() => {
       if (!common_vendor.wx$1.cloud) {
         console.error("请使用 2.2.3 或以上的基础库以使用云能力");
       } else {
