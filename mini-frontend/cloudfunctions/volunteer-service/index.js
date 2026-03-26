@@ -11,6 +11,7 @@ const $ = db.command.aggregate
 const DEFAULT_PAGE_SIZE = 10
 const MAX_PAGE_SIZE = 50
 const MAX_CHECKIN_PHOTOS = 9
+const ADMIN_SESSION_TTL_MS = 7 * 24 * 60 * 60 * 1000
 
 exports.main = async (event = {}) => {
   const { action, data = {} } = event
@@ -20,6 +21,8 @@ exports.main = async (event = {}) => {
     switch (action) {
       case 'wechatLogin':
         return await wechatLogin(data, OPENID)
+      case 'adminLogin':
+        return await adminLogin(data, OPENID)
       case 'bindUser':
         return await bindUser(data, OPENID)
 
@@ -224,11 +227,18 @@ async function fetchAllByWhere(collectionName, whereQuery = {}, options = {}) {
   return result
 }
 
+function isAdminSessionActive(user) {
+  if (!user || !user.adminSessionExpiresAt) return false
+
+  const expiresAt = new Date(user.adminSessionExpiresAt).getTime()
+  return Number.isFinite(expiresAt) && expiresAt > Date.now()
+}
+
 async function getUserRole(openid) {
   try {
-    const res = await db.collection('users').where({ _openid: openid }).limit(1).get()
-    if (res.data && res.data.length > 0) {
-      return String(res.data[0].role || 'member')
+    const user = await getUserByOpenid(openid)
+    if (user && (String(user.role || 'member') === 'admin' || isAdminSessionActive(user))) {
+      return 'admin'
     }
   } catch (err) {
     // 在未创建 users 集合时兜底为普通成员
@@ -770,13 +780,116 @@ function buildToken(openid) {
   return `token_${openid}_${Date.now()}`
 }
 
+async function findAdminByCredential(account, password) {
+  const inputAccount = String(account || '').trim()
+  const inputPassword = String(password || '').trim()
+  if (!inputAccount || !inputPassword) return null
+
+  const res = await db.collection('users').where({ role: 'admin' }).limit(100).get()
+  const adminUsers = res.data || []
+
+  for (const user of adminUsers) {
+    const candidateAccounts = [
+      user.adminAccount,
+      user.account,
+      user.username,
+      user.loginAccount,
+      user.phone
+    ]
+      .map(v => String(v == null ? '' : v).trim())
+      .filter(Boolean)
+
+    const candidatePasswords = [
+      user.adminPassword,
+      user.password,
+      user.passwd,
+      user.loginPassword
+    ]
+      .map(v => String(v == null ? '' : v).trim())
+      .filter(Boolean)
+
+    if (candidateAccounts.includes(inputAccount) && candidatePasswords.includes(inputPassword)) {
+      return user
+    }
+  }
+
+  console.warn(`[adminLogin] credential mismatch, account=${inputAccount}, adminCount=${adminUsers.length}`)
+  return null
+}
+
+async function attachAdminSession(openid, account, adminUser) {
+  const user = await ensureUser(openid)
+  if (!user || !user._id) return null
+
+  const now = new Date()
+  const expiresAt = new Date(now.getTime() + ADMIN_SESSION_TTL_MS)
+
+  await db.collection('users').doc(user._id).update({
+    data: {
+      adminSessionAccount: account,
+      adminSessionUserId: adminUser?._id || '',
+      adminSessionAt: now,
+      adminSessionExpiresAt: expiresAt,
+      updatedAt: db.serverDate()
+    }
+  })
+
+  const latest = await db.collection('users').doc(user._id).get()
+  return latest.data || user
+}
+
+async function adminLogin(data = {}, openid) {
+  const account = String(data.account || '').trim()
+  const password = String(data.password || '').trim()
+
+  if (!account || !password) {
+    return { code: 400, message: '请输入管理员账号和密码' }
+  }
+  if (!openid) {
+    return { code: 400, message: '缺少用户标识' }
+  }
+
+  const credentialUser = await findAdminByCredential(account, password)
+  if (!credentialUser) {
+    return { code: 401, message: '账号或密码错误' }
+  }
+
+  await attachAdminSession(openid, account, credentialUser)
+  const normalizedUser = normalizeUserData(credentialUser)
+  const displayName = String(
+    credentialUser.nickName ||
+    credentialUser.nickname ||
+    credentialUser.realName ||
+    credentialUser.adminAccount ||
+    credentialUser.account ||
+    account
+  ).trim()
+  const userInfo = {
+    ...normalizedUser,
+    nickName: displayName,
+    nickname: displayName,
+    avatar: credentialUser.avatar || credentialUser.avatarUrl || '',
+    avatarUrl: credentialUser.avatarUrl || credentialUser.avatar || '',
+    role: 'admin'
+  }
+
+  return {
+    code: 0,
+    data: {
+      token: buildToken(openid),
+      userInfo
+    }
+  }
+}
+
 function normalizeUserData(user) {
   if (!user) return user
+  const role = user.role === 'admin' || isAdminSessionActive(user) ? 'admin' : 'member'
   return {
     ...user,
     totalPoints: Number(user.totalPoints || 0),
     checkinCount: Number(user.checkinCount || 0),
-    role: user.role === 'admin' ? 'admin' : 'member'
+    role
   }
 }
 
