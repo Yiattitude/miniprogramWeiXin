@@ -1,6 +1,26 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const api_admin = require("../../api/admin.js");
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
 if (!Math) {
   Icon();
 }
@@ -9,17 +29,17 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "statistics",
   setup(__props) {
     const stats = common_vendor.ref(null);
-    common_vendor.onLoad(async () => {
+    common_vendor.onLoad(() => __async(this, null, function* () {
       common_vendor.index.showLoading({ title: "加载数据中" });
       try {
-        const res = await api_admin.getAdminStats();
+        const res = yield api_admin.getAdminStats();
         if (res.code === 0 && res.data) {
           stats.value = res.data;
         }
       } finally {
         common_vendor.index.hideLoading();
       }
-    });
+    }));
     return (_ctx, _cache) => {
       return common_vendor.e({
         a: stats.value

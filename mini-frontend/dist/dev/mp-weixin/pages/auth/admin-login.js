@@ -2,6 +2,26 @@
 const common_vendor = require("../../common/vendor.js");
 const stores_user = require("../../stores/user.js");
 const api_http = require("../../api/http.js");
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
 if (!Math) {
   Icon();
 }
@@ -45,35 +65,37 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
     function isTabPage(url) {
       return url === "/pages/index/index" || url === "/pages/volunteer/index" || url === "/pages/volunteer/profile";
     }
-    async function onSubmit() {
-      if (!validateForm()) {
-        common_vendor.index.showToast({ title: "请检查输入信息", icon: "none" });
-        return;
-      }
-      loading.value = true;
-      try {
-        const res = await api_http.cloudCall("adminLogin", {
-          account: form.account.trim(),
-          password: form.password
-        });
-        if (!(res == null ? void 0 : res.token)) {
-          common_vendor.index.showToast({ title: "登录失败，请重试", icon: "none" });
+    function onSubmit() {
+      return __async(this, null, function* () {
+        if (!validateForm()) {
+          common_vendor.index.showToast({ title: "请检查输入信息", icon: "none" });
           return;
         }
-        userStore.token = res.token;
-        if (res.userInfo)
-          userStore.syncUserInfo(res.userInfo);
-        common_vendor.index.showToast({ title: "登录成功", icon: "success" });
-        const url = redirect.value || "/pages/admin/statistics";
-        if (isTabPage(url)) {
-          common_vendor.index.switchTab({ url });
-        } else {
-          common_vendor.index.redirectTo({ url });
+        loading.value = true;
+        try {
+          const res = yield api_http.cloudCall("adminLogin", {
+            account: form.account.trim(),
+            password: form.password
+          });
+          if (!(res == null ? void 0 : res.token)) {
+            common_vendor.index.showToast({ title: "登录失败，请重试", icon: "none" });
+            return;
+          }
+          userStore.token = res.token;
+          if (res.userInfo)
+            userStore.syncUserInfo(res.userInfo);
+          common_vendor.index.showToast({ title: "登录成功", icon: "success" });
+          const url = redirect.value || "/pages/admin/statistics";
+          if (isTabPage(url)) {
+            common_vendor.index.switchTab({ url });
+          } else {
+            common_vendor.index.redirectTo({ url });
+          }
+        } catch (error) {
+        } finally {
+          loading.value = false;
         }
-      } catch (error) {
-      } finally {
-        loading.value = false;
-      }
+      });
     }
     function onCancel() {
       common_vendor.index.navigateBack();

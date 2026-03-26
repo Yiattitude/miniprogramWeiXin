@@ -2,6 +2,26 @@
 const common_vendor = require("../../common/vendor.js");
 const stores_volunteer = require("../../stores/volunteer.js");
 const utils_format = require("../../utils/format.js");
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
 if (!Array) {
   const _easycom_uv_loading_icon2 = common_vendor.resolveComponent("uv-loading-icon");
   _easycom_uv_loading_icon2();
@@ -38,34 +58,38 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       return utils_format.formatDateTime(date);
     }
     common_vendor.onLoad(() => loadFirst());
-    common_vendor.onPullDownRefresh(async () => {
-      await loadFirst();
+    common_vendor.onPullDownRefresh(() => __async(this, null, function* () {
+      yield loadFirst();
       common_vendor.index.stopPullDownRefresh();
-    });
-    async function loadFirst() {
-      page.value = 1;
-      finished.value = false;
-      list.value = [];
-      await loadMore();
+    }));
+    function loadFirst() {
+      return __async(this, null, function* () {
+        page.value = 1;
+        finished.value = false;
+        list.value = [];
+        yield loadMore();
+      });
     }
-    async function loadMore() {
-      if (loading.value || finished.value)
-        return;
-      loading.value = true;
-      try {
-        const result = await volunteerStore.fetchMyRecords(page.value, PAGE_SIZE);
-        list.value = page.value === 1 ? result.list : [...list.value, ...result.list];
-        total.value = result.total;
-        if (list.value.length >= result.total) {
-          finished.value = true;
-        } else {
-          page.value++;
+    function loadMore() {
+      return __async(this, null, function* () {
+        if (loading.value || finished.value)
+          return;
+        loading.value = true;
+        try {
+          const result = yield volunteerStore.fetchMyRecords(page.value, PAGE_SIZE);
+          list.value = page.value === 1 ? result.list : [...list.value, ...result.list];
+          total.value = result.total;
+          if (list.value.length >= result.total) {
+            finished.value = true;
+          } else {
+            page.value++;
+          }
+        } catch (err) {
+          console.error("[record] load error:", err);
+        } finally {
+          loading.value = false;
         }
-      } catch (err) {
-        console.error("[record] load error:", err);
-      } finally {
-        loading.value = false;
-      }
+      });
     }
     function previewPhoto(photos, index) {
       common_vendor.index.previewImage({

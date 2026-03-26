@@ -2,6 +2,26 @@
 const common_vendor = require("../../common/vendor.js");
 const stores_user = require("../../stores/user.js");
 const api_volunteer = require("../../api/volunteer.js");
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
 if (!Math) {
   Icon();
 }
@@ -22,17 +42,18 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       }
     );
     const stats = common_vendor.ref({ totalActivities: 0, totalHours: 0, totalCount: 0 });
-    common_vendor.onShow(async () => {
+    common_vendor.onShow(() => __async(this, null, function* () {
+      var _a, _b, _c;
       try {
-        const data = await api_volunteer.getStatistics();
+        const data = yield api_volunteer.getStatistics();
         if (data) {
-          stats.value.totalActivities = data.totalActivities ?? 0;
-          stats.value.totalHours = data.totalHours ?? 0;
-          stats.value.totalCount = data.totalCount ?? 0;
+          stats.value.totalActivities = (_a = data.totalActivities) != null ? _a : 0;
+          stats.value.totalHours = (_b = data.totalHours) != null ? _b : 0;
+          stats.value.totalCount = (_c = data.totalCount) != null ? _c : 0;
         }
-      } catch {
+      } catch (e) {
       }
-    });
+    }));
     function navTo(url) {
       common_vendor.index.navigateTo({ url });
     }

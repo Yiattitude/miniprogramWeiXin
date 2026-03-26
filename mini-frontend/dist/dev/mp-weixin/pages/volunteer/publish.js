@@ -2,6 +2,26 @@
 const common_vendor = require("../../common/vendor.js");
 const api_volunteer = require("../../api/volunteer.js");
 const composables_useAuth = require("../../composables/useAuth.js");
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "publish",
   setup(__props) {
@@ -46,50 +66,52 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         return "";
       return dt.toISOString();
     }
-    async function onSubmit() {
-      const ok = await requireLogin({
-        content: "发布活动需要先登录，是否立即登录？"
-      });
-      if (!ok)
-        return;
-      const { name, category, location, startDate, startClock, endDate, endClock, maxCount } = form.value;
-      if (!name.trim())
-        return common_vendor.index.showToast({ title: "请填写活动名称", icon: "none" });
-      if (!category)
-        return common_vendor.index.showToast({ title: "请选择活动分类", icon: "none" });
-      if (!location.trim())
-        return common_vendor.index.showToast({ title: "请填写活动地点", icon: "none" });
-      if (!startDate || !startClock)
-        return common_vendor.index.showToast({ title: "请选择开始日期和时间", icon: "none" });
-      if (!endDate || !endClock)
-        return common_vendor.index.showToast({ title: "请选择结束日期和时间", icon: "none" });
-      if (!maxCount || maxCount <= 0)
-        return common_vendor.index.showToast({ title: "请填写正确的名额上限", icon: "none" });
-      const startTime = toIsoString(startDate, startClock);
-      const endTime = toIsoString(endDate, endClock);
-      if (!startTime || !endTime)
-        return common_vendor.index.showToast({ title: "时间格式不合法", icon: "none" });
-      if (new Date(startTime).getTime() >= new Date(endTime).getTime()) {
-        return common_vendor.index.showToast({ title: "结束时间必须晚于开始时间", icon: "none" });
-      }
-      submitting.value = true;
-      try {
-        await api_volunteer.publishActivity({
-          name: name.trim(),
-          category,
-          location: location.trim(),
-          startTime,
-          endTime,
-          maxCount,
-          description: form.value.description.trim()
+    function onSubmit() {
+      return __async(this, null, function* () {
+        const ok = yield requireLogin({
+          content: "发布活动需要先登录，是否立即登录？"
         });
-        common_vendor.index.showToast({ title: "发布成功", icon: "success" });
-        setTimeout(() => common_vendor.index.navigateBack(), 1500);
-      } catch (err) {
-        common_vendor.index.showToast({ title: (err == null ? void 0 : err.message) || "发布失败，请重试", icon: "none" });
-      } finally {
-        submitting.value = false;
-      }
+        if (!ok)
+          return;
+        const { name, category, location, startDate, startClock, endDate, endClock, maxCount } = form.value;
+        if (!name.trim())
+          return common_vendor.index.showToast({ title: "请填写活动名称", icon: "none" });
+        if (!category)
+          return common_vendor.index.showToast({ title: "请选择活动分类", icon: "none" });
+        if (!location.trim())
+          return common_vendor.index.showToast({ title: "请填写活动地点", icon: "none" });
+        if (!startDate || !startClock)
+          return common_vendor.index.showToast({ title: "请选择开始日期和时间", icon: "none" });
+        if (!endDate || !endClock)
+          return common_vendor.index.showToast({ title: "请选择结束日期和时间", icon: "none" });
+        if (!maxCount || maxCount <= 0)
+          return common_vendor.index.showToast({ title: "请填写正确的名额上限", icon: "none" });
+        const startTime = toIsoString(startDate, startClock);
+        const endTime = toIsoString(endDate, endClock);
+        if (!startTime || !endTime)
+          return common_vendor.index.showToast({ title: "时间格式不合法", icon: "none" });
+        if (new Date(startTime).getTime() >= new Date(endTime).getTime()) {
+          return common_vendor.index.showToast({ title: "结束时间必须晚于开始时间", icon: "none" });
+        }
+        submitting.value = true;
+        try {
+          yield api_volunteer.publishActivity({
+            name: name.trim(),
+            category,
+            location: location.trim(),
+            startTime,
+            endTime,
+            maxCount,
+            description: form.value.description.trim()
+          });
+          common_vendor.index.showToast({ title: "发布成功", icon: "success" });
+          setTimeout(() => common_vendor.index.navigateBack(), 1500);
+        } catch (err) {
+          common_vendor.index.showToast({ title: (err == null ? void 0 : err.message) || "发布失败，请重试", icon: "none" });
+        } finally {
+          submitting.value = false;
+        }
+      });
     }
     return (_ctx, _cache) => {
       return {

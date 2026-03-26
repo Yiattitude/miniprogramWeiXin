@@ -2,6 +2,26 @@
 const common_vendor = require("../../common/vendor.js");
 const utils_format = require("../../utils/format.js");
 const api_admin = require("../../api/admin.js");
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
 if (!Array) {
   const _easycom_uv_loading_icon2 = common_vendor.resolveComponent("uv-loading-icon");
   _easycom_uv_loading_icon2();
@@ -37,63 +57,69 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         return "";
       return utils_format.formatDateTime(new Date(val));
     }
-    async function loadUser() {
-      if (!userId.value)
-        return;
-      try {
-        const detail = await api_admin.getAdminUser(userId.value);
-        if (detail.code === 0 && detail.data) {
-          user.value = detail.data;
-          await loadLogs();
-        }
-      } catch (err) {
-        common_vendor.index.showToast({ title: "用户信息加载失败", icon: "none" });
-      }
-    }
-    async function loadLogs() {
-      if (!user.value)
-        return;
-      loading.value = true;
-      try {
-        const res = await api_admin.getPointsLogs(user.value._id);
-        if (res.code === 0 && res.data) {
-          logs.value = res.data.list;
-        }
-      } finally {
-        loading.value = false;
-      }
-    }
-    async function submitAdjust() {
-      const amount = Number(adjAmount.value);
-      const reason = adjReason.value.trim();
-      if (!amount || amount <= 0) {
-        common_vendor.index.showToast({ title: "请输入有效的调整数值", icon: "none" });
-        return;
-      }
-      if (!reason) {
-        common_vendor.index.showToast({ title: "必须填写操作原因", icon: "none" });
-        return;
-      }
-      const actAmount = adjType.value === "add" ? amount : -amount;
-      common_vendor.index.showModal({
-        title: "二次确认",
-        content: `确认要为该用户 ${actAmount > 0 ? "增加" : "扣除"} ${Math.abs(actAmount)} 积分吗？`,
-        success: async (res) => {
-          if (res.confirm && user.value) {
-            common_vendor.index.showLoading({ title: "提交中" });
-            try {
-              const resp = await api_admin.adjustUserPoints({ targetUserId: user.value._id, amount: actAmount, reason });
-              if (resp.code === 0) {
-                common_vendor.index.showToast({ title: "操作成功" });
-                adjAmount.value = "";
-                adjReason.value = "";
-                await loadUser();
-              }
-            } finally {
-              common_vendor.index.hideLoading();
-            }
+    function loadUser() {
+      return __async(this, null, function* () {
+        if (!userId.value)
+          return;
+        try {
+          const detail = yield api_admin.getAdminUser(userId.value);
+          if (detail.code === 0 && detail.data) {
+            user.value = detail.data;
+            yield loadLogs();
           }
+        } catch (err) {
+          common_vendor.index.showToast({ title: "用户信息加载失败", icon: "none" });
         }
+      });
+    }
+    function loadLogs() {
+      return __async(this, null, function* () {
+        if (!user.value)
+          return;
+        loading.value = true;
+        try {
+          const res = yield api_admin.getPointsLogs(user.value._id);
+          if (res.code === 0 && res.data) {
+            logs.value = res.data.list;
+          }
+        } finally {
+          loading.value = false;
+        }
+      });
+    }
+    function submitAdjust() {
+      return __async(this, null, function* () {
+        const amount = Number(adjAmount.value);
+        const reason = adjReason.value.trim();
+        if (!amount || amount <= 0) {
+          common_vendor.index.showToast({ title: "请输入有效的调整数值", icon: "none" });
+          return;
+        }
+        if (!reason) {
+          common_vendor.index.showToast({ title: "必须填写操作原因", icon: "none" });
+          return;
+        }
+        const actAmount = adjType.value === "add" ? amount : -amount;
+        common_vendor.index.showModal({
+          title: "二次确认",
+          content: `确认要为该用户 ${actAmount > 0 ? "增加" : "扣除"} ${Math.abs(actAmount)} 积分吗？`,
+          success: (res) => __async(this, null, function* () {
+            if (res.confirm && user.value) {
+              common_vendor.index.showLoading({ title: "提交中" });
+              try {
+                const resp = yield api_admin.adjustUserPoints({ targetUserId: user.value._id, amount: actAmount, reason });
+                if (resp.code === 0) {
+                  common_vendor.index.showToast({ title: "操作成功" });
+                  adjAmount.value = "";
+                  adjReason.value = "";
+                  yield loadUser();
+                }
+              } finally {
+                common_vendor.index.hideLoading();
+              }
+            }
+          })
+        });
       });
     }
     return (_ctx, _cache) => {

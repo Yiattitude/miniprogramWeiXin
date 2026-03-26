@@ -1,6 +1,26 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const api_admin = require("../../api/admin.js");
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
 if (!Array) {
   const _easycom_uv_loading_icon2 = common_vendor.resolveComponent("uv-loading-icon");
   _easycom_uv_loading_icon2();
@@ -21,10 +41,10 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
     const list = common_vendor.ref([]);
     const total = common_vendor.ref(0);
     common_vendor.onLoad(() => loadFirst());
-    common_vendor.onPullDownRefresh(async () => {
-      await loadFirst();
+    common_vendor.onPullDownRefresh(() => __async(this, null, function* () {
+      yield loadFirst();
       common_vendor.index.stopPullDownRefresh();
-    });
+    }));
     function onSearch() {
       loadFirst();
     }
@@ -32,32 +52,36 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       keyword.value = "";
       loadFirst();
     }
-    async function loadFirst() {
-      page.value = 1;
-      finished.value = false;
-      list.value = [];
-      await loadMore();
+    function loadFirst() {
+      return __async(this, null, function* () {
+        page.value = 1;
+        finished.value = false;
+        list.value = [];
+        yield loadMore();
+      });
     }
-    async function loadMore() {
-      if (loading.value || finished.value)
-        return;
-      loading.value = true;
-      try {
-        const result = await api_admin.getAdminUsers({ page: page.value, pageSize: PAGE_SIZE, keyword: keyword.value });
-        if (result.code === 0 && result.data) {
-          list.value = page.value === 1 ? result.data.list : [...list.value, ...result.data.list];
-          total.value = result.data.total;
-          if (list.value.length >= result.data.total) {
-            finished.value = true;
-          } else {
-            page.value++;
+    function loadMore() {
+      return __async(this, null, function* () {
+        if (loading.value || finished.value)
+          return;
+        loading.value = true;
+        try {
+          const result = yield api_admin.getAdminUsers({ page: page.value, pageSize: PAGE_SIZE, keyword: keyword.value });
+          if (result.code === 0 && result.data) {
+            list.value = page.value === 1 ? result.data.list : [...list.value, ...result.data.list];
+            total.value = result.data.total;
+            if (list.value.length >= result.data.total) {
+              finished.value = true;
+            } else {
+              page.value++;
+            }
           }
+        } catch (err) {
+          common_vendor.index.showToast({ title: "加载失败", icon: "none" });
+        } finally {
+          loading.value = false;
         }
-      } catch (err) {
-        common_vendor.index.showToast({ title: "加载失败", icon: "none" });
-      } finally {
-        loading.value = false;
-      }
+      });
     }
     function goDetail(item) {
       common_vendor.index.navigateTo({

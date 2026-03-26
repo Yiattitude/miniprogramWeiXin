@@ -2,6 +2,26 @@
 const common_vendor = require("../../common/vendor.js");
 const stores_volunteer = require("../../stores/volunteer.js");
 const composables_useAuth = require("../../composables/useAuth.js");
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
 if (!Array) {
   const _easycom_uv_upload2 = common_vendor.resolveComponent("uv-upload");
   _easycom_uv_upload2();
@@ -29,19 +49,19 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         return "3-10";
       return "1-5";
     });
-    common_vendor.onLoad(async (options) => {
+    common_vendor.onLoad((options) => __async(this, null, function* () {
       const id = (options == null ? void 0 : options.activityId) || "";
       activityId.value = id;
       if (!id)
         return;
       try {
-        const activity = await volunteerStore.fetchActivityById(id);
+        const activity = yield volunteerStore.fetchActivityById(id);
         activityName.value = activity.name;
         activityCategory.value = activity.category || "其他服务";
       } catch (e) {
         console.error("[checkin-form] fetchActivity error:", e);
       }
-    });
+    }));
     function validate() {
       errors.value = {};
       const points = parseInt(declaredPoints.value);
@@ -63,31 +83,33 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       }
       return Object.keys(errors.value).length === 0;
     }
-    async function handleSubmit() {
-      const ok = await requireLogin({
-        content: "提交打卡需要先登录，是否立即登录？"
-      });
-      if (!ok)
-        return;
-      if (!validate())
-        return;
-      submitting.value = true;
-      try {
-        const photoUrls = fileList.value.map((f) => f.url || f.path);
-        await volunteerStore.submitCheckin({
-          activityId: activityId.value,
-          declaredPoints: parseInt(declaredPoints.value),
-          activityCategory: activityCategory.value,
-          photos: photoUrls,
-          remark: remark.value || void 0
+    function handleSubmit() {
+      return __async(this, null, function* () {
+        const ok = yield requireLogin({
+          content: "提交打卡需要先登录，是否立即登录？"
         });
-        common_vendor.index.showToast({ title: "打卡成功！", icon: "success" });
-        setTimeout(() => common_vendor.index.navigateBack(), 1500);
-      } catch (e) {
-        console.error("[checkin-form] submit error:", e);
-      } finally {
-        submitting.value = false;
-      }
+        if (!ok)
+          return;
+        if (!validate())
+          return;
+        submitting.value = true;
+        try {
+          const photoUrls = fileList.value.map((f) => f.url || f.path);
+          yield volunteerStore.submitCheckin({
+            activityId: activityId.value,
+            declaredPoints: parseInt(declaredPoints.value),
+            activityCategory: activityCategory.value,
+            photos: photoUrls,
+            remark: remark.value || void 0
+          });
+          common_vendor.index.showToast({ title: "打卡成功！", icon: "success" });
+          setTimeout(() => common_vendor.index.navigateBack(), 1500);
+        } catch (e) {
+          console.error("[checkin-form] submit error:", e);
+        } finally {
+          submitting.value = false;
+        }
+      });
     }
     return (_ctx, _cache) => {
       return common_vendor.e({

@@ -2,6 +2,26 @@
 const common_vendor = require("../../common/vendor.js");
 const api_admin = require("../../api/admin.js");
 const utils_format = require("../../utils/format.js");
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
 if (!Array) {
   const _easycom_uv_loading_icon2 = common_vendor.resolveComponent("uv-loading-icon");
   _easycom_uv_loading_icon2();
@@ -45,7 +65,8 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       return item.honorLevel || item.honor_type || "未填写";
     }
     function displayPoints(item) {
-      return Number(item.honorPoints ?? item.honor_points ?? 0);
+      var _a, _b;
+      return Number((_b = (_a = item.honorPoints) != null ? _a : item.honor_points) != null ? _b : 0);
     }
     function onTabChange(e) {
       currentTab.value = e.index;
@@ -58,36 +79,40 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       return utils_format.formatDateTime(new Date(value));
     }
     common_vendor.onLoad(() => loadFirst());
-    common_vendor.onPullDownRefresh(async () => {
-      await loadFirst();
+    common_vendor.onPullDownRefresh(() => __async(this, null, function* () {
+      yield loadFirst();
       common_vendor.index.stopPullDownRefresh();
-    });
-    async function loadFirst() {
-      page.value = 1;
-      finished.value = false;
-      list.value = [];
-      await loadMore();
+    }));
+    function loadFirst() {
+      return __async(this, null, function* () {
+        page.value = 1;
+        finished.value = false;
+        list.value = [];
+        yield loadMore();
+      });
     }
-    async function loadMore() {
-      if (loading.value || finished.value)
-        return;
-      loading.value = true;
-      try {
-        const result = await api_admin.getAdminHonors({ page: page.value, pageSize: PAGE_SIZE, status: currentStatus.value });
-        if (result.code === 0 && result.data) {
-          list.value = page.value === 1 ? result.data.list : [...list.value, ...result.data.list];
-          total.value = result.data.total;
-          if (list.value.length >= result.data.total) {
-            finished.value = true;
-          } else {
-            page.value++;
+    function loadMore() {
+      return __async(this, null, function* () {
+        if (loading.value || finished.value)
+          return;
+        loading.value = true;
+        try {
+          const result = yield api_admin.getAdminHonors({ page: page.value, pageSize: PAGE_SIZE, status: currentStatus.value });
+          if (result.code === 0 && result.data) {
+            list.value = page.value === 1 ? result.data.list : [...list.value, ...result.data.list];
+            total.value = result.data.total;
+            if (list.value.length >= result.data.total) {
+              finished.value = true;
+            } else {
+              page.value++;
+            }
           }
+        } catch (err) {
+          common_vendor.index.showToast({ title: "加载失败", icon: "none" });
+        } finally {
+          loading.value = false;
         }
-      } catch (err) {
-        common_vendor.index.showToast({ title: "加载失败", icon: "none" });
-      } finally {
-        loading.value = false;
-      }
+      });
     }
     function previewProofs(urls) {
       if (!urls || urls.length === 0)
@@ -107,11 +132,11 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       common_vendor.index.showModal({
         title: "确认通过",
         content: `确定通过 ${displayName(item)} 的荣誉审核并发放 ${displayPoints(item)} 积分吗？`,
-        success: async (res) => {
+        success: (res) => __async(this, null, function* () {
           if (res.confirm) {
             common_vendor.index.showLoading({ title: "处理中" });
             try {
-              const resp = await api_admin.auditHonor({ id: recordId, pass: true });
+              const resp = yield api_admin.auditHonor({ id: recordId, pass: true });
               if (resp.code === 0) {
                 common_vendor.index.showToast({ title: "已通过" });
                 list.value.splice(index, 1);
@@ -121,7 +146,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
               common_vendor.index.hideLoading();
             }
           }
-        }
+        })
       });
     }
     function onReject(item, index) {
@@ -131,7 +156,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         content: "请输入驳回理由：",
         editable: true,
         placeholderText: "例如：材料不清晰/无法核验",
-        success: async (res) => {
+        success: (res) => __async(this, null, function* () {
           if (res.confirm) {
             if (!res.content) {
               common_vendor.index.showToast({ title: "必须填写驳回理由", icon: "none" });
@@ -139,7 +164,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
             }
             common_vendor.index.showLoading({ title: "处理中" });
             try {
-              const resp = await api_admin.auditHonor({ id: recordId, pass: false, rejectReason: res.content });
+              const resp = yield api_admin.auditHonor({ id: recordId, pass: false, rejectReason: res.content });
               if (resp.code === 0) {
                 common_vendor.index.showToast({ title: "已驳回" });
                 list.value.splice(index, 1);
@@ -149,7 +174,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
               common_vendor.index.hideLoading();
             }
           }
-        }
+        })
       });
     }
     return (_ctx, _cache) => {

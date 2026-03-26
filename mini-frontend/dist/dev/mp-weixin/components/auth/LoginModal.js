@@ -1,5 +1,25 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
 const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   __name: "LoginModal",
   emits: ["wechat-code", "admin", "close"],
@@ -14,26 +34,28 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       show.value = false;
       emit("close");
     }
-    async function handleLogin() {
-      if (!agreed.value) {
-        common_vendor.index.showToast({ title: "请先同意服务协议与隐私政策", icon: "none" });
-        return;
-      }
-      try {
-        const loginResult = await common_vendor.index.login({
-          provider: "weixin"
-        });
-        if (loginResult.code) {
-          emit("wechat-code", loginResult.code);
-          close();
+    function handleLogin() {
+      return __async(this, null, function* () {
+        if (!agreed.value) {
+          common_vendor.index.showToast({ title: "请先同意服务协议与隐私政策", icon: "none" });
+          return;
         }
-      } catch (error) {
-        console.error("登录失败:", error);
-        common_vendor.index.showToast({
-          title: "登录失败，请重试",
-          icon: "none"
-        });
-      }
+        try {
+          const loginResult = yield common_vendor.index.login({
+            provider: "weixin"
+          });
+          if (loginResult.code) {
+            emit("wechat-code", loginResult.code);
+            close();
+          }
+        } catch (error) {
+          console.error("登录失败:", error);
+          common_vendor.index.showToast({
+            title: "登录失败，请重试",
+            icon: "none"
+          });
+        }
+      });
     }
     function handleAdminEntry() {
       if (!agreed.value) {

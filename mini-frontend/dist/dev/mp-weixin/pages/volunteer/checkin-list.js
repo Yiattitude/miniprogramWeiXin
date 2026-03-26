@@ -1,6 +1,26 @@
 "use strict";
 const common_vendor = require("../../common/vendor.js");
 const stores_volunteer = require("../../stores/volunteer.js");
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
 if (!Array) {
   const _easycom_uv_loading_icon2 = common_vendor.resolveComponent("uv-loading-icon");
   const _easycom_uv_load_more2 = common_vendor.resolveComponent("uv-load-more");
@@ -25,10 +45,10 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
     common_vendor.onLoad(() => {
       loadList(true);
     });
-    common_vendor.onPullDownRefresh(async () => {
-      await loadList(true);
+    common_vendor.onPullDownRefresh(() => __async(this, null, function* () {
+      yield loadList(true);
       common_vendor.index.stopPullDownRefresh();
-    });
+    }));
     common_vendor.onReachBottom(() => {
       if (!finished.value) {
         loadList();
@@ -46,36 +66,38 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         (a, b) => getPublishTime(b) - getPublishTime(a)
       );
     }
-    async function loadList(reset = false) {
-      if (loading.value)
-        return;
-      if (reset) {
-        page.value = 1;
-        finished.value = false;
-        list.value = [];
-        volunteerStore.resetFilter();
-      }
-      if (finished.value)
-        return;
-      loading.value = true;
-      try {
-        const result = await volunteerStore.fetchActivityList(page.value, PAGE_SIZE);
-        const incoming = Array.isArray(result.list) ? result.list : [];
-        const merged = mergeActivities(list.value, incoming);
-        list.value = merged;
-        const totalFromResult = typeof result.total === "number" ? result.total : null;
-        const reachedTotal = totalFromResult !== null ? merged.length >= totalFromResult : incoming.length < PAGE_SIZE;
-        if (reachedTotal || incoming.length === 0) {
-          finished.value = true;
-        } else {
-          page.value += 1;
+    function loadList(reset = false) {
+      return __async(this, null, function* () {
+        if (loading.value)
+          return;
+        if (reset) {
+          page.value = 1;
+          finished.value = false;
+          list.value = [];
+          volunteerStore.resetFilter();
         }
-      } catch (e) {
-        console.error("[checkin-list] fetch error:", e);
-        common_vendor.index.showToast({ title: (e == null ? void 0 : e.message) || "加载失败", icon: "none" });
-      } finally {
-        loading.value = false;
-      }
+        if (finished.value)
+          return;
+        loading.value = true;
+        try {
+          const result = yield volunteerStore.fetchActivityList(page.value, PAGE_SIZE);
+          const incoming = Array.isArray(result.list) ? result.list : [];
+          const merged = mergeActivities(list.value, incoming);
+          list.value = merged;
+          const totalFromResult = typeof result.total === "number" ? result.total : null;
+          const reachedTotal = totalFromResult !== null ? merged.length >= totalFromResult : incoming.length < PAGE_SIZE;
+          if (reachedTotal || incoming.length === 0) {
+            finished.value = true;
+          } else {
+            page.value += 1;
+          }
+        } catch (e) {
+          console.error("[checkin-list] fetch error:", e);
+          common_vendor.index.showToast({ title: (e == null ? void 0 : e.message) || "加载失败", icon: "none" });
+        } finally {
+          loading.value = false;
+        }
+      });
     }
     function onLoadMore() {
       if (!finished.value)

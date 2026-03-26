@@ -12,16 +12,48 @@ export type WechatLoginResponse = {
   userInfo?: any
 }
 
+function pickDefined<T>(values: Array<T | null | undefined>): T | undefined {
+  for (let i = 0; i < values.length; i += 1) {
+    const value = values[i]
+    if (value !== undefined && value !== null) return value
+  }
+  return undefined
+}
+
 export async function wechatLogin(data: { code: string }): Promise<WechatLoginResponse> {
   const raw = await cloudCall<any>('wechatLogin', data, 'volunteer-service')
 
   // 兼容后端常见字段命名差异（need_binding / openId 等）
-  const needBinding =
-    raw?.needBinding ?? raw?.need_binding ?? raw?.needBind ?? raw?.need_bind ?? false
+  const rawAny = raw as any
+  const dataAny = rawAny && rawAny.data ? rawAny.data : undefined
 
-  const openid = raw?.openid ?? raw?.openId ?? raw?.open_id ?? raw?.data?.openid ?? ''
-  const token = raw?.token ?? raw?.accessToken ?? raw?.access_token ?? raw?.data?.token ?? ''
-  const userInfo = raw?.userInfo ?? raw?.user_info ?? raw?.data?.userInfo ?? raw?.data?.user_info
+  const needBindingValue = pickDefined([
+    rawAny ? rawAny.needBinding : undefined,
+    rawAny ? rawAny.need_binding : undefined,
+    rawAny ? rawAny.needBind : undefined,
+    rawAny ? rawAny.need_bind : undefined,
+  ])
+  const needBinding =
+    needBindingValue === undefined || needBindingValue === null ? false : needBindingValue
+
+  const openid = pickDefined([
+    rawAny ? rawAny.openid : undefined,
+    rawAny ? rawAny.openId : undefined,
+    rawAny ? rawAny.open_id : undefined,
+    dataAny ? dataAny.openid : undefined,
+  ])
+  const token = pickDefined([
+    rawAny ? rawAny.token : undefined,
+    rawAny ? rawAny.accessToken : undefined,
+    rawAny ? rawAny.access_token : undefined,
+    dataAny ? dataAny.token : undefined,
+  ])
+  const userInfo = pickDefined([
+    rawAny ? rawAny.userInfo : undefined,
+    rawAny ? rawAny.user_info : undefined,
+    dataAny ? dataAny.userInfo : undefined,
+    dataAny ? dataAny.user_info : undefined,
+  ])
 
   return {
     needBinding: !!needBinding,

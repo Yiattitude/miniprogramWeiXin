@@ -3,6 +3,26 @@ const common_vendor = require("../../common/vendor.js");
 const api_volunteer = require("../../api/volunteer.js");
 const composables_useAuth = require("../../composables/useAuth.js");
 const stores_user = require("../../stores/user.js");
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
 if (!Array) {
   const _easycom_uv_upload2 = common_vendor.resolveComponent("uv-upload");
   _easycom_uv_upload2();
@@ -54,40 +74,42 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       list.splice(index, 1);
       honorFiles.value = list;
     }
-    async function submitHonor() {
-      const ok = await requireLogin({
-        content: "提交荣誉信息需要先登录，是否立即登录？"
-      });
-      if (!ok)
-        return;
-      if (!selectedHonor.value) {
-        common_vendor.index.showToast({ title: "请选择荣誉级别", icon: "none" });
-        return;
-      }
-      const userInfo = userStore.userInfo || {};
-      const userId = userInfo._id || userInfo.userId || userInfo.id || userInfo._openid || "";
-      honorSubmitting.value = true;
-      try {
-        const proofs = [
-          ...honorImages.value.map((item) => item.url || item.path).filter(Boolean),
-          ...honorFiles.value.map((item) => item.path).filter(Boolean)
-        ];
-        await api_volunteer.submitHonor({
-          userId,
-          honorLevel: selectedHonor.value,
-          honorPoints: honorPoints.value,
-          proofs
+    function submitHonor() {
+      return __async(this, null, function* () {
+        const ok = yield requireLogin({
+          content: "提交荣誉信息需要先登录，是否立即登录？"
         });
-        common_vendor.index.showToast({ title: "提交成功，等待审核", icon: "success" });
-        selectedHonor.value = "";
-        honorPoints.value = 0;
-        honorImages.value = [];
-        honorFiles.value = [];
-      } catch (err) {
-        common_vendor.index.showToast({ title: (err == null ? void 0 : err.message) || "提交失败，请重试", icon: "none" });
-      } finally {
-        honorSubmitting.value = false;
-      }
+        if (!ok)
+          return;
+        if (!selectedHonor.value) {
+          common_vendor.index.showToast({ title: "请选择荣誉级别", icon: "none" });
+          return;
+        }
+        const userInfo = userStore.userInfo || {};
+        const userId = userInfo._id || userInfo.userId || userInfo.id || userInfo._openid || "";
+        honorSubmitting.value = true;
+        try {
+          const proofs = [
+            ...honorImages.value.map((item) => item.url || item.path).filter(Boolean),
+            ...honorFiles.value.map((item) => item.path).filter(Boolean)
+          ];
+          yield api_volunteer.submitHonor({
+            userId,
+            honorLevel: selectedHonor.value,
+            honorPoints: honorPoints.value,
+            proofs
+          });
+          common_vendor.index.showToast({ title: "提交成功，等待审核", icon: "success" });
+          selectedHonor.value = "";
+          honorPoints.value = 0;
+          honorImages.value = [];
+          honorFiles.value = [];
+        } catch (err) {
+          common_vendor.index.showToast({ title: (err == null ? void 0 : err.message) || "提交失败，请重试", icon: "none" });
+        } finally {
+          honorSubmitting.value = false;
+        }
+      });
     }
     return (_ctx, _cache) => {
       return common_vendor.e({

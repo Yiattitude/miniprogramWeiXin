@@ -2,6 +2,26 @@
 const common_vendor = require("../../common/vendor.js");
 const api_user = require("../../api/user.js");
 const stores_user = require("../../stores/user.js");
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
 if (!Math) {
   Icon();
 }
@@ -56,33 +76,35 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       validatePhone(form.phone);
       return !errors.realName && !errors.phone && !!form.realName && !!form.phone;
     }
-    async function onSubmit() {
-      if (!openid.value) {
-        common_vendor.index.showToast({ title: "缺少 openid，请重新登录", icon: "none" });
-        common_vendor.index.redirectTo({ url: `/pages/auth/login?redirect=${encodeURIComponent(redirect.value)}` });
-        return;
-      }
-      if (!validateForm()) {
-        common_vendor.index.showToast({ title: "请检查输入信息", icon: "none" });
-        return;
-      }
-      loading.value = true;
-      try {
-        const res = await api_user.bindUser({ openid: openid.value, realName: form.realName, phone: form.phone });
-        if (!res.success || !res.token) {
-          common_vendor.index.showToast({ title: res.message || "绑定失败", icon: "none" });
+    function onSubmit() {
+      return __async(this, null, function* () {
+        if (!openid.value) {
+          common_vendor.index.showToast({ title: "缺少 openid，请重新登录", icon: "none" });
+          common_vendor.index.redirectTo({ url: `/pages/auth/login?redirect=${encodeURIComponent(redirect.value)}` });
           return;
         }
-        userStore.token = res.token;
-        if (res.userInfo)
-          userStore.syncUserInfo(res.userInfo);
-        common_vendor.index.showToast({ title: "绑定成功", icon: "success" });
-        common_vendor.index.switchTab({ url: "/pages/index/index" });
-      } catch {
-        common_vendor.index.showToast({ title: "网络错误，请重试", icon: "none" });
-      } finally {
-        loading.value = false;
-      }
+        if (!validateForm()) {
+          common_vendor.index.showToast({ title: "请检查输入信息", icon: "none" });
+          return;
+        }
+        loading.value = true;
+        try {
+          const res = yield api_user.bindUser({ openid: openid.value, realName: form.realName, phone: form.phone });
+          if (!res.success || !res.token) {
+            common_vendor.index.showToast({ title: res.message || "绑定失败", icon: "none" });
+            return;
+          }
+          userStore.token = res.token;
+          if (res.userInfo)
+            userStore.syncUserInfo(res.userInfo);
+          common_vendor.index.showToast({ title: "绑定成功", icon: "success" });
+          common_vendor.index.switchTab({ url: "/pages/index/index" });
+        } catch (e) {
+          common_vendor.index.showToast({ title: "网络错误，请重试", icon: "none" });
+        } finally {
+          loading.value = false;
+        }
+      });
     }
     function onCancel() {
       common_vendor.index.navigateBack();

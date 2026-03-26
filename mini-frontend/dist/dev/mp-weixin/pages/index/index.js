@@ -2,6 +2,26 @@
 const common_vendor = require("../../common/vendor.js");
 const stores_user = require("../../stores/user.js");
 const stores_volunteer = require("../../stores/volunteer.js");
+var __async = (__this, __arguments, generator) => {
+  return new Promise((resolve, reject) => {
+    var fulfilled = (value) => {
+      try {
+        step(generator.next(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var rejected = (value) => {
+      try {
+        step(generator.throw(value));
+      } catch (e) {
+        reject(e);
+      }
+    };
+    var step = (x) => x.done ? resolve(x.value) : Promise.resolve(x.value).then(fulfilled, rejected);
+    step((generator = generator.apply(__this, __arguments)).next());
+  });
+};
 if (!Array) {
   const _easycom_uv_loading_icon2 = common_vendor.resolveComponent("uv-loading-icon");
   _easycom_uv_loading_icon2();
@@ -22,11 +42,11 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
     const activityPageSize = common_vendor.ref(4);
     const activityLoading = common_vendor.ref(false);
     const activityFinished = common_vendor.ref(false);
-    common_vendor.onMounted(async () => {
+    common_vendor.onMounted(() => __async(this, null, function* () {
       if (userStore.isLoggedIn && !userStore.userInfo) {
-        await userStore.fetchProfile();
+        yield userStore.fetchProfile();
       }
-    });
+    }));
     common_vendor.onLoad(() => {
       computePageSize();
       loadActivities(true);
@@ -65,39 +85,41 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
         (a, b) => getPublishTime(b) - getPublishTime(a)
       );
     }
-    async function loadActivities(reset = false) {
-      if (activityLoading.value)
-        return;
-      if (reset) {
-        activityPage.value = 1;
-        activityFinished.value = false;
-        activities.value = [];
-        volunteerStore.resetFilter();
-      }
-      if (activityFinished.value)
-        return;
-      activityLoading.value = true;
-      try {
-        const result = await volunteerStore.fetchActivityList(
-          activityPage.value,
-          activityPageSize.value
-        );
-        const incoming = Array.isArray(result.list) ? result.list : [];
-        const merged = mergeActivities(activities.value, incoming);
-        activities.value = merged;
-        const totalFromResult = typeof result.total === "number" ? result.total : null;
-        const reachedTotal = totalFromResult !== null ? merged.length >= totalFromResult : incoming.length < activityPageSize.value;
-        if (reachedTotal || incoming.length === 0) {
-          activityFinished.value = true;
-        } else {
-          activityPage.value += 1;
+    function loadActivities(reset = false) {
+      return __async(this, null, function* () {
+        if (activityLoading.value)
+          return;
+        if (reset) {
+          activityPage.value = 1;
+          activityFinished.value = false;
+          activities.value = [];
+          volunteerStore.resetFilter();
         }
-      } catch (e) {
-        console.error("[index] loadActivities error:", e);
-        common_vendor.index.showToast({ title: (e == null ? void 0 : e.message) || "加载失败", icon: "none" });
-      } finally {
-        activityLoading.value = false;
-      }
+        if (activityFinished.value)
+          return;
+        activityLoading.value = true;
+        try {
+          const result = yield volunteerStore.fetchActivityList(
+            activityPage.value,
+            activityPageSize.value
+          );
+          const incoming = Array.isArray(result.list) ? result.list : [];
+          const merged = mergeActivities(activities.value, incoming);
+          activities.value = merged;
+          const totalFromResult = typeof result.total === "number" ? result.total : null;
+          const reachedTotal = totalFromResult !== null ? merged.length >= totalFromResult : incoming.length < activityPageSize.value;
+          if (reachedTotal || incoming.length === 0) {
+            activityFinished.value = true;
+          } else {
+            activityPage.value += 1;
+          }
+        } catch (e) {
+          console.error("[index] loadActivities error:", e);
+          common_vendor.index.showToast({ title: (e == null ? void 0 : e.message) || "加载失败", icon: "none" });
+        } finally {
+          activityLoading.value = false;
+        }
+      });
     }
     return (_ctx, _cache) => {
       var _a, _b;
