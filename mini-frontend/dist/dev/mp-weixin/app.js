@@ -2,6 +2,7 @@
 Object.defineProperty(exports, Symbol.toStringTag, { value: "Module" });
 const common_vendor = require("./common/vendor.js");
 const stores_user = require("./stores/user.js");
+const utils_mingcuteFont = require("./utils/mingcute-font.js");
 if (!Math) {
   "./pages/index/index.js";
   "./pages/auth/login.js";
@@ -33,6 +34,7 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
           traceUser: true
         });
       }
+      utils_mingcuteFont.loadMingcuteFont();
       if (userStore.isLoggedIn) {
         userStore.fetchProfile().catch((err) => {
           console.error("获取用户信息失败", err);

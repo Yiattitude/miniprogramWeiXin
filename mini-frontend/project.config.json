@@ -26,7 +26,7 @@
     "minifyWXSS": true,
     "minifyWXML": true,
     "localPlugins": false,
-    "condition": false,
+    "condition": true,
     "swc": false,
     "disableSWC": true,
     "disableUseStrict": false,
@@ -44,5 +44,6 @@
     "ignore": [],
     "include": []
   },
-  "appid": "wx2b8ff48151cc1a2b"
+  "appid": "wx2b8ff48151cc1a2b",
+  "projectArchitecture": "multiPlatform"
 }

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 declare const wx: any
-import { onMounted } from 'vue'
 import { useUserStore } from './stores/user'
 import { onLaunch } from '@dcloudio/uni-app'
+import { loadMingcuteFont } from './utils/mingcute-font'
 
 const userStore = useUserStore()
 
@@ -16,6 +16,9 @@ onLaunch(() => {
       traceUser: true,
     })
   }
+
+  // 1.5 兜底加载 MingCute 字体（避免本地字体路径被禁）
+  loadMingcuteFont()
 
   // 2. 检查登录状态
   if (userStore.isLoggedIn) {
