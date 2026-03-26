@@ -6,6 +6,7 @@ const utils_mingcuteFont = require("./utils/mingcute-font.js");
 if (!Math) {
   "./pages/index/index.js";
   "./pages/auth/login.js";
+  "./pages/auth/admin-login.js";
   "./pages/auth/bind.js";
   "./pages/volunteer/index.js";
   "./pages/volunteer/profile.js";

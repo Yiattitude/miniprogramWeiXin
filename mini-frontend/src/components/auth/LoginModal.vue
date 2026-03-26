@@ -3,14 +3,23 @@
     <view class="modal-mask"></view>
     <view class="modal-content">
       <button
-        class="login-btn"
+        class="login-btn admin-btn"
+        :disabled="!agreed"
+        :class="{ 'is-disabled': !agreed }"
+        @tap="handleAdminEntry"
+      >
+        管理员入口
+      </button>
+
+      <button
+        class="login-btn one-key-btn"
         :type="'primary' as any"
         open-type="getUserInfo"
         :disabled="!agreed"
         :class="{ 'is-disabled': !agreed }"
         @getuserinfo="handleLogin"
       >
-        微信授权登录
+        一键登录
       </button>
 
       <view class="modal-tip" @tap="toggleAgree">
@@ -33,6 +42,7 @@ import { ref } from 'vue'
 
 const emit = defineEmits<{
   (e: 'wechat-code', code: string): void
+  (e: 'admin'): void
   (e: 'close'): void
 }>()
 
@@ -72,6 +82,14 @@ async function handleLogin() {
       icon: 'none'
     })
   }
+}
+
+function handleAdminEntry() {
+  if (!agreed.value) {
+    uni.showToast({ title: '请先同意服务协议与隐私政策', icon: 'none' })
+    return
+  }
+  emit('admin')
 }
 
 function toggleAgree() {
@@ -141,6 +159,17 @@ defineExpose({ open, close })
       &:active {
         transform: scale(0.98);
       }
+    }
+
+    .admin-btn {
+      background: #0b2fa8;
+      color: #fff;
+    }
+
+    .one-key-btn {
+      background: #2fb14b;
+      color: #fff;
+      margin-bottom: 24px;
     }
 
     .modal-tip {

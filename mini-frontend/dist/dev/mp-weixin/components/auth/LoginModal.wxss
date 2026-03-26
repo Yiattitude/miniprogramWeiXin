@@ -54,6 +54,15 @@
 .login-modal .modal-content .login-btn.data-v-f765fec6:active {
   transform: scale(0.98);
 }
+.login-modal .modal-content .admin-btn.data-v-f765fec6 {
+  background: #0b2fa8;
+  color: #fff;
+}
+.login-modal .modal-content .one-key-btn.data-v-f765fec6 {
+  background: #2fb14b;
+  color: #fff;
+  margin-bottom: 24px;
+}
 .login-modal .modal-content .modal-tip.data-v-f765fec6 {
   display: flex;
   justify-content: center;

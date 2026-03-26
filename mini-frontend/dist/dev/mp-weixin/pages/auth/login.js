@@ -29,6 +29,12 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       ).trim();
       return !realName || !phone;
     }
+    function onAdminEntry() {
+      const url = `/pages/auth/admin-login?redirect=${encodeURIComponent(
+        redirect.value || "/pages/admin/statistics"
+      )}`;
+      common_vendor.index.navigateTo({ url });
+    }
     async function onWechatCode(code) {
       try {
         common_vendor.index.showLoading({ title: "登录中..." });
@@ -80,7 +86,8 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
     }
     return (_ctx, _cache) => {
       return {
-        a: common_vendor.o(onWechatCode)
+        a: common_vendor.o(onWechatCode),
+        b: common_vendor.o(onAdminEntry)
       };
     };
   }

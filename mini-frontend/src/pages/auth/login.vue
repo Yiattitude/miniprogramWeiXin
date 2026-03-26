@@ -1,7 +1,7 @@
 <template>
   <page-meta root-font-size="system" />
   <view class="page">
-    <LoginModal @wechat-code="onWechatCode" />
+    <LoginModal @wechat-code="onWechatCode" @admin="onAdminEntry" />
   </view>
 </template>
 
@@ -37,6 +37,13 @@ function needProfileBind(info: WechatLoginResponse['userInfo']) {
     userInfo.phone ?? userInfo.mobile ?? userInfo.phoneNumber ?? userInfo.tel ?? ''
   ).trim()
   return !realName || !phone
+}
+
+function onAdminEntry() {
+  const url = `/pages/auth/admin-login?redirect=${encodeURIComponent(
+    redirect.value || '/pages/admin/statistics'
+  )}`
+  uni.navigateTo({ url })
 }
 
 async function onWechatCode(code: string) {

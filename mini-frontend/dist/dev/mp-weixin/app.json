@@ -2,6 +2,7 @@
   "pages": [
     "pages/index/index",
     "pages/auth/login",
+    "pages/auth/admin-login",
     "pages/auth/bind",
     "pages/volunteer/index",
     "pages/volunteer/profile",

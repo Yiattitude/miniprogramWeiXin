@@ -22,6 +22,12 @@
       }
     },
     {
+      "path": "pages/auth/admin-login",
+      "style": {
+        "navigationBarTitleText": "管理员登录"
+      }
+    },
+    {
       "path": "pages/auth/bind",
       "style": {
         "navigationBarTitleText": "完善信息"
