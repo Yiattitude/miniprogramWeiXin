@@ -2,25 +2,27 @@
   <view class="login-modal" :class="{ show }">
     <view class="modal-mask"></view>
     <view class="modal-content">
-      <button
-        class="login-btn admin-btn"
-        :disabled="!agreed"
-        :class="{ 'is-disabled': !agreed }"
-        @tap="handleAdminEntry"
-      >
-        管理员入口
-      </button>
+      <view class="btn-group">
+        <button
+          class="login-btn admin-btn"
+          :disabled="!agreed"
+          :class="{ 'is-disabled': !agreed }"
+          @tap="handleAdminEntry"
+        >
+          管理员入口
+        </button>
 
-      <button
-        class="login-btn one-key-btn"
-        :type="'primary' as any"
-        open-type="getUserInfo"
-        :disabled="!agreed"
-        :class="{ 'is-disabled': !agreed }"
-        @getuserinfo="handleLogin"
-      >
-        一键登录
-      </button>
+        <button
+          class="login-btn one-key-btn"
+          :type="'primary' as any"
+          open-type="getUserInfo"
+          :disabled="!agreed"
+          :class="{ 'is-disabled': !agreed }"
+          @getuserinfo="handleLogin"
+        >
+          一键登录
+        </button>
+      </view>
 
       <view class="modal-tip" @tap="toggleAgree">
         <view class="agree-box" :class="{ checked: agreed }" aria-hidden="true">
@@ -125,31 +127,42 @@ defineExpose({ open, close })
     background: rgba(0, 0, 0, 0.62);
   }
 
-  .modal-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 86%;
-    max-width: 560rpx;
-    background: #fff;
-    border-radius: 28rpx;
-    padding: 56rpx 36rpx 44rpx;
+    .modal-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    width: 88%;
+    max-width: 620rpx;
+    background: linear-gradient(180deg, #ffffff 0%, #f5f8ff 100%);
+    border-radius: 32rpx;
+    padding: 64rpx 44rpx 64rpx;
     text-align: center;
-    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.15);
+      box-shadow:
+        0 20px 60px rgba(15, 35, 80, 0.18),
+        inset 0 0 0 1px rgba(31, 79, 178, 0.04);
+      min-height: 420rpx;
+      display: flex;
+      flex-direction: column;
+
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
 
     .login-btn {
       width: 100%;
-      min-height: 52px;
-      height: 52px;
+      min-height: 48px;
+      height: 48px;
       border-radius: 26px;
       font-size: 22px;
       font-weight: 800;
-      letter-spacing: 1px;
+      letter-spacing: 2rpx;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 18px;
+      margin-bottom: 0;
       transition: transform 0.2s ease;
 
       &.is-disabled {
@@ -164,27 +177,30 @@ defineExpose({ open, close })
     .admin-btn {
       background: #0b2fa8;
       color: #fff;
+      box-shadow: 0 12px 24px rgba(11, 47, 168, 0.24);
     }
 
     .one-key-btn {
       background: #2fb14b;
       color: #fff;
-      margin-bottom: 24px;
+      box-shadow: 0 12px 24px rgba(47, 177, 75, 0.22);
     }
 
     .modal-tip {
       display: flex;
       justify-content: center;
-      align-items: flex-start;
+      align-items: center;
       gap: 10px;
-      font-size: 16px;
-      color: #3b4654;
+      font-size: 13px;
+      color: #475569;
       line-height: 1.6;
-      padding: 6px 0;
+      padding: 10px 0 0;
+      flex-wrap: nowrap;
+      margin-top: auto;
 
       .agree-box {
-        width: 22px;
-        height: 22px;
+        width: 20px;
+        height: 20px;
         border-radius: 6px;
         border: 2px solid #7a8797;
         background: #fff;
@@ -212,9 +228,11 @@ defineExpose({ open, close })
       .tip-text {
         display: flex;
         justify-content: center;
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
         gap: 8rpx;
+        
         text-align: left;
+        white-space: nowrap;
       }
 
       .tip-link {
