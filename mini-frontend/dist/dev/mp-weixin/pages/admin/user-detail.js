@@ -17,16 +17,14 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
     const user = common_vendor.ref(null);
     const logs = common_vendor.ref([]);
     const loading = common_vendor.ref(false);
+    const userId = common_vendor.ref("");
     const adjType = common_vendor.ref("add");
     const adjAmount = common_vendor.ref("");
     const adjReason = common_vendor.ref("");
     common_vendor.onLoad((options) => {
-      if (options.payload) {
-        try {
-          user.value = JSON.parse(decodeURIComponent(options.payload));
-          loadLogs();
-        } catch {
-        }
+      userId.value = (options == null ? void 0 : options.id) || "";
+      if (userId.value) {
+        loadUser();
       }
     });
     function formatTime(val) {
@@ -38,6 +36,19 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       if (!val)
         return "";
       return utils_format.formatDateTime(new Date(val));
+    }
+    async function loadUser() {
+      if (!userId.value)
+        return;
+      try {
+        const detail = await api_admin.getAdminUser(userId.value);
+        if (detail.code === 0 && detail.data) {
+          user.value = detail.data;
+          await loadLogs();
+        }
+      } catch (err) {
+        common_vendor.index.showToast({ title: "用户信息加载失败", icon: "none" });
+      }
     }
     async function loadLogs() {
       if (!user.value)
@@ -74,10 +85,9 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
               const resp = await api_admin.adjustUserPoints({ targetUserId: user.value._id, amount: actAmount, reason });
               if (resp.code === 0) {
                 common_vendor.index.showToast({ title: "操作成功" });
-                user.value.totalPoints += actAmount;
                 adjAmount.value = "";
                 adjReason.value = "";
-                await loadLogs();
+                await loadUser();
               }
             } finally {
               common_vendor.index.hideLoading();

@@ -11,23 +11,10 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
   setup(__props) {
     const userStore = stores_user.useUserStore();
     const redirect = common_vendor.ref("/pages/index/index");
-    const forceBind = common_vendor.ref(false);
-    const didAutoJump = common_vendor.ref(false);
     common_vendor.onLoad((query) => {
       const r = (query == null ? void 0 : query.redirect) || "";
       if (r)
         redirect.value = decodeURIComponent(r);
-      forceBind.value = String((query == null ? void 0 : query.forceBind) || "") === "1";
-      if (forceBind.value && !didAutoJump.value) {
-        didAutoJump.value = true;
-        setTimeout(() => {
-          common_vendor.index.navigateTo({
-            url: `/pages/auth/bind?openid=${encodeURIComponent(
-              "mock_openid_" + Date.now()
-            )}&redirect=${encodeURIComponent(redirect.value || "/pages/index/index")}`
-          });
-        }, 0);
-      }
     });
     function isTabPage(url) {
       return url === "/pages/index/index" || url === "/pages/volunteer/index" || url === "/pages/volunteer/profile";
@@ -45,14 +32,6 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
     async function onWechatCode(code) {
       try {
         common_vendor.index.showLoading({ title: "登录中..." });
-        if (forceBind.value) {
-          common_vendor.index.navigateTo({
-            url: `/pages/auth/bind?openid=${encodeURIComponent(
-              "mock_openid_" + Date.now()
-            )}&redirect=${encodeURIComponent(redirect.value || "/pages/index/index")}`
-          });
-          return;
-        }
         const res = await api_user.api.wechatLogin({ code });
         const openid = res.openid || "";
         if (openid) {

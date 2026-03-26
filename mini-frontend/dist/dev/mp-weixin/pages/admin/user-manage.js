@@ -60,9 +60,8 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
       }
     }
     function goDetail(item) {
-      const payload = encodeURIComponent(JSON.stringify(item));
       common_vendor.index.navigateTo({
-        url: `/pages/admin/user-detail?payload=${payload}`
+        url: `/pages/admin/user-detail?id=${item._id}`
       });
     }
     return (_ctx, _cache) => {

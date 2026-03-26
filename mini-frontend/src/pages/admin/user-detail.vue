@@ -92,12 +92,13 @@ import { ref } from 'vue'
 import Icon from '@/components/common/Icon.vue'
 import { onLoad } from '@dcloudio/uni-app'
 import { formatDateTime } from '@/utils/format'
-import { getPointsLogs, adjustUserPoints } from '@/api/admin'
+import { getPointsLogs, adjustUserPoints, getAdminUser } from '@/api/admin'
 import type { AdminUser, PointsLog } from '@/api/admin'
 
 const user = ref<AdminUser | null>(null)
 const logs = ref<PointsLog[]>([])
 const loading = ref(false)
+const userId = ref('')
 
 // 调整表单
 const adjType = ref<'add'|'sub'>('add')
@@ -105,11 +106,9 @@ const adjAmount = ref('')
 const adjReason = ref('')
 
 onLoad((options: any) => {
-  if (options.payload) {
-    try {
-      user.value = JSON.parse(decodeURIComponent(options.payload))
-      loadLogs()
-    } catch {}
+  userId.value = options?.id || ''
+  if (userId.value) {
+    loadUser()
   }
 })
 
@@ -121,6 +120,19 @@ function formatTime(val: string) {
 function formatDateTimeRaw(val: string) {
   if (!val) return ''
   return formatDateTime(new Date(val))
+}
+
+async function loadUser() {
+  if (!userId.value) return
+  try {
+    const detail = await getAdminUser(userId.value)
+    if (detail.code === 0 && detail.data) {
+      user.value = detail.data
+      await loadLogs()
+    }
+  } catch (err) {
+    uni.showToast({ title: '用户信息加载失败', icon: 'none' })
+  }
 }
 
 async function loadLogs() {
@@ -161,11 +173,9 @@ async function submitAdjust() {
           const resp = await adjustUserPoints({ targetUserId: user.value._id, amount: actAmount, reason })
           if (resp.code === 0) {
             uni.showToast({ title: '操作成功' })
-            // 模拟刷新界面数据
-            user.value.totalPoints += actAmount
             adjAmount.value = ''
             adjReason.value = ''
-            await loadLogs()
+            await loadUser()
           }
         } finally {
           uni.hideLoading()

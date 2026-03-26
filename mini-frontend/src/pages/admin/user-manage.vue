@@ -128,12 +128,8 @@ async function loadMore() {
 }
 
 function goDetail(item: AdminUser) {
-  // Pass user details strictly via URL storage or simple params. 
-  // Here we pass basic json via URL for mock purposes.
-  // In real app, just pass ID and redownload.
-  const payload = encodeURIComponent(JSON.stringify(item))
   uni.navigateTo({
-    url: `/pages/admin/user-detail?payload=${payload}`
+    url: `/pages/admin/user-detail?id=${item._id}`
   })
 }
 </script>

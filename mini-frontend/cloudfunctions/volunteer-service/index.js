@@ -18,6 +18,11 @@ exports.main = async (event = {}) => {
 
   try {
     switch (action) {
+      case 'wechatLogin':
+        return await wechatLogin(data, OPENID)
+      case 'bindUser':
+        return await bindUser(data, OPENID)
+
       case 'getActivities':
         return await getActivities(data, OPENID)
       case 'getActivityById':
@@ -41,6 +46,28 @@ exports.main = async (event = {}) => {
         return await getStatistics(OPENID)
       case 'exportReport':
         return await exportReport(data, OPENID)
+
+      case 'submitHonor':
+        return await submitHonor(data, OPENID)
+
+      case 'adminGetUsers':
+        return await adminGetUsers(data, OPENID)
+      case 'adminGetUser':
+        return await adminGetUser(data, OPENID)
+      case 'getPointsLogs':
+        return await getPointsLogs(data, OPENID)
+      case 'adjustUserPoints':
+        return await adjustUserPoints(data, OPENID)
+      case 'adminGetCheckins':
+        return await adminGetCheckins(data, OPENID)
+      case 'auditCheckin':
+        return await auditCheckin(data, OPENID)
+      case 'adminGetStats':
+        return await adminGetStats(data, OPENID)
+      case 'adminGetHonors':
+        return await adminGetHonors(data, OPENID)
+      case 'adminAuditHonor':
+        return await adminAuditHonor(data, OPENID)
 
       default:
         return { code: 400, message: '未定义的业务动作' }
@@ -309,6 +336,7 @@ async function publishActivity(form = {}, openid) {
   if (adminError) return adminError
 
   const name = String(form.name || '').trim()
+  const category = String(form.category || '').trim()
   const location = String(form.location || '').trim()
   const description = String(form.description || '').trim()
   const startTime = String(form.startTime || '').trim()
@@ -331,6 +359,7 @@ async function publishActivity(form = {}, openid) {
 
   const newActivity = {
     name,
+    category,
     location,
     description,
     startTime,
@@ -486,6 +515,8 @@ async function getMySignups(openid) {
 
 async function submitCheckin(data = {}, openid) {
   const activityId = String(data.activityId || '').trim()
+  const declaredPoints = Number(data.declaredPoints)
+  const activityCategory = String(data.activityCategory || '').trim()
   const serviceHours = Number(data.serviceHours)
   const serviceCount = Number(data.serviceCount)
   const photos = Array.isArray(data.photos) ? data.photos.filter(Boolean) : []
@@ -495,12 +526,8 @@ async function submitCheckin(data = {}, openid) {
     return { code: 400, message: '缺少活动 ID' }
   }
 
-  if (!Number.isFinite(serviceHours) || serviceHours <= 0 || serviceHours > 24) {
-    return { code: 400, message: '服务时长必须在 0 ~ 24 小时内' }
-  }
-
-  if (!Number.isInteger(serviceCount) || serviceCount < 1) {
-    return { code: 400, message: '服务人数必须为正整数' }
+  if (!Number.isFinite(declaredPoints) || declaredPoints <= 0) {
+    return { code: 400, message: '申报积分必须为正整数' }
   }
 
   if (photos.length > MAX_CHECKIN_PHOTOS) {
@@ -541,14 +568,22 @@ async function submitCheckin(data = {}, openid) {
     const record = {
       activityId,
       activityName: activity.name,
+      activityCategory: activity.category || activityCategory || '其他服务',
       activityLocation: activity.location,
-      serviceHours,
-      serviceCount,
+      declaredPoints,
       photos,
       remark,
       _openid: openid,
       checkedAt: db.serverDate(),
       status: 'pending'
+    }
+
+    if (Number.isFinite(serviceHours) && serviceHours > 0) {
+      record.serviceHours = serviceHours
+    }
+
+    if (Number.isInteger(serviceCount) && serviceCount > 0) {
+      record.serviceCount = serviceCount
     }
 
     const addRes = await transaction.collection('records').add({ data: record })
@@ -585,6 +620,12 @@ async function getMyRecords(params = {}, openid) {
 }
 
 async function getStatistics(openid) {
+  const [userRes, checkinCountRes, honorCountRes] = await Promise.all([
+    db.collection('users').where({ _openid: openid }).limit(1).get(),
+    db.collection('records').where({ _openid: openid }).count(),
+    db.collection('honors').where({ _openid: openid }).count()
+  ])
+
   const statsRes = await db.collection('records')
     .aggregate()
     .match({
@@ -628,6 +669,12 @@ async function getStatistics(openid) {
     .end()
 
   const stats = statsRes.list[0] || { totalHours: 0, totalCount: 0, totalServed: 0 }
+  const user = userRes.data && userRes.data.length > 0 ? userRes.data[0] : null
+
+  const [checkinRecordsRes, honorRecordsRes] = await Promise.all([
+    db.collection('records').where({ _openid: openid }).orderBy('checkedAt', 'desc').limit(50).get(),
+    db.collection('honors').where({ _openid: openid }).orderBy('createdAt', 'desc').limit(50).get()
+  ])
 
   return {
     code: 0,
@@ -635,6 +682,11 @@ async function getStatistics(openid) {
       totalHours: Number(stats.totalHours || 0),
       totalCount: Number(stats.totalCount || 0),
       totalServed: Number(stats.totalServed || 0),
+      totalPoints: Number(user?.totalPoints || 0),
+      totalCheckins: Number(checkinCountRes.total || 0),
+      totalHonors: Number(honorCountRes.total || 0),
+      checkinRecords: checkinRecordsRes.data || [],
+      honorRecords: honorRecordsRes.data || [],
       byCategory: (byCategoryRes.list || []).map(item => ({
         category: item._id || '未分类',
         count: Number(item.count || 0),
@@ -711,5 +763,601 @@ async function exportReport(_params = {}, openid) {
   return {
     code: 0,
     data: uploadRes.fileID
+  }
+}
+
+function buildToken(openid) {
+  return `token_${openid}_${Date.now()}`
+}
+
+function normalizeUserData(user) {
+  if (!user) return user
+  return {
+    ...user,
+    totalPoints: Number(user.totalPoints || 0),
+    checkinCount: Number(user.checkinCount || 0),
+    role: user.role === 'admin' ? 'admin' : 'member'
+  }
+}
+
+async function getUserByOpenid(openid) {
+  if (!openid) return null
+  const res = await db.collection('users').where({ _openid: openid }).limit(1).get()
+  return res.data && res.data.length > 0 ? res.data[0] : null
+}
+
+async function ensureUser(openid) {
+  if (!openid) return null
+  const existing = await getUserByOpenid(openid)
+  if (existing) return existing
+
+  const data = {
+    _openid: openid,
+    realName: '',
+    phone: '',
+    role: 'member',
+    totalPoints: 0,
+    checkinCount: 0,
+    createdAt: db.serverDate(),
+    updatedAt: db.serverDate()
+  }
+
+  const res = await db.collection('users').add({ data })
+  const created = await db.collection('users').doc(res._id).get()
+  return created.data || { _id: res._id, ...data }
+}
+
+async function wechatLogin(_data, openid) {
+  if (!openid) {
+    return { code: 400, message: '缺少用户标识' }
+  }
+
+  const user = await ensureUser(openid)
+  const normalized = normalizeUserData(user)
+  const needBinding = !normalized?.realName || !normalized?.phone
+
+  return {
+    code: 0,
+    data: {
+      needBinding,
+      openid,
+      token: buildToken(openid),
+      userInfo: normalized
+    }
+  }
+}
+
+async function bindUser(data = {}, openidFromCtx) {
+  const openid = String(data.openid || openidFromCtx || '').trim()
+  const realName = String(data.realName || '').trim()
+  const phone = String(data.phone || '').trim()
+
+  if (!openid) {
+    return { code: 400, message: '缺少 openid' }
+  }
+  if (!realName || !phone) {
+    return { code: 400, message: '请填写完整姓名和手机号' }
+  }
+
+  const user = await getUserByOpenid(openid)
+  const updateData = {
+    realName,
+    phone,
+    updatedAt: db.serverDate(),
+    bindAt: user?.bindAt || db.serverDate()
+  }
+
+  if (user && user._id) {
+    await db.collection('users').doc(user._id).update({ data: updateData })
+  } else {
+    await db.collection('users').add({
+      data: {
+        _openid: openid,
+        role: 'member',
+        totalPoints: 0,
+        checkinCount: 0,
+        createdAt: db.serverDate(),
+        ...updateData
+      }
+    })
+  }
+
+  const latest = await getUserByOpenid(openid)
+  return {
+    code: 0,
+    data: {
+      token: buildToken(openid),
+      userInfo: normalizeUserData(latest)
+    }
+  }
+}
+
+async function submitHonor(data = {}, openid) {
+  const honorLevel = String(data.honorLevel || '').trim()
+  const honorPoints = Number(data.honorPoints)
+  const proofs = Array.isArray(data.proofs) ? data.proofs.filter(Boolean) : []
+  const userId = String(data.userId || '').trim()
+
+  if (!honorLevel || !Number.isFinite(honorPoints) || honorPoints <= 0) {
+    return { code: 400, message: '荣誉信息不完整' }
+  }
+
+  let user = null
+  if (userId) {
+    try {
+      const res = await db.collection('users').doc(userId).get()
+      user = res.data || null
+    } catch (err) {
+      user = null
+    }
+  }
+  if (!user) {
+    user = await getUserByOpenid(openid)
+  }
+
+  const record = {
+    userId: user?._id || userId || '',
+    userName: user?.realName || '',
+    phone: user?.phone || '',
+    honorLevel,
+    honorPoints,
+    proofs,
+    status: 'pending',
+    _openid: openid,
+    createdAt: db.serverDate()
+  }
+
+  const res = await db.collection('honors').add({ data: record })
+  return { code: 0, data: { id: res._id } }
+}
+
+async function adminGetUsers(params = {}, openid) {
+  const adminError = await ensureAdmin(openid)
+  if (adminError) return adminError
+
+  const { page, pageSize, skip } = normalizePagination(params.page, params.pageSize)
+  const keyword = String(params.keyword || '').trim()
+
+  let query = db.collection('users')
+  if (keyword) {
+    const kw = db.RegExp({ regexp: keyword, options: 'i' })
+    query = query.where(_.or([{ realName: kw }, { phone: kw }]))
+  }
+
+  const countRes = await query.count()
+  const listRes = await query
+    .skip(skip)
+    .limit(pageSize)
+    .get()
+
+  const list = (listRes.data || []).map(normalizeUserData)
+
+  return {
+    code: 0,
+    data: {
+      list,
+      total: countRes.total,
+      page,
+      pageSize
+    }
+  }
+}
+
+async function adminGetUser(params = {}, openid) {
+  const adminError = await ensureAdmin(openid)
+  if (adminError) return adminError
+
+  const id = String(params.id || '').trim()
+  if (!id) return { code: 400, message: '缺少用户 ID' }
+
+  try {
+    const res = await db.collection('users').doc(id).get()
+    if (!res.data) return { code: 404, message: '用户不存在' }
+    return { code: 0, data: normalizeUserData(res.data) }
+  } catch (err) {
+    return { code: 404, message: '用户不存在' }
+  }
+}
+
+async function getPointsLogs(params = {}, openid) {
+  const adminError = await ensureAdmin(openid)
+  if (adminError) return adminError
+
+  const userId = String(params.userId || '').trim()
+  if (!userId) return { code: 400, message: '缺少用户 ID' }
+
+  const res = await db.collection('points_logs')
+    .where({ userId })
+    .orderBy('createdAt', 'desc')
+    .limit(200)
+    .get()
+
+  return { code: 0, data: { list: res.data || [] } }
+}
+
+async function adjustUserPoints(data = {}, openid) {
+  const adminError = await ensureAdmin(openid)
+  if (adminError) return adminError
+
+  const targetUserId = String(data.targetUserId || '').trim()
+  const amount = Number(data.amount)
+  const reason = String(data.reason || '').trim()
+
+  if (!targetUserId) return { code: 400, message: '缺少目标用户' }
+  if (!Number.isFinite(amount) || amount === 0) return { code: 400, message: '调整数值不合法' }
+  if (!reason) return { code: 400, message: '必须填写调整原因' }
+
+  const transaction = await db.startTransaction()
+  try {
+    const userRes = await transaction.collection('users').doc(targetUserId).get()
+    if (!userRes.data) {
+      await safeRollback(transaction)
+      return { code: 404, message: '用户不存在' }
+    }
+
+    const user = userRes.data
+    const currentPoints = Number(user.totalPoints || 0)
+    const nextPoints = currentPoints + amount
+    if (nextPoints < 0) {
+      await safeRollback(transaction)
+      return { code: 400, message: '扣减后积分不可为负数' }
+    }
+
+    await transaction.collection('users').doc(targetUserId).update({
+      data: {
+        totalPoints: nextPoints,
+        updatedAt: db.serverDate()
+      }
+    })
+
+    await transaction.collection('points_logs').add({
+      data: {
+        userId: targetUserId,
+        userOpenid: user._openid || '',
+        operatorId: openid,
+        changeAmount: amount,
+        afterPoints: nextPoints,
+        reason,
+        type: 'manual_adjust',
+        createdAt: db.serverDate()
+      }
+    })
+
+    await transaction.commit()
+    return { code: 0, data: { success: true } }
+  } catch (err) {
+    await safeRollback(transaction)
+    console.error('[adjustUserPoints] error:', err)
+    return { code: 500, message: '操作失败，请稍后重试' }
+  }
+}
+
+async function adminGetCheckins(params = {}, openid) {
+  const adminError = await ensureAdmin(openid)
+  if (adminError) return adminError
+
+  const { page, pageSize, skip } = normalizePagination(params.page, params.pageSize)
+  const status = String(params.status || '').trim()
+  const whereQuery = status ? { status } : {}
+
+  const countRes = await db.collection('records').where(whereQuery).count()
+  const listRes = await db.collection('records')
+    .where(whereQuery)
+    .orderBy('checkedAt', 'desc')
+    .skip(skip)
+    .limit(pageSize)
+    .get()
+
+  const records = listRes.data || []
+  const userOpenids = records.map(item => item._openid).filter(Boolean)
+  const users = await fetchByFieldIn('users', '_openid', userOpenids)
+  const userMap = new Map((users || []).map(item => [item._openid, item]))
+
+  const list = records.map(record => {
+    const user = userMap.get(record._openid)
+    return {
+      ...record,
+      realName: user?.realName || '',
+      phone: user?.phone || ''
+    }
+  })
+
+  return {
+    code: 0,
+    data: {
+      list,
+      total: countRes.total,
+      page,
+      pageSize
+    }
+  }
+}
+
+async function auditCheckin(data = {}, openid) {
+  const adminError = await ensureAdmin(openid)
+  if (adminError) return adminError
+
+  const recordId = String(data.recordId || '').trim()
+  const pass = !!data.pass
+  const rejectReason = String(data.rejectReason || '').trim()
+
+  if (!recordId) return { code: 400, message: '缺少记录 ID' }
+
+  const transaction = await db.startTransaction()
+  try {
+    const recordRes = await transaction.collection('records').doc(recordId).get()
+    const record = recordRes.data
+
+    if (!record) {
+      await safeRollback(transaction)
+      return { code: 404, message: '记录不存在' }
+    }
+
+    if (record.status && record.status !== 'pending') {
+      await safeRollback(transaction)
+      return { code: 400, message: '该记录已审核' }
+    }
+
+    if (pass) {
+      const declaredPoints = Number(record.declaredPoints || 0)
+      const userRes = await transaction.collection('users').where({ _openid: record._openid }).limit(1).get()
+      let user = userRes.data && userRes.data.length > 0 ? userRes.data[0] : null
+
+      if (!user) {
+        const createRes = await transaction.collection('users').add({
+          data: {
+            _openid: record._openid,
+            realName: record.realName || '',
+            phone: record.phone || '',
+            role: 'member',
+            totalPoints: 0,
+            checkinCount: 0,
+            createdAt: db.serverDate(),
+            updatedAt: db.serverDate()
+          }
+        })
+        const createdUser = await transaction.collection('users').doc(createRes._id).get()
+        user = createdUser.data
+      }
+
+      const currentPoints = Number(user?.totalPoints || 0)
+      const nextPoints = currentPoints + declaredPoints
+      const nextCheckinCount = Number(user?.checkinCount || 0) + 1
+
+      await transaction.collection('users').doc(user._id).update({
+        data: {
+          totalPoints: nextPoints,
+          checkinCount: nextCheckinCount,
+          updatedAt: db.serverDate()
+        }
+      })
+
+      await transaction.collection('records').doc(recordId).update({
+        data: {
+          status: 'approved',
+          auditedAt: db.serverDate(),
+          auditorOpenid: openid,
+          updatedAt: db.serverDate(),
+          rejectReason: ''
+        }
+      })
+
+      await transaction.collection('points_logs').add({
+        data: {
+          userId: user._id,
+          userOpenid: user._openid || '',
+          operatorId: openid,
+          changeAmount: declaredPoints,
+          afterPoints: nextPoints,
+          reason: `打卡审核通过：${record.activityName || ''}`,
+          type: 'audit_pass',
+          recordId,
+          createdAt: db.serverDate()
+        }
+      })
+    } else {
+      if (!rejectReason) {
+        await safeRollback(transaction)
+        return { code: 400, message: '必须填写驳回原因' }
+      }
+
+      await transaction.collection('records').doc(recordId).update({
+        data: {
+          status: 'rejected',
+          rejectReason,
+          auditedAt: db.serverDate(),
+          auditorOpenid: openid,
+          updatedAt: db.serverDate()
+        }
+      })
+    }
+
+    await transaction.commit()
+    return { code: 0, data: { success: true } }
+  } catch (err) {
+    await safeRollback(transaction)
+    console.error('[auditCheckin] error:', err)
+    return { code: 500, message: '审核失败，请稍后重试' }
+  }
+}
+
+async function adminGetStats(_params = {}, openid) {
+  const adminError = await ensureAdmin(openid)
+  if (adminError) return adminError
+
+  const usersCount = await db.collection('users').count()
+  const checkinsCount = await db.collection('records').count()
+
+  const pointsAgg = await db.collection('users')
+    .aggregate()
+    .group({ _id: null, totalPointsIssued: $.sum('$totalPoints') })
+    .end()
+
+  const totalPointsIssued = pointsAgg.list[0]?.totalPointsIssued || 0
+
+  const topRes = await db.collection('users')
+    .orderBy('totalPoints', 'desc')
+    .limit(5)
+    .get()
+
+  const topUsers = (topRes.data || []).map(item => ({
+    realName: item.realName || '未命名',
+    totalPoints: Number(item.totalPoints || 0)
+  }))
+
+  return {
+    code: 0,
+    data: {
+      totalUsers: usersCount.total,
+      totalCheckins: checkinsCount.total,
+      totalPointsIssued,
+      topUsers
+    }
+  }
+}
+
+async function adminGetHonors(params = {}, openid) {
+  const adminError = await ensureAdmin(openid)
+  if (adminError) return adminError
+
+  const { page, pageSize, skip } = normalizePagination(params.page, params.pageSize)
+  const status = String(params.status || '').trim()
+  const whereQuery = status ? { status } : {}
+
+  const countRes = await db.collection('honors').where(whereQuery).count()
+  const listRes = await db.collection('honors')
+    .where(whereQuery)
+    .orderBy('createdAt', 'desc')
+    .skip(skip)
+    .limit(pageSize)
+    .get()
+
+  const honors = listRes.data || []
+  const userIds = honors.map(item => item.userId).filter(Boolean)
+  const users = await fetchByFieldIn('users', '_id', userIds)
+  const userMap = new Map((users || []).map(item => [item._id, item]))
+
+  const list = honors.map(item => {
+    const user = userMap.get(item.userId)
+    return {
+      ...item,
+      id: item._id,
+      userName: item.userName || user?.realName || '',
+      phone: item.phone || user?.phone || ''
+    }
+  })
+
+  return {
+    code: 0,
+    data: {
+      list,
+      total: countRes.total,
+      page,
+      pageSize
+    }
+  }
+}
+
+async function adminAuditHonor(data = {}, openid) {
+  const adminError = await ensureAdmin(openid)
+  if (adminError) return adminError
+
+  const honorId = String(data.id || '').trim()
+  const pass = !!data.pass
+  const rejectReason = String(data.rejectReason || '').trim()
+
+  if (!honorId) return { code: 400, message: '缺少荣誉记录 ID' }
+
+  const transaction = await db.startTransaction()
+  try {
+    const honorRes = await transaction.collection('honors').doc(honorId).get()
+    const honor = honorRes.data
+
+    if (!honor) {
+      await safeRollback(transaction)
+      return { code: 404, message: '荣誉记录不存在' }
+    }
+
+    if (honor.status && honor.status !== 'pending') {
+      await safeRollback(transaction)
+      return { code: 400, message: '该记录已审核' }
+    }
+
+    if (pass) {
+      const honorPoints = Number(honor.honorPoints || 0)
+      let user = null
+      if (honor.userId) {
+        try {
+          const userRes = await transaction.collection('users').doc(honor.userId).get()
+          user = userRes.data || null
+        } catch (err) {
+          user = null
+        }
+      }
+      if (!user && honor._openid) {
+        const userRes = await transaction.collection('users').where({ _openid: honor._openid }).limit(1).get()
+        user = userRes.data && userRes.data.length > 0 ? userRes.data[0] : null
+      }
+      if (!user) {
+        await safeRollback(transaction)
+        return { code: 404, message: '用户不存在' }
+      }
+
+      const currentPoints = Number(user.totalPoints || 0)
+      const nextPoints = currentPoints + honorPoints
+
+      await transaction.collection('users').doc(user._id).update({
+        data: {
+          totalPoints: nextPoints,
+          updatedAt: db.serverDate()
+        }
+      })
+
+      await transaction.collection('honors').doc(honorId).update({
+        data: {
+          status: 'approved',
+          auditedAt: db.serverDate(),
+          auditorOpenid: openid,
+          updatedAt: db.serverDate(),
+          rejectReason: ''
+        }
+      })
+
+      await transaction.collection('points_logs').add({
+        data: {
+          userId: user._id,
+          userOpenid: user._openid || '',
+          operatorId: openid,
+          changeAmount: honorPoints,
+          afterPoints: nextPoints,
+          reason: `荣誉审核通过：${honor.honorLevel || ''}`,
+          type: 'audit_pass',
+          honorId,
+          createdAt: db.serverDate()
+        }
+      })
+    } else {
+      if (!rejectReason) {
+        await safeRollback(transaction)
+        return { code: 400, message: '必须填写驳回原因' }
+      }
+
+      await transaction.collection('honors').doc(honorId).update({
+        data: {
+          status: 'rejected',
+          rejectReason,
+          auditedAt: db.serverDate(),
+          auditorOpenid: openid,
+          updatedAt: db.serverDate()
+        }
+      })
+    }
+
+    await transaction.commit()
+    return { code: 0, data: { success: true } }
+  } catch (err) {
+    await safeRollback(transaction)
+    console.error('[adminAuditHonor] error:', err)
+    return { code: 500, message: '审核失败，请稍后重试' }
   }
 }

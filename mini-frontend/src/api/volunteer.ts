@@ -1,7 +1,6 @@
 /**
  * @file volunteer.ts
- * @description 志愿活动模块 API
- *              由原 mock 模式切换为微信云开发调用
+ * @description 志愿活动模块 API（微信云开发调用）
  */
 
 import { cloudCall } from './http'
