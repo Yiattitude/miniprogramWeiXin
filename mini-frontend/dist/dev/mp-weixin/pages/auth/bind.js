@@ -55,19 +55,19 @@ const _sfc_main = /* @__PURE__ */ common_vendor.defineComponent({
     common_vendor.watch(() => form.phone, validatePhone);
     function validateRealName(value) {
       if (!value.trim())
-        errors.realName = "请输入真实姓名";
-      else if (value.length < 2)
-        errors.realName = "姓名至少2个字符";
-      else if (!/^[\u4e00-\u9fa5]{2,}$/.test(value))
-        errors.realName = "请输入正确的中文姓名";
+        errors.realName = "请输入昵称";
+    //   else if (value.length < 2)
+    //     errors.realName = "姓名至少2个字符";
+    //   else if (!/^[\u4e00-\u9fa5]{2,}$/.test(value))
+    //     errors.realName = "请输入正确的中文姓名";
       else
         errors.realName = "";
     }
     function validatePhone(value) {
       if (!value)
-        errors.phone = "请输入手机号码";
-      else if (!/^1[3-9]\d{9}$/.test(value))
-        errors.phone = "请输入正确的手机号码";
+        errors.phone = "请输入邀请码";
+    //   else if (!/^1[3-9]\d{9}$/.test(value))
+    //     errors.phone = "请输入正确的邀请码";
       else
         errors.phone = "";
     }
